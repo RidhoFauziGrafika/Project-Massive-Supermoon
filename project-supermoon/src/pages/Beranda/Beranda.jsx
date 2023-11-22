@@ -9,7 +9,6 @@ const Beranda = () => {
     <>
       <SecondNavbar />
       <div className="font-productSans">
-        <h2 className="text-4xl">Halaman Beranda</h2>
         <div className="flex flex-row justify-evenly items-center">
           <MainCard />
           <MainCard />

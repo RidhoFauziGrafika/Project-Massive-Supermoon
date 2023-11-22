@@ -1,11 +1,13 @@
 import React from "react";
-import MainNavbar from "../../component/Navbar/MainNavbar";
+import SecondNavbar from "../../component/Navbar/SecondNavbar";
+import MainFooter from "../../component/Footer/MainFooter";
 
 const TentangKami = () => {
   return (
     <>
-      <MainNavbar />
+      <SecondNavbar />
       <h1>Halaman Tentang Kami</h1>
+      <MainFooter />
     </>
   );
 };

@@ -1,11 +1,11 @@
 import React from "react";
-import MainNavbar from "../../component/Navbar/MainNavbar";
+import SecondNavbar from "../../component/Navbar/SecondNavbar";
 import MainFooter from "../../component/Footer/MainFooter";
 
 const Wisata = () => {
   return (
     <>
-      <MainNavbar />
+      <SecondNavbar />
       <h1>Halaman Wisata</h1>
       <MainFooter />
     </>

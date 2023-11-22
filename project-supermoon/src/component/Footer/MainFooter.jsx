@@ -6,8 +6,8 @@ import { FaTwitter } from "react-icons/fa";
 const MainFooter = () => {
   return (
     <>
-      <footer className="bg-primary-pressed text-center text-neutral-10 lg:text-left font-productSans">
-        <div className="flex p-6 justify-between">
+      <footer className="mt-10 bg-primary-pressed text-center text-neutral-10 lg:text-left font-productSans">
+        <div className="flex p-8 justify-between">
           <div className="flex flex-row">
             <Link
               className="text-base font-bold block text-neutral-10 py-4 px-6"
@@ -35,11 +35,10 @@ const MainFooter = () => {
           </div>
         </div>
         <div className="border-b border-primary-surface w-11/12 mx-auto"></div>
-        <p className="flex py-5 text-sm justify-center  text-white">
+        <p className="flex py-10 text-sm justify-center  text-white">
           kuningantour.com @2023 All rights reserved
         </p>
 
-        <div className="mx-6 py-10 text-center md:text-left"></div>
       </footer>
     </>
   );

@@ -109,13 +109,14 @@ const SecondNavbar = () => {
               <div className="flex flex-col">
                 <Link
                   to="/profile"
-                  className="px-4 py-2 border-b border-neutral-10 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
+                  className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
                 >
                   Profile Saya
                 </Link>
+                <hr className="border-neutral-10"/>
                 <Link
                   to="/"
-                  className="px-4 py-2 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
+                  className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
                 >
                   Keluar
                 </Link>
