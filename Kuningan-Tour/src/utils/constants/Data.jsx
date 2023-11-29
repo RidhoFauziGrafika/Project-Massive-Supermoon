@@ -1,3 +1,4 @@
+// import img-card
 import img1 from "../../assets/images/Beranda/wisata/sidomba.png";
 import img2 from "../../assets/images/Beranda/wisata/cibulan.png";
 import img3 from "../../assets/images/Beranda/wisata/ciremai.png";
@@ -5,10 +6,41 @@ import img4 from "../../assets/images/Beranda/wisata/cilengkrang.png";
 import img5 from "../../assets/images/Beranda/wisata/lingarjati.png";
 import img6 from "../../assets/images/Beranda/wisata/sukageuri.png";
 
+// detail image 1
+import detailWisataCidomba1 from "../../assets/images/DetailWisata/DetailWisata-1/images-1.jpg";
+import detailWisataCidomba2 from "../../assets/images/DetailWisata/DetailWisata-1/images-2.jpg";
+import detailWisataCidomba3 from "../../assets/images/DetailWisata/DetailWisata-1/images-3.jpg";
+import detailWisataCidomba4 from "../../assets/images/DetailWisata/DetailWisata-1/images-4.jpg";
+// detail image 2
+import detailWisataCibulan1 from "../../assets/images/DetailWisata/DetailWisata-2/1.jpg";
+import detailWisataCibulan2 from "../../assets/images/DetailWisata/DetailWisata-2/2.jpg";
+import detailWisataCibulan3 from "../../assets/images/DetailWisata/DetailWisata-2/3.jpg";
+import detailWisataCibulan4 from "../../assets/images/DetailWisata/DetailWisata-2/4.jpg";
+// detail image 3
+import detailWisataCiremai1 from "../../assets/images/DetailWisata/DetailWisata-3/1.jpg";
+import detailWisataCiremai2 from "../../assets/images/DetailWisata/DetailWisata-3/2.jpg";
+import detailWisataCiremai3 from "../../assets/images/DetailWisata/DetailWisata-3/3.jpg";
+import detailWisataCiremai4 from "../../assets/images/DetailWisata/DetailWisata-3/4.jpg";
+// detail image 4
+import detailWisataCilengkrang1 from "../../assets/images/DetailWisata/DetailWisata-4/1.jpg";
+import detailWisataCilengkrang2 from "../../assets/images/DetailWisata/DetailWisata-4/2.jpg";
+import detailWisataCilengkrang3 from "../../assets/images/DetailWisata/DetailWisata-4/3.jpg";
+import detailWisataCilengkrang4 from "../../assets/images/DetailWisata/DetailWisata-4/4.jpg";
+// detail image 5
+import detailWisataLingarjati1 from "../../assets/images/DetailWisata/DetailWisata-5/1.jpg";
+import detailWisataLingarjati2 from "../../assets/images/DetailWisata/DetailWisata-5/2.jpg";
+import detailWisataLingarjati3 from "../../assets/images/DetailWisata/DetailWisata-5/3.jpg";
+import detailWisataLingarjati4 from "../../assets/images/DetailWisata/DetailWisata-5/4.jpg";
+// detail image 6
+import detailWisataSukageuri1 from "../../assets/images/DetailWisata/DetailWisata-6/1.jpg";
+import detailWisataSukageuri2 from "../../assets/images/DetailWisata/DetailWisata-6/2.jpg";
+import detailWisataSukageuri3 from "../../assets/images/DetailWisata/DetailWisata-6/3.jpg";
+import detailWisataSukageuri4 from "../../assets/images/DetailWisata/DetailWisata-6/4.jpg";
+
 const tours = [
   {
     id: 1,
-    title: "Cidomba",
+    title: "Curug Cidomba",
     category: [
       {
         category1: "Perkemahan",
@@ -25,6 +57,20 @@ const tours = [
     location:
       "Desa Peusing, Kecamatan Jalaksana, Kabupaten Kuningan, Provinsi Jawa Barat",
     image_card: img1,
+    image_details: [
+      {
+        img1: detailWisataCidomba1,
+      },
+      {
+        img2: detailWisataCidomba2,
+      },
+      {
+        img3: detailWisataCidomba3,
+      },
+      {
+        img4: detailWisataCidomba4,
+      },
+    ],
     ticket: [
       {
         price1: 10000,
@@ -61,6 +107,7 @@ const tours = [
     ],
     rating: 4.8,
     review: 1000,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",
@@ -113,6 +160,20 @@ const tours = [
     location:
       "Desa Manis Kidul, Kecamatan Jalaksana, Kabupaten Kuningan, Jawa Barat - Indonesia",
     image_card: img2,
+    image_details: [
+      {
+        img1: detailWisataCibulan1,
+      },
+      {
+        img2: detailWisataCibulan2,
+      },
+      {
+        img3: detailWisataCibulan3,
+      },
+      {
+        img4: detailWisataCibulan4,
+      },
+    ],
     ticket: [
       {
         price1: 18000,
@@ -137,6 +198,7 @@ const tours = [
     ],
     rating: 4.7,
     review: 2100,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",
@@ -189,6 +251,20 @@ const tours = [
     location:
       "gunung berapi kerucut yang secara administratif termasuk dalam wilayah dua kabupaten, yakni Kabupaten Kuningan dan Kabupaten Majalengka, Provinsi Jawa Barat.",
     image_card: img3,
+    image_details: [
+      {
+        img1: detailWisataCiremai1,
+      },
+      {
+        img2: detailWisataCiremai2,
+      },
+      {
+        img3: detailWisataCiremai3,
+      },
+      {
+        img4: detailWisataCiremai4,
+      },
+    ],
     ticket: [
       {
         price1: 5000,
@@ -228,6 +304,7 @@ const tours = [
     ],
     rating: 4.3,
     review: 1200,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",
@@ -280,10 +357,25 @@ const tours = [
     location:
       "Awirarangan, Kec. Kuningan, Kabupaten Kuningan, Jawa Barat 45511, Indonesia",
     image_card: img4,
+    image_details: [
+      {
+        img1: detailWisataCilengkrang1,
+      },
+      {
+        img2: detailWisataCilengkrang2,
+      },
+      {
+        img3: detailWisataCilengkrang3,
+      },
+      {
+        img4: detailWisataCilengkrang4,
+      },
+    ],
     ticket: 17000,
     facility: "Camping",
     rating: 4.4,
     review: 2300,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",
@@ -335,6 +427,20 @@ const tours = [
       "Destinasi pariwisata Gedung Perundingan Linggarjati di Cilimus, Kuningan, Jawa Barat, menampilkan daya tarik keindahan yang begitu menarik untuk dinikmati. Merupakan suatu kerugian apabila Anda berada di Kota Kuningan tanpa meluangkan waktu untuk mengunjungi tempat bersejarah ini yang memancarkan keindahan yang unik dan tak tertandingi.",
     location: "Linggarjati, Cilimus, Kuningan, Jawa Barat",
     image_card: img5,
+    image_details: [
+      {
+        img1: detailWisataLingarjati1,
+      },
+      {
+        img2: detailWisataLingarjati2,
+      },
+      {
+        img3: detailWisataLingarjati3,
+      },
+      {
+        img4: detailWisataLingarjati4,
+      },
+    ],
     ticket: 2000,
     facility: [
       {
@@ -352,6 +458,7 @@ const tours = [
     ],
     rating: 4.3,
     review: 1300,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",
@@ -404,6 +511,20 @@ const tours = [
     location:
       "Jl. Palutungan, Desa Cisantana, Kecamatan Cigugur, Kabupaten Kuningan, Jawa Barat.",
     image_card: img6,
+    image_details: [
+      {
+        img1: detailWisataSukageuri1,
+      },
+      {
+        img2: detailWisataSukageuri2,
+      },
+      {
+        img3: detailWisataSukageuri3,
+      },
+      {
+        img4: detailWisataSukageuri4,
+      },
+    ],
     ticket: 15000,
     facility: [
       {
@@ -424,6 +545,7 @@ const tours = [
     ],
     rating: 4.7,
     review: 990,
+    jam_operasional: "Beroperasional mulai pukul 07 pagi sampai dengan 05 sore",
     komentar: [
       {
         nama: "Salsabila Abadi",

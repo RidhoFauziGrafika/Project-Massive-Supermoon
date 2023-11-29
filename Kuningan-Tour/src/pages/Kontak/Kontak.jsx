@@ -9,13 +9,13 @@ const Kontak = () => {
   return (
     <>
       <Navbar />
-      <section class="bg-white lg:flex font-productSans">
-        <div className="lg:py-16 px-24 lg:px-16 flex justify-center">
-          <div className="mt-10 block w-full p-2.5">
+      <section class="lg:flex font-productSans px-24 gap-2">
+        <div className="py-8">
+          <div className="w-full h-full hidden lg:block">
             <img src={imgkuningan} alt="Logo" />
           </div>
         </div>
-        <div class="py-8 lg:py-24 px-4 mx-auto max-w-screen-md column-4">
+        <div class="py-8 px-4 mx-auto max-w-screen-md column-4">
           <h3 class="mb-3 text-[40px] tracking-tight font-bold text-neutral-100">
             Hubungi Kami
           </h3>

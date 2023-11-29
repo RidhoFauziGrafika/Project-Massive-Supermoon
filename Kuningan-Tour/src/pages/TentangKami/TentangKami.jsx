@@ -13,6 +13,7 @@ import imgmember4 from "../../assets/images/TentangKami/member/4.png";
 import imgmember5 from "../../assets/images/TentangKami/member/5.png";
 import imgmember6 from "../../assets/images/TentangKami/member/6.png";
 import imgmember7 from "../../assets/images/TentangKami/member/7.png";
+import AuthNavbar from "../../components/Navbar/AuthNavbar";
 
 const TentangKami = () => {
   const [carouselsImg, setCarouselsImg] = useState(data);
@@ -22,7 +23,7 @@ const TentangKami = () => {
       <div className="font-productSans">
         <div className="w-full mb-10">
           <img
-            className="top-0 left-0 w-full h-[640px] object-cover z-[999px]"
+            className="top-0 left-0 w-full h-[640px] object-cover"
             src={bgAbout}
             alt="kuningan"
           />
@@ -31,7 +32,7 @@ const TentangKami = () => {
               <h1 className="text-5xl lg:text-[56px] text-center font-bold">
                 Kabupaten Kuningan
               </h1>
-              <p className="text-xl text-center">
+              <p className="lg:text-xl text-base text-center">
                 Kabupaten Kuningan menawarkan lanskap indah perbukitan dan sawah{" "}
                 <br />
                 hijau, didukung oleh situs sejarah dan kebudayaan, menjadikannya
@@ -47,8 +48,8 @@ const TentangKami = () => {
             </div>
           </div>
         </div>
-        <div className="w-full inline-flex flex-nowrap ]">
-          <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-xl animate-infinite-scroll">
+        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)">
+          <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
             {carouselsImg.map((carouselImg) => {
               return (
                 <CardCarousel key={carouselImg.id} carouselImg={carouselImg} />
@@ -59,10 +60,10 @@ const TentangKami = () => {
         <div className="py-14">
           <div className="flex flex-col lg:flex-row justify-around px-[72px]">
             <div>
-              <h2 className="text-5xl font-bold mt-8 text-primary-main">
+              <h2 className="lg:text-5xl text-2xl font-bold mt-8 text-primary-main">
                 Tentang Kami
               </h2>
-              <p className="text-2xl mt-8 mb-8">
+              <p className="lg:text-2xl text-base mt-8 mb-8">
                 Tim Supermoon, kreatif dan penuh semangat, merancang situs web
                 destinasi wisata Kabupaten Kuningan. Fokus pada keindahan alam
                 dan budaya, platform ini menyajikan informasi lengkap tentang
@@ -74,7 +75,7 @@ const TentangKami = () => {
             <img src={tentangKami} alt="tentang kami" className="w-full" />
           </div>
         </div>
-        <div className="px-24 py-12">
+        <div className="px-24 py-12 bg-primary-surface">
           <div className="flex flex-col lg:flex-row justify-around">
             <img
               src={logovisimisi}
@@ -83,20 +84,20 @@ const TentangKami = () => {
             />
             <div className="py-16">
               <div className="py-4">
-                <h3 className="text-[40px] text-primary-main font-bold">
+                <h3 className="lg:text-[40px] text-xl text-primary-main font-bold">
                   Visi
                 </h3>
-                <p className="text-2xl">
+                <p className="lg:text-2xl text-base mt-3">
                   Menjadi sumber utama inspirasi bagi pengunjung yang ingin
                   mengeksplor keindahan alam, budaya, dan potensi pariwisata
                   Kabupaten Kuningan.
                 </p>
               </div>
               <div className="py-4">
-                <h3 className="text-[40px] text-primary-main font-bold">
+                <h3 className="lg:text-[40px] text-xl text-primary-main font-bold">
                   Misi
                 </h3>
-                <ol className="list-decimal ml-3 text-2xl">
+                <ol className="list-decimal ml-3 lg:text-2xl text-base mt-3 px-3">
                   <li>
                     Memajukan pariwisata Kabupaten Kuningan dengan promosi yang
                     menarik perhatian.
@@ -114,58 +115,102 @@ const TentangKami = () => {
             </div>
           </div>
         </div>
-        <div className="px-24 py-[48px, 72px]">
+        <div className="px-24 py-[48px, 72px] mt-5">
           <div className="text-center">
-            <h3 className="text-[40px] font-bold text-primary-main">
+            <h3 className="lg:text-[40px] text-xl font-bold text-primary-main">
               Anggota Tim Supermoon
             </h3>
-            <p className="text-2xl">
+            <p className="lg:text-2xl text-base mt-3">
               Kami adalah tim berdedikasi yang terdiri dari individu-individu
               berbakat <br /> dan bersemangat. Mari kita kenali lebih dekat para
               anggota kami:
             </p>
           </div>
-          <div className="flex flex-col">
-            <div className="flex  py-8  justify-around">
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember1} alt="Dini Fariha Profile" />
-                <p>DINI FARIHA</p>
-                <p>PROJECT MANAGER</p>
+          <section className="bg-white">
+            <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+              <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember1}
+                    alt="Dini Fariha"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                    Dini Fariha
+                  </h3>
+                  <p className="text-xs lg:text-base">Project Manager</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember2}
+                    alt="Muharim Awaluddin"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                    Muharim Awaluddin
+                  </h3>
+                  <p className="text-xs lg:text-base">Hipster</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember3}
+                    alt="Ridho Fauzi Grafika"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                    Ridho Fauzi Grafika
+                  </h3>
+                  <p className="text-xs lg:text-base">Hacker / Scrum Master</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember4}
+                    alt="Ahmad ThomThomi"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                    Ahmad ThomThomi
+                  </h3>
+                  <p className="text-xs lg:text-base">Hacker</p>
+                </div>
               </div>
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember2} alt="Muharim Awaluddin Profile" />
-                <p>MUHARIM AWALUDDIN</p>
-                <p>HIPSTER</p>
-              </div>
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember3} alt="Ridho Fauzi Grafika Profile" />
-                <p>RIDHO FAUZI GRAFIKA</p>
-                <p>HACKER SCRUM MASTER</p>
-              </div>
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember4} alt="AHMAD THOMTHOMI Profile" />
-                <p>AHMAD THOMTHOMI B</p>
-                <p>HACKER</p>
+              <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mt-10">
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember5}
+                    alt="Bonnie Avatar"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Ahmad Febrian Sembiring
+                  </h3>
+                  <p className="text-xs lg:text-base">Hipster</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember6}
+                    alt="Agus Ananda Putra"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Agus Ananda Putra
+                  </h3>
+                  <p className="text-xs lg:text-base">Hipster</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember7}
+                    alt="Johan Arifin"
+                  />
+                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    M. Johan Arifin
+                  </h3>
+                  <p className="text-xs lg:text-base">Hacker</p>
+                </div>
               </div>
             </div>
-            <div className="flex py-8 justify-around">
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember5} alt="AHMAD FEBRIAN Profile" />
-                <p>AHMAD FEBRIAN</p>
-                <p>HIPSTER</p>
-              </div>
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember6} alt="AGUS ANANDA PUTRA Profile" />
-                <p>AGUS ANANDA PUTRA</p>
-                <p>HIPSTER</p>
-              </div>
-              <div className="px-3 flex flex-col justify-center text-center">
-                <img src={imgmember7} alt="m.johan arifin Profile" />
-                <p>M. JOHAN ARIFIN</p>
-                <p>HACKER</p>
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
       <Footer />

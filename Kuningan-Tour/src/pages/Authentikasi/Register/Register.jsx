@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../../assets/logo/KUNINGANTOUR_1.png";
-import { BiSolidHide } from "react-icons/bi";
+import { BiSolidHide, BiShow } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowPasswordConfirm = () => {
+    setShowPasswordConfirm(!showPasswordConfirm);
+  };
   return (
     <>
       <div>
@@ -13,7 +24,7 @@ const Register = () => {
           </div>
           <div className="flex flex-col lg:flex-row justify-evenly">
             <div className="px-6 py-4">
-              <div className="flex flex-col justify-center text-center lg:mt-10">
+              <div className="flex flex-col justify-center text-center lg:mt-5">
                 <h2 className="text-5xl font-bold mb-3">Daftar Akun</h2>
                 <p className="text-base mb-5">
                   Buat akun untuk mengakses semua fitur kami
@@ -48,10 +59,16 @@ const Register = () => {
                   <div className="flex flex-col mb-4">
                     <label htmlFor="password">Kata Sandi</label>
                     <div className="absolute py-10 end-2">
-                      <BiSolidHide className="w-6 h-6" fill="#9E9E9E" />
+                      <label onClick={handleShowPassword}>
+                        {showPassword ? (
+                          <BiShow className="w-6 h-6 cursor-pointer" />
+                        ) : (
+                          <BiSolidHide className="w-6 h-6 cursor-pointer" />
+                        )}
+                      </label>
                     </div>
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
                       placeholder="Masukkan Kata Sandi"
                     />
@@ -62,10 +79,16 @@ const Register = () => {
                   <div className="flex flex-col">
                     <label htmlFor="password">Konfirmasi Kata Sandi</label>
                     <div className="absolute py-10 end-2">
-                      <BiSolidHide className="w-6 h-6" fill="#9E9E9E" />
+                      <label onClick={handleShowPasswordConfirm}>
+                        {showPasswordConfirm ? (
+                          <BiShow className="w-6 h-6 cursor-pointer" />
+                        ) : (
+                          <BiSolidHide className="w-6 h-6 cursor-pointer" />
+                        )}
+                      </label>
                     </div>
                     <input
-                      type="password"
+                      type={showPasswordConfirm ? "text" : "password"}
                       className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
                       placeholder="Masukkan Kata Sandi"
                     />
@@ -93,7 +116,7 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
-                <div className="py-5">
+                <div className="py-10">
                   <button className="bg-primary-main rounded-lg w-full px-2 py-2 mt-5 text-neutral-10">
                     Daftar
                   </button>

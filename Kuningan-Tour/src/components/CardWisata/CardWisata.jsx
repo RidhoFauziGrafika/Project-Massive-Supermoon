@@ -1,5 +1,6 @@
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const CardWisata = (props) => {
   const { tour } = props;
@@ -36,9 +37,12 @@ const CardWisata = (props) => {
                   <p className="text-sm">{tour.review}</p>
                 </div>
               </div>
-              <a className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg">
+              <Link
+                to="/wisata/detailWisata"
+                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+              >
                 Detail
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,34 +1,41 @@
 import React from "react";
 import { RiInstagramFill, RiPinterestFill } from "react-icons/ri";
 import { FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <>
-      <footer className="bg-primary-pressed text-center text-neutral-10 lg:text-left font-productSans px-4 lg:px-24">
-        <div className="flex p-6 justify-between">
-          <div className="flex flex-row">
-            <a className="text-base font-bold block text-neutral-10 py-4 px-6">
+      <footer className="bg-primary-pressed text-center text-neutral-10 lg:text-left font-productSans px-9 lg:px-24 py-12 gap-12">
+        <div className="flex p-6 justify-between gap-6">
+          <div className="flex flex-row gap-2 lg:gap-4">
+            <Link
+              to="/tentangkami"
+              className="lg:text-base text-sm block text-neutral-10"
+            >
               Tentang Kami
-            </a>
-            <a className="text-base font-bold block text-neutral-10 py-4 px-6">
+            </Link>
+            <Link
+              to="/kontak"
+              className="lg:text-base text-sm block text-neutral-10"
+            >
               Kontak
-            </a>
+            </Link>
           </div>
-          <div className="flex gap-3">
-            <a href="#">
-              <RiInstagramFill className="w-10 h-10 text-[#D0EBE3]" />
+          <div className="flex gap-2 lg:gap-3">
+            <a href="#" target="_blank">
+              <RiInstagramFill className="lg:w-8 lg:h-8 w-6 h-6 text-[#D0EBE3]" />
             </a>
-            <a href="#">
-              <FaTwitter className="w-10 h-10 text-[#D0EBE3]" />
+            <a href="#" target="_blank">
+              <FaTwitter className="lg:w-8 lg:h-8 w-6 h-6 text-[#D0EBE3]" />
             </a>
-            <a href="#">
-              <RiPinterestFill className="w-10 h-10 text-[#D0EBE3]" />
+            <a href="#" target="_blank">
+              <RiPinterestFill className="lg:w-8 lg:h-8 w-6 h-6 text-[#D0EBE3]" />
             </a>
           </div>
         </div>
         <div className="border-b border-primary-surface w-11/12 mx-auto"></div>
-        <p className="flex py-5 text-sm justify-center  text-white">
+        <p className="flex text-sm justify-center text-white py-4">
           kuningantour.com @2023 All rights reserved
         </p>
 

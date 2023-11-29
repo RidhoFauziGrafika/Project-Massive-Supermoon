@@ -1,124 +1,413 @@
-// paket wisata 1 image
+// card wisata image
 import imgPaketWisataCard1 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-1-img.png";
-// paket wisata 2 image
 import imgPaketWisataCard2 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-2-img.png";
-// paket wisata 3 image
 import imgPaketWisataCard3 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-3-img.png";
-// paket wisata 4 image
 import imgPaketWisataCard4 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-4-img.png";
-// paket wisata 5 image
 import imgPaketWisataCard5 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-5-img.png";
-// paket wisata 6 image
 import imgPaketWisataCard6 from "../../assets/images/Paket Wisata/paket-wisata-1/paket-wisata-6-img.png";
 
 const PackageTours = [
   {
     id: 1,
     title: "Paket Wisata 1",
-    category: [
-      {
-        category1: "Alam",
-      },
-      {
-        category2: "Taman",
-      },
-      {
-        category3: "Kolam Renang",
-      },
+    category: ["Alam ", " Taman", " Kolam Renang"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.7,
     review: 2000,
-    imgCard: imgPaketWisataCard1,
+    image_card: imgPaketWisataCard1,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
   {
     id: 2,
     title: "Paket Wisata 2",
-    category: [
-      {
-        category1: "Sejarah",
-      },
-      {
-        category2: "Alam",
-      },
-      {
-        category3: "Kolam Renang",
-      },
+    category: ["Sejarah ", " Alam", " Kolam Renang"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.4,
     review: 999,
-    imgCard: imgPaketWisataCard2,
+    image_card: imgPaketWisataCard2,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
   {
     id: 3,
     title: "Paket Wisata 3",
-    category: [
-      {
-        category1: "Alam",
-      },
-      {
-        category2: "Gunung",
-      },
-      {
-        category3: "Kolam Renang",
-      },
+    category: ["Alam ", " Gunung", " Kolam Renang"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.2,
     review: 1000,
-    imgCard: imgPaketWisataCard3,
+    image_card: imgPaketWisataCard3,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
   {
     id: 4,
     title: "Paket Wisata 4",
-    category: [
-      {
-        category1: "Curug",
-      },
-      {
-        category2: "Alam",
-      },
-      {
-        category3: "Mata Air Panas",
-      },
+    category: ["Curug ", " Alam", " Mata Air Panas"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.5,
     review: 1300,
-    imgCard: imgPaketWisataCard4,
+    image_card: imgPaketWisataCard4,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
   {
     id: 5,
     title: "Paket Wisata 5",
-    category: [
-      {
-        category1: "Sejarah",
-      },
-      {
-        category2: "Kolam Renang",
-      },
-      {
-        category3: "Taman",
-      },
+    category: ["Sejarah ", "Kolam Renang ", "Taman"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.1,
     review: 500,
-    imgCard: imgPaketWisataCard5,
+    image_card: imgPaketWisataCard5,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
   {
     id: 6,
     title: "Paket Wisata 6",
-    category: [
-      {
-        category1: "Perkemahan",
-      },
-      {
-        category2: "Alam",
-      },
-      {
-        category3: "Bukit",
-      },
+    category: ["Perkemahan ", "Alam ", "Bukit"],
+    wisataFasilities: [
+      "Museum",
+      "Auditorium",
+      "Taman",
+      "Parkiran",
+      "Toilet",
+      "Warung",
+    ],
+    kulinerFasilities: [
+      "Ayam",
+      "Seafood",
+      "Minuman",
+      "Taman",
+      "Toilet",
+      "Parkiran",
+    ],
+    penginapanFasilities: [
+      "Hotel",
+      "Sarapan",
+      "Air Panas",
+      "Kolam Renang",
+      "Taman",
+      "Parkiran",
     ],
     rating: 4.7,
     review: 2100,
-    imgCard: imgPaketWisataCard6,
+    image_card: imgPaketWisataCard6,
+    price: "Rp.1.500.000 / person",
+    description:
+      "Paket wisata ini dibuat untuk memudahkan para wisatawan dalam merencanakan liburan di kabupaten kuningan. paket wisata ini terdiri dari kunjungan beberapa tempat wisata. Serta mendapatkan kuliner dan penginapan jika membeli paket wisata kuningan.",
+    komentar: [
+      {
+        nama: "Salsabila Abadi",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+      {
+        nama: "Abadi Salsabila",
+        description:
+          "Tempat Wisatanya keren serta fasilitas yang ada juga sangat terawat dengan baik",
+        rating: [
+          {
+            rating1: "1",
+            rating2: "2",
+            rating3: "3",
+            rating4: "4",
+            rating5: "5",
+          },
+        ],
+        waktu: "November 2023",
+      },
+    ],
   },
 ];
 

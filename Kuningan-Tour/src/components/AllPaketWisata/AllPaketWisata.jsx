@@ -1,5 +1,6 @@
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const AllPaketWisata = (props) => {
   const { packageTour } = props;
@@ -9,24 +10,15 @@ const AllPaketWisata = (props) => {
         <div className="w-full bg-neutral-card rounded-lg drop-shadow-xl">
           <img
             className="rounded-t-lg"
-            src={packageTour.imgCard}
+            src={packageTour.image_card}
             alt={packageTour.title}
           />
           <div className="p-5">
             <h5 className="mb-2 text-xl font-bold tracking-tight text-neutral-100">
               {packageTour.title}
             </h5>
-            <div className="flex flex-row gap-2">
-              <a className="text-primary-pressed">
-                {packageTour.category[0].category1}
-              </a>
-              <a className="text-primary-pressed">
-                {" "}
-                {packageTour.category[1].category2}
-              </a>
-              <a className="text-primary-pressed">
-                {packageTour.category[2].category3}
-              </a>
+            <div className="flex flex-row gap-3">
+              <a className="text-primary-pressed">{packageTour.category}</a>
             </div>
             <div className="flex flex-row justify-between p-3">
               <div className="flex flex-row">
@@ -36,9 +28,12 @@ const AllPaketWisata = (props) => {
                   <p className="text-sm">{packageTour.review} Reviews</p>
                 </div>
               </div>
-              <a className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg">
+              <Link
+                to="/paketWisata/detailPaket"
+                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+              >
                 Detail
-              </a>
+              </Link>
             </div>
           </div>
         </div>
