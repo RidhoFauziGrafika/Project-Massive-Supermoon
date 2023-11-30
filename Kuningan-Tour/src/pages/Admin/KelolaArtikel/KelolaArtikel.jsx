@@ -14,15 +14,18 @@ const KelolaArtikel = () => {
       <Navbar />
       <div className="font-productSans bg-[#F7F7FF] flex flex-row">
         <SidebarAdmin />
-        <div className="w-full px-6 py-10">
+        <div className="w-full px-6 py-10 overflow-auto">
           <div className="w-full bg-neutral-10 rounded-lg">
             <div className="px-4 py-6">
               <div className="flex lg:flex-row flex-col lg:justify-between px-6 py-10">
                 <h1 className="lg:text-2xl text-base font-bold mb-3">
                   Kelola Artikel
                 </h1>
-                <Link className="px-4 py-2 bg-primary-main rounded-lg text-white lg:text-base text-sm flex gap-3">
-                  <FaPlus className="w-5 h-5" />
+                <Link
+                  to="/dashboard/formArtikel"
+                  className="w-fit lg:px-4 lg:py-2 px-3 py-2 bg-primary-main rounded-lg text-white lg:text-base text-xs flex gap-3 items-center"
+                >
+                  <FaPlus className="lg:w-5 lg:h-5 w-3 h-3" />
                   Tambah Artikel
                 </Link>
               </div>
@@ -52,48 +55,95 @@ const KelolaArtikel = () => {
                   </form>
                 </div>
               </div>
+              <div className="w-full  overflow-x-auto">
+                <table className="min-w-full border-collapse border border-neutral-50  rounded-lg">
+                  <thead className="bg-primary-main divide-y-1 divide-x-2">
+                    <tr>
+                      <th className="px-6 py-3 text-xs font-medium  tracking-wider text-center text-white uppercase border border-neutral-50">
+                        No
+                      </th>
+                      <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
+                        Judul
+                      </th>
+                      <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg ">
+                    <tr className="text-center">
+                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                        1
+                      </td>
+                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                        Gunung Ciremai: Keindahan Alam dan Peninggalan Sejarah
+                        yang Mengagumkan
+                      </td>
+                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                        Publish
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center border border-neutral-50 justify-center">
+                        <Link className="px-4 py-2 bg-[#0D6EFD] rounded-lg">
+                          <BiSolidPencil className="text-white" />
+                        </Link>
+                        <Link className="px-4 py-2 bg-[#FD3550] rounded-lg">
+                          <FaTrashCan className="text-white" />
+                        </Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <nav aria-label="Page navigation example" className="mt-3">
+                  <ul className="inline-flex -space-x-px text-sm gap-3">
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 ms-0 leading-tight border border-neutral-50 "
+                      >
+                        <IoIosArrowBack />
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight border border-neutral-50"
+                      >
+                        1
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight border border-neutral-50"
+                      >
+                        2
+                      </a>
+                    </li>
+
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight border border-neutral-50"
+                      >
+                        3
+                      </a>
+                    </li>
+
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center justify-center px-3 h-8 leading-tight border border-neutral-50"
+                      >
+                        <IoIosArrowForward />
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
-          </div>
-          <div className="w-full  overflow-x-auto">
-            <table className="min-w-full border divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Name
-                  </th>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Role
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    John Doe
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    Developer
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    Jane Smith
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    Designer
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
