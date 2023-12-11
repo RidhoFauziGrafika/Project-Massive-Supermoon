@@ -113,67 +113,89 @@ async function saveTour(req, res){
     
 
 async function indexTour(req, res) {
-    try {
-      const allToursDetails = await dbExecute(`
-        SELECT
-            t.title,
-            t.slug,
-            t.categories,
-            t.price,
-            t.address,
-            t.address_link,
-            t.description,
-            t.ticket_operasional,
-            ti.img_path AS image_path,
-            f.name AS facility_name
-        FROM tours t
-        LEFT JOIN tour_images ti ON t.id = ti.tour_id AND ti.is_deleted = FALSE
-        LEFT JOIN tour_has_facilities thf ON t.id = thf.tour_id
-        LEFT JOIN facilities f ON thf.facility_id = f.id
-        WHERE t.is_deleted = FALSE
-    `);
+try {
+  const allToursDetails = await dbExecute(`
+    SELECT
+        t.id,
+        t.title,
+        t.slug,
+        t.categories,
+        t.price,
+        t.address,
+        t.address_link,
+        t.description,
+        t.ticket_operasional,
+        ti.img_path AS image_path,
+        f.name AS facility_name
+    FROM tours t
+    LEFT JOIN tour_images ti ON t.id = ti.tour_id AND ti.is_deleted = FALSE
+    LEFT JOIN tour_has_facilities thf ON t.id = thf.tour_id
+    LEFT JOIN facilities f ON thf.facility_id = f.id
+    WHERE t.is_deleted = FALSE
+  `);
 
-      // Continue with processing the retrieved allToursDetails
-      // For example, you may want to format the data for response
-      const formattedAllToursDetails = {};
+  // Continue with processing the retrieved allToursDetails
+  // Calculate average rating for each tour
+  const toursWithRatings = await Promise.all(
+    allToursDetails.map(async (tour) => {
+      const reviews = await dbExecute(
+        "SELECT rating FROM reviews WHERE review_type_id = ? AND is_deleted = FALSE",
+        [tour.id]
+      );
 
-      allToursDetails.forEach((tour) => {
-        if (!formattedAllToursDetails[tour.slug]) {
-          formattedAllToursDetails[tour.slug] = {
-            title: tour.title,
-            slug: tour.slug,
-            categories: tour.categories,
-            price: tour.price,
-            address: tour.address,
-            address_link: tour.address_link,
-            description: tour.description,
-            ticket_operasional: tour.ticket_operasional,
-            images: [],
-            facilities: [],
-          };
-        }
 
-        if (tour.image_path) {
-          formattedAllToursDetails[tour.slug].images.push(tour.image_path);
-        }
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+            reviews.length
+          : 0;
 
-        if (tour.facility_name) {
-          formattedAllToursDetails[tour.slug].facilities.push(
-            tour.facility_name
-          );
-        }
-      });
+      return {
+        ...tour,
+        averageRating,
+      };
+    })
+  );
 
-      const toursArray = Object.values(formattedAllToursDetails);
+  // Format the data for response
+  const formattedAllToursDetails = {};
 
-      res.status(200).json({
-        message: "success",
-        data: toursArray,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal Server Error!" });
+  toursWithRatings.forEach((tour) => {
+    if (!formattedAllToursDetails[tour.slug]) {
+      formattedAllToursDetails[tour.slug] = {
+        title: tour.title,
+        slug: tour.slug,
+        categories: tour.categories,
+        price: tour.price,
+        address: tour.address,
+        address_link: tour.address_link,
+        description: tour.description,
+        ticket_operasional: tour.ticket_operasional,
+        images: [],
+        facilities: [],
+        averageRating: tour.averageRating,
+      };
     }
+
+    if (tour.image_path) {
+      formattedAllToursDetails[tour.slug].images.push(tour.image_path);
+    }
+
+    if (tour.facility_name) {
+      formattedAllToursDetails[tour.slug].facilities.push(tour.facility_name);
+    }
+  });
+
+  const toursArray = Object.values(formattedAllToursDetails);
+
+  res.status(200).json({
+    message: "success",
+    data: toursArray,
+  });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Internal Server Error!" });
+}
 
 }
 
@@ -181,25 +203,26 @@ async function detailTour(req, res) {
     const tourSlug = req.params.slug;
 
     try {
+      // Retrieve tour details without average rating
       const tourDetails = await dbExecute(
         `
-        SELECT
-            t.title,
-            t.slug,
-            t.categories,
-            t.price,
-            t.address,
-            t.address_link,
-            t.description,
-            t.ticket_operasional,
-            ti.img_path AS image_path,
-            f.name AS facility_name
-        FROM tours t
-        LEFT JOIN tour_images ti ON t.id = ti.tour_id AND ti.is_deleted = FALSE
-        LEFT JOIN tour_has_facilities thf ON t.id = thf.tour_id
-        LEFT JOIN facilities f ON thf.facility_id = f.id
-        WHERE t.slug = ? AND t.is_deleted = FALSE
-    `,
+    SELECT
+        t.title,
+        t.slug,
+        t.categories,
+        t.price,
+        t.address,
+        t.address_link,
+        t.description,
+        t.ticket_operasional,
+        ti.img_path AS image_path,
+        f.name AS facility_name
+    FROM tours t
+    LEFT JOIN tour_images ti ON t.id = ti.tour_id AND ti.is_deleted = FALSE
+    LEFT JOIN tour_has_facilities thf ON t.id = thf.tour_id
+    LEFT JOIN facilities f ON thf.facility_id = f.id
+    WHERE t.slug = ? AND t.is_deleted = FALSE
+  `,
         [tourSlug]
       );
 
@@ -210,23 +233,43 @@ async function detailTour(req, res) {
         });
       }
 
+      // Retrieve reviews for the tour
+      const reviews = await dbExecute(
+        `
+    SELECT
+        rating
+    FROM reviews
+    WHERE review_type_id = (SELECT id FROM tours WHERE slug = ?) AND is_deleted = FALSE
+  `,
+        [tourSlug]
+      );
+
+      // Calculate average rating
+      let totalRating = 0;
+      let averageRating = 0;
+
+      if (reviews.length > 0) {
+        totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        averageRating = totalRating / reviews.length;
+      }
+
       // Continue with processing the retrieved tourDetails
-      // For example, you may want to format the data for response
       const formattedTourDetails = {
-        title: tourDetails[0].title,
-        slug: tourDetails[0].slug,
-        categories: tourDetails[0].categories,
-        price: tourDetails[0].price,
-        address: tourDetails[0].address,
-        address_link: tourDetails[0].address_link,
-        description: tourDetails[0].description,
-        ticket_operasional: tourDetails[0].ticket_operasional,
+        title: tourDetails[0]?.title,
+        slug: tourDetails[0]?.slug,
+        categories: tourDetails[0]?.categories,
+        price: tourDetails[0]?.price,
+        address: tourDetails[0]?.address,
+        address_link: tourDetails[0]?.address_link,
+        description: tourDetails[0]?.description,
+        ticket_operasional: tourDetails[0]?.ticket_operasional,
         images: tourDetails
-          .map((detail) => detail.image_path)
+          .map((detail) => detail?.image_path)
           .filter((path) => path !== null),
         facilities: tourDetails
-          .map((detail) => detail.facility_name)
+          .map((detail) => detail?.facility_name)
           .filter((name) => name !== null),
+        averageRating: averageRating,
       };
 
       res.status(200).json({
@@ -237,6 +280,7 @@ async function detailTour(req, res) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error!" });
     }
+
 }
 
 async function editTour(req, res) {
