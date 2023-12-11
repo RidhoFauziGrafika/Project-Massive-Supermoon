@@ -1,11 +1,12 @@
 const mysql = require('mysql2/promise')
+require("dotenv").config();
 
 const db = mysql.createPool({
-    host: "localhost",
-    port: '3380',
-    user: "root",
-    database: "kuningan_tour",
-    password: "root",
+    host: process.env.DB_HOST ?? "localhost",
+    port: process.env.DB_PORT ?? '3380',
+    user: process.env.DB_USER ?? "root",
+    database: process.env.DB_NAME ?? "kuningan_tour",
+    password: process.env.DB_PASSWORD ?? "root",
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10,
@@ -15,5 +16,12 @@ const db = mysql.createPool({
     keepAliveInitialDelay: 0
 })
 
-
-module.exports = db
+async function dbExecute(query, value) {
+    try {
+      const [results] = await db.query(query, value ?? []);
+      return results;
+    } catch (error) {
+      console.log(error);
+    }
+}
+module.exports = dbExecute
