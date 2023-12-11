@@ -13,6 +13,8 @@ import imgmember4 from "../../assets/images/TentangKami/member/4.png";
 import imgmember5 from "../../assets/images/TentangKami/member/5.png";
 import imgmember6 from "../../assets/images/TentangKami/member/6.png";
 import imgmember7 from "../../assets/images/TentangKami/member/7.png";
+import imgmember8 from "../../assets/images/TentangKami/member/8.png";
+import imgmember9 from "../../assets/images/TentangKami/member/9.png";
 import AuthNavbar from "../../components/Navbar/AuthNavbar";
 
 const TentangKami = () => {
@@ -128,50 +130,74 @@ const TentangKami = () => {
           </div>
           <section className="bg-white">
             <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
-              <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mt-10">
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
                     className="mx-auto mb-4 w-36 h-36 rounded-full"
                     src={imgmember1}
-                    alt="Dini Fariha"
+                    alt="Bonnie Avatar"
                   />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
                     Dini Fariha
                   </h3>
-                  <p className="text-xs lg:text-base">Project Manager</p>
+                  <p className="text-xs lg:text-base uppercase">Hipster</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember6}
+                    alt="Agus Ananda Putra"
+                  />
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Agus Ananda Putra
+                  </h3>
+                  <p className="text-xs lg:text-base uppercase">Hipster</p>
+                </div>
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember7}
+                    alt="Johan Arifin"
+                  />
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    M. Johan Arifin
+                  </h3>
+                  <p className="text-xs lg:text-base uppercase">Hacker</p>
+                </div>
+              </div>
+              <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mt-10">
+                <div className="text-center text-gray-500 dark:text-gray-400">
+                  <img
+                    className="mx-auto mb-4 w-36 h-36 rounded-full"
+                    src={imgmember3}
+                    alt="Bonnie Avatar"
+                  />
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Ridho Fauzi Grafika
+                  </h3>
+                  <p className="text-xs lg:text-base uppercase">Hipster</p>
                 </div>
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
                     className="mx-auto mb-4 w-36 h-36 rounded-full"
                     src={imgmember2}
-                    alt="Muharim Awaluddin"
+                    alt="Agus Ananda Putra"
                   />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
                     Muharim Awaluddin
                   </h3>
-                  <p className="text-xs lg:text-base">Hipster</p>
-                </div>
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <img
-                    className="mx-auto mb-4 w-36 h-36 rounded-full"
-                    src={imgmember3}
-                    alt="Ridho Fauzi Grafika"
-                  />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
-                    Ridho Fauzi Grafika
-                  </h3>
-                  <p className="text-xs lg:text-base">Hacker / Scrum Master</p>
+                  <p className="text-xs lg:text-base uppercase">Hipster</p>
                 </div>
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
                     className="mx-auto mb-4 w-36 h-36 rounded-full"
                     src={imgmember4}
-                    alt="Ahmad ThomThomi"
+                    alt="Johan Arifin"
                   />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900">
-                    Ahmad ThomThomi
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Ahmad Thomthomi Barosimi
                   </h3>
-                  <p className="text-xs lg:text-base">Hacker</p>
+                  <p className="text-xs lg:text-base uppercase">Hacker</p>
                 </div>
               </div>
               <div className="grid gap-8 lg:gap-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mt-10">
@@ -189,24 +215,24 @@ const TentangKami = () => {
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
                     className="mx-auto mb-4 w-36 h-36 rounded-full"
-                    src={imgmember6}
+                    src={imgmember9}
                     alt="Agus Ananda Putra"
                   />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
-                    Agus Ananda Putra
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Maudi Nur Aisyah
                   </h3>
-                  <p className="text-xs lg:text-base">Hipster</p>
+                  <p className="text-xs lg:text-base uppercase">HCAI</p>
                 </div>
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
                     className="mx-auto mb-4 w-36 h-36 rounded-full"
-                    src={imgmember7}
+                    src={imgmember8}
                     alt="Johan Arifin"
                   />
-                  <h3 className="mb-1 text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
-                    M. Johan Arifin
+                  <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
+                    Muhamad Dimas Joreski
                   </h3>
-                  <p className="text-xs lg:text-base">Hacker</p>
+                  <p className="text-xs lg:text-base uppercase">HCAI</p>
                 </div>
               </div>
             </div>

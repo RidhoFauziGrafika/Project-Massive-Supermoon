@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SidebarAdmin from "../../../components/SidebarAdmin/SidebarAdmin";
 import { Navbar } from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import axios from "axios";
 
 const KelolaArtikel = () => {
   return (

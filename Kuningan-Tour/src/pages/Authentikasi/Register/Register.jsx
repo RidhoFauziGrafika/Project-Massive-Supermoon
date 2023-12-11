@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../../../assets/logo/KUNINGANTOUR_1.png";
 import { BiSolidHide, BiShow } from "react-icons/bi";
-import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,9 @@ const Register = () => {
           <div className="flex flex-col lg:flex-row justify-evenly">
             <div className="px-6 py-4">
               <div className="flex flex-col justify-center text-center lg:mt-5">
-                <h2 className="text-5xl font-bold mb-3">Daftar Akun</h2>
+                <h2 className="lg:text-5xl text-3xl font-bold mb-3">
+                  Daftar Akun
+                </h2>
                 <p className="text-base mb-5">
                   Buat akun untuk mengakses semua fitur kami
                 </p>
@@ -55,6 +57,18 @@ const Register = () => {
                     placeholder="Masukkan Nomor Anda"
                   />
                 </div>
+                <div className="flex flex-col">
+                  <label htmlFor="gender">Jenis Kelamin</label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    className="block border border-neutral-60 rounded-lg w-full
+                  lg:w-[634px] px-2 py-2 mt-2"
+                  >
+                    <option value="Laki-Laki">Laki - Laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
+                </div>
                 <div className="relative mb-2">
                   <div className="flex flex-col mb-4">
                     <label htmlFor="password">Kata Sandi</label>
@@ -72,9 +86,9 @@ const Register = () => {
                       className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
                       placeholder="Masukkan Kata Sandi"
                     />
-                    <a class="text-xs text-neutral-100 mt-2" href="#">
+                    <span className="text-xs text-neutral-100 mt-2">
                       Kata sandi harus berisi huruf kapital & angka
-                    </a>
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="password">Konfirmasi Kata Sandi</label>
@@ -94,20 +108,20 @@ const Register = () => {
                     />
                   </div>
                   <div className="absolute flex start-0 mt-2 mb-4">
-                    <div class="flex items-center h-5">
+                    <div className="flex items-center h-5">
                       <input
                         id="terms"
                         aria-describedby="terms"
                         type="checkbox"
-                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                       />
                     </div>
-                    <div class="ml-3 text-sm">
+                    <div className="ml-3 text-sm">
                       <label
-                        for="terms"
-                        class="font-light text-gray-500 dark:text-gray-300"
+                        htmlFor="terms"
+                        className="font-light text-gray-500 dark:text-gray-300"
                       >
-                        <a class="text-sm text-neutral-100" href="#">
+                        <a className="text-sm text-neutral-100" href="#">
                           Dengan mendaftar, saya menyatakan telah membaca dan
                           menyetujui Syarat & Ketentuan serta Kebijakan Privasi
                           yang berlaku
@@ -117,24 +131,16 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="py-10">
-                  <button className="bg-primary-main rounded-lg w-full px-2 py-2 mt-5 text-neutral-10">
+                  <button className="bg-primary-main rounded-lg w-full px-2 py-2 mt-8 text-neutral-10">
                     Daftar
                   </button>
-                  <div>
-                    <p className="text-center text-base">Atau</p>
-                  </div>
-                  <div className="relative">
-                    <div className="absolute py-4 start-2">
-                      <FcGoogle className="w-6 h-6" />
-                    </div>
-                    <button className="border border-primary-main rounded-lg w-full px-2 py-2 mt-2 text-primary-main">
-                      Masuk Dengan Google
-                    </button>
-                  </div>
-                  <a href="#" className="text-base flex justify-center mt-2">
+                  <Link
+                    to="/login"
+                    className="text-base flex justify-center mt-2"
+                  >
                     Sudah punya akun?
                     <span className="text-primary-main font-bold">Masuk</span>
-                  </a>
+                  </Link>
                 </div>
               </form>
             </div>

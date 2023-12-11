@@ -16,7 +16,7 @@ const Login = () => {
       <div className="font-productSans flex h-screen justify-center">
         <div className="py-10">
           <img src={logo} alt="Logo" className="mx-auto py-10" />
-          <div className="flex lg:flex-row flex-col gap-6">
+          <div className="flex lg:flex-row flex-col lg:gap-6">
             <div className="w-full">
               <img
                 src={imgKuningan}
@@ -25,8 +25,8 @@ const Login = () => {
               />
             </div>
             <div className="w-full px-6 py-6 gap-6">
-              <div className="flex flex-col justify-center">
-                <h3 className="lg:text-5xl text-2xl font-bold mb-3">
+              <div className="flex flex-col justify-center text-center">
+                <h3 className="lg:text-5xl text-3xl font-bold mb-3">
                   Selamat Datang
                 </h3>
                 <p className="lg:text-base text-sm mb-3">
@@ -38,18 +38,13 @@ const Login = () => {
                   <label htmlFor="email">Email</label>
                   <input
                     type="text"
-                    className="block border border-neutral-60 rounded-lg w-full px-2 py-2 mb-2"
-                    placeholder="Masukkan Email"
+                    className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
+                    placeholder="Masukkan Email Anda"
                   />
                 </div>
                 <div className="relative mb-2">
-                  <div className="flex flex-col">
+                  <div className="flex flex-col mb-4">
                     <label htmlFor="password">Kata Sandi</label>
-                    <input
-                      type={show ? "text" : "password"}
-                      className="block border border-neutral-60 rounded-lg w-full px-2 py-2 mt-2"
-                      placeholder="Masukkan Kata Sandi"
-                    />
                     <div className="absolute py-10 end-2">
                       <label onClick={handleShow}>
                         {show ? (
@@ -59,6 +54,14 @@ const Login = () => {
                         )}
                       </label>
                     </div>
+                    <input
+                      type={show ? "text" : "password"}
+                      className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
+                      placeholder="Masukkan Kata Sandi"
+                    />
+                    <span className="text-xs text-neutral-100 mt-2">
+                      Kata sandi harus berisi huruf kapital & angka
+                    </span>
                   </div>
                   <div className="absolute end-0">
                     <a href="#" className="text-base block">
@@ -70,17 +73,6 @@ const Login = () => {
                   <button className="bg-primary-main rounded-lg  w-full px-2 py-2 mt-4 text-neutral-10">
                     Masuk
                   </button>
-                  <div>
-                    <p className="text-center text-base">Atau</p>
-                  </div>
-                  <div className="relative">
-                    <div className="absolute py-4 start-2">
-                      <FcGoogle className="w-6 h-6" />
-                    </div>
-                    <button className="border border-primary-main rounded-lg w-full px-2 py-2 mt-2 text-primary-main">
-                      Masuk Dengan Google
-                    </button>
-                  </div>
                   <Link
                     to="/register"
                     className="text-base flex justify-center mt-2"
