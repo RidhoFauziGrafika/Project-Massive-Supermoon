@@ -1,9 +1,23 @@
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
-const fs = require("fs");
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, path.join(__dirname, "../public"));
+  },
+  filename: function (req, file, callback) {
+    const uniqueFileName =
+      Date.now() + "-" + uuidv4() + path.extname(file.originalname);
+    callback(null, uniqueFileName);
+
+    // Save the image_path for each iteration
+    if (!req.image_paths) {
+      req.image_paths = [];
+    }
+    req.image_paths.push(uniqueFileName);
+  },
+});
 
 const imageFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
@@ -17,17 +31,6 @@ const upload = multer({
   storage: storage,
   fileFilter: imageFilter,
   limits: { fileSize: 1024 * 1024 },
-  destination: (req, file, callback) => {
-    callback(null, "public/");
-  },
-  filename: (req, file, callback) => {
-    const uniqueFileName =
-      Date.now() + "-" + uuidv4() + path.extname(file.originalname);
-    callback(null, uniqueFileName);
-
-    // Save the image_path for each iteration
-    req.image_path = uniqueFileName;
-  },
 });
 
 async function handleImageUpload(fieldName, maxCount) {
