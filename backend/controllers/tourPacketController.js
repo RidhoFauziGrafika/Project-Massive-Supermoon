@@ -4,6 +4,8 @@ const validator = require("validator");
 const fs = require("fs/promises");
 const path = require("path");
 const { validationResult } = require("express-validator");
+const { v4: uuidv4 } = require("uuid");
+const handleImageUpload = require('../utils/multipleImageUploads')
 
 const newTourPacket = async (req, res) => {
   try {

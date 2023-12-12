@@ -3,6 +3,8 @@ const newTourValidation = require("../request/newTourRequest");
 const validator = require("validator");
 const fs = require("fs/promises");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
+const handleImageUpload = require("../utils/multipleImageUploads");
 
 async function newTour(req, res) {
   try {

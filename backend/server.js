@@ -10,6 +10,7 @@ const path = require('path')
 // const userRoutes = require('./routes/userRoutes')
 const tourRoutes = require('./routes/tourRoutes')
 const tourPacketRoutes = require("./routes/tourPacketRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // CONSTANT CONFIG
 const PORT = process.env.PORT || 5050;
@@ -36,6 +37,7 @@ app.use('/storage', express.static(path.join(__dirname, 'public')))
 // app.use("/api/users", userRoutes);
 app.use('/api/tours', tourRoutes)
 app.use('/api/tour-packets', tourPacketRoutes)
+app.use('/api/auth', authRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT http://localhost:${PORT}`);

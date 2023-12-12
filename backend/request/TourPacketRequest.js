@@ -144,9 +144,11 @@ function validateLodgingLink(value) {
        errors.tour_link("Link tidak valid!");
      }
 }
+
+  const errors = {};
 // Validation function called inside controller
 function newTourValidation(data) {
-  const errors = {};
+
   validateTitle(data.title);
   validateSlug(data.slug);
   validatePrice(data.price);
