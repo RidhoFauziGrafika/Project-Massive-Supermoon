@@ -12,6 +12,8 @@ const {
   deleteImage,
 } = require("../controllers/auth.controller");
 const validateRegistrationFields = require("../validation/validateRegistration");
+const validateLogin = require("../validation/validateLogin");
+
 Router.get("/", getRegister); // get data before register
 Router.post("/", [validateRegistrationFields, register]); // save data when registering user
 // Router.get('/:uuid') // get user's uuid for getting user informations
@@ -25,7 +27,7 @@ Router.post("/", [validateRegistrationFields, register]); // save data when regi
 // Router.delete('/image') // for deleting image
 
 // authenticate users
-// Router.post('/login') // login for getting token
+Router.post("/login", [validateLogin, login]); // login for getting token
 // LOGOUT is handle in frontend to set JWT time
 
 module.exports = Router;

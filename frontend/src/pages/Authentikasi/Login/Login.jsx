@@ -4,9 +4,45 @@ import imgKuningan from "../../../assets/images/Login/kuningan.png";
 import { BiSolidHide, BiShow } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/auth/login",
+        formData
+      );
+
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+
+      toast.success("Login successful!");
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
 
   const handleShow = () => {
     setShow(!show);
@@ -33,13 +69,15 @@ const Login = () => {
                   Masukkan identitas anda untuk mengakses fitur
                 </p>
               </div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="flex flex-col">
                   <label htmlFor="email">Email</label>
                   <input
                     type="text"
                     className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
                     placeholder="Masukkan Email Anda"
+                    name="email"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="relative mb-2">
@@ -58,6 +96,8 @@ const Login = () => {
                       type={show ? "text" : "password"}
                       className="block border border-neutral-60 rounded-lg w-full lg:w-[634px] px-2 py-2 mt-2"
                       placeholder="Masukkan Kata Sandi"
+                      name="password"
+                      onChange={handleChange}
                     />
                     <span className="text-xs text-neutral-100 mt-2">
                       Kata sandi harus berisi huruf kapital & angka

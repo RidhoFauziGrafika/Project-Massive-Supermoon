@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -239,15 +240,18 @@ const Register = () => {
                       Masuk Dengan Google
                     </button>
                   </div>
-                  <a href="#" className="text-base flex justify-center mt-2">
+                  <Link
+                    to="/login"
+                    className="text-base flex justify-center mt-2"
+                  >
                     Sudah punya akun?
                     <button
-                      type="submit"
+                      type="button"
                       className="text-primary-main font-bold"
                     >
                       Masuk
                     </button>
-                  </a>
+                  </Link>
                 </div>
               </form>
             </div>

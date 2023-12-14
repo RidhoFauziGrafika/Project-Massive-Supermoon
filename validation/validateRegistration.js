@@ -64,9 +64,10 @@ const validateRegistrationFields = async (req, res, next) => {
   }
 
   try {
-    const [rows] = await db.query("SELECT email FROM users WHERE email = ?", [
-      req.body.phone,
-    ]);
+    const [rows] = await db.query(
+      "SELECT email FROM users WHERE phone_number = ?",
+      [req.body.phone]
+    );
 
     console.log(rows);
     if (rows.length > 0) {

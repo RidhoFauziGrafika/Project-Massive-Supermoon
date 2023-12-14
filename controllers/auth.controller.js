@@ -4,8 +4,19 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs/promises");
 const jwt = require("jsonwebtoken");
-const {query} = require("../config/database");
+const { query } = require("../config/database");
 const toDatetime = require("../utils/datetime");
+const { SECRET } = require("../config/configs");
+
+// const createToken = async (user) => {
+//   const expiresIn = "15m";
+
+//   const token = await jwt.sign({ user }, SECRET, {
+//     expiresIn: "15m",
+//     algorithm: "HS256",
+//   });
+//   return token;
+// };
 
 const getRegister = asyncHandler(async (req, res) => {
   try {
@@ -53,7 +64,32 @@ const register = asyncHandler(async (req, res) => {
   }
 });
 
-const login = asyncHandler(async (req, res) => {});
+const login = asyncHandler(async (req, res) => {
+  try {
+    const user = await query(
+      `SELECT u.id_uuid, u.fullname, u.email, r.name AS role
+FROM users AS u
+JOIN user_roles AS r ON u.role_id = r.id
+WHERE u.email = ?;
+`,
+      [req.body.email]
+    );
+
+    console.log(user);
+
+    const token = await jwt.sign({ fullname: user.fullname, email: user.email, role: user.role, id_uuid: user.id_uuid }, SECRET, {
+      expiresIn: "15m",
+      algorithm: "HS256",
+    });
+
+    console.log(token);
+    res.json({ succes: true, message: "Login berhasil!", token: token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+    throw new Error("Error saat login!");
+  }
+});
 
 const getUser = asyncHandler(async (req, res) => {});
 const updateUser = asyncHandler(async (req, res) => {});
