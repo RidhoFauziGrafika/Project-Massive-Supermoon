@@ -6,6 +6,16 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { BiSolidHide, BiShow } from "react-icons/bi";
 
 const Setting = () => {
+  let user = JSON.parse(localStorage.getItem("user")) || "No user";
+  user = user[0];
+  const fullname = user.fullname || "Nama";
+  const profile_image = user.image_path || "No Image";
+  const phone = user.phone_number;
+  const email = user.email;
+  const user_gender = user.gender || "Tidak ada";
+
+  console.log(user);
+
   return (
     <>
       <Navbar />

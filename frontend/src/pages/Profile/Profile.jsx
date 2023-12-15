@@ -8,6 +8,12 @@ import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Profile = () => {
+  let user = JSON.parse(localStorage.getItem("user")) || "No user";
+  user = user[0];
+  const fullname = user.fullname || "Nama";
+  const image_path = user.image_path || "No Image";
+  console.log(user);
+
   return (
     <>
       <Navbar />
@@ -15,7 +21,7 @@ const Profile = () => {
         <Sidebar />
         <div className="w-full px-4 py-10">
           <div className="px-4 mb-5">
-            <h4 className="lg:text-4xl text-xl font-bold">Hello Arin</h4>
+            <h4 className="lg:text-4xl text-xl font-bold">Hello {fullname}</h4>
             <p className="lg:text-base text-sm">
               Selamat datang dan jelajahi lebih banyak tempat di Kabupaten
               Kuningan.
