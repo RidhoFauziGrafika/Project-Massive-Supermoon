@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarAdmin from "../../../components/SidebarAdmin/SidebarAdmin";
-import { Navbar } from "../../../components/Navbar/Navbar";
+import Navbar  from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";

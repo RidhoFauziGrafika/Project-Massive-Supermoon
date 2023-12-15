@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa6";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import { FaWifi } from "react-icons/fa";
 import { MdMosque } from "react-icons/md";
 import { FaParking } from "react-icons/fa";

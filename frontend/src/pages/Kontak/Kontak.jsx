@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import imgkuningan from "../../assets/images/Kontak/kuningan.png";
 import { CgMail } from "react-icons/cg";

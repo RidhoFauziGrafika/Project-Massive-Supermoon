@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import imgBooking from "../../assets/images/checkout/img-booking.svg";
 import imgBookingPaid from "../../assets/images/checkout/img-booking-paid.svg";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Steps = ({ step }) => {
   return (

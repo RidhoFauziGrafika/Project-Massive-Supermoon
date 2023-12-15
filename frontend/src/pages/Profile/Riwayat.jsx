@@ -4,7 +4,7 @@ import Logo from "../../assets/logo/KUNINGANTOUR_1.png";
 import Footer from "../../components/Footer/Footer";
 import CardRiwayat from "../../components/CardProfile/CardRiwayat";
 import { Link } from "react-router-dom";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Riwayat = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SidebarAdmin from "../../../components/SidebarAdmin/SidebarAdmin";
-import { Navbar } from "../../../components/Navbar/Navbar";
+import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 
 const DetailPembayaran = () => {

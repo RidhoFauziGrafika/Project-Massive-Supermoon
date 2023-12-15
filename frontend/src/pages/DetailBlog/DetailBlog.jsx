@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import data from "../../utils/constants/Blog";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 
 const DetailBlog = () => {
   const [blogs, setBlogs] = useState(data);

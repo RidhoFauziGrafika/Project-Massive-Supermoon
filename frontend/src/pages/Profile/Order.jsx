@@ -1,7 +1,7 @@
 import React from "react";
 import AuthNavbar from "../../components/Navbar/AuthNavbar";
 import Footer from "../../components/Footer/Footer";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 

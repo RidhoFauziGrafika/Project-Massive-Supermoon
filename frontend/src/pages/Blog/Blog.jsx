@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import Wisata from "../../assets/images/Blog/img-1.png";
 import CardBlog from "../../components/CardBlog/CardBlog";
 import { Link } from "react-router-dom";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import data from "../../utils/constants/Blog";
 
 const Blog = () => {

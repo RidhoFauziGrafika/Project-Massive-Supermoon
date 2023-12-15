@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar } from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { FaStar } from "react-icons/fa6";
 import data from "../../utils/constants/Data";
