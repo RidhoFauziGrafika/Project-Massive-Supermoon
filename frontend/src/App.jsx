@@ -38,6 +38,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import NotFound from "./pages/NotFound/NotFound";
 import Layout from "./components/Layout/Layout";
+import RequireAuth from "./services/RequireAuth";
 
 const ROLES = {
   CLIENT: "8912",
@@ -49,6 +50,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
+          {/* PUBLIC ROUTES */}
           <Route path="/" element={<Beranda />} />
           <Route path="/authBeranda" element={<AuthBeranda />} />
           <Route path="/register" element={<Register />} />
@@ -58,58 +60,74 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/paketWisata" element={<PaketWisata />} />
           <Route path="/tentangkami" element={<TentangKami />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/riwayat" element={<Riwayat />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/pengaturan" element={<Setting />} />
           <Route path="/blog/detailBlog" element={<DetailBlog />} />
           <Route path="/wisata/detailWisata" element={<DetailWisata />} />
           <Route path="/wisata/detailWisata" element={<DetailWisata />} />
           <Route path="/paketWisata/detailPaket" element={<DetailPaket />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/detailPenginapan" element={<DetailPenginapan />} />
           <Route path="/detailKuliner" element={<DetailKuliner />} />
-          <Route path="/dashboard/kelolaArtikel" element={<KelolaArtikel />} />
-          <Route path="/dashboard/formArtikel" element={<FormArtikel />} />
-          <Route
-            path="/dashboard/kelolaPengguna"
-            element={<KelolaPengguna />}
-          />
-          <Route path="/dashboard/formEditUser" element={<FormEditUser />} />
-          <Route path="/dashboard/kelolaWisata" element={<KelolaWisata />} />
-          <Route path="/dashboard/formWisata" element={<FormWisata />} />
-          <Route
-            path="/dashboard/kelolaPaketWisata"
-            element={<KelolaPaketWisata />}
-          />
-          <Route
-            path="/dashboard/formPaketWisata"
-            element={<FormPaketWisata />}
-          />
-          <Route
-            path="/dashboard/kelolaPenginapan"
-            element={<KelolaPenginapan />}
-          />
-          <Route
-            path="/dashboard/formPenginapan"
-            element={<FormPenginapan />}
-          />
-          <Route path="/dashboard/kelolaKuliner" element={<KelolaKuliner />} />
-          <Route path="/dashboard/formKuliner" element={<FormKuliner />} />
-          <Route
-            path="/dashboard/kelolaKomentar"
-            element={<KelolaKomentar />}
-          />
-          <Route
-            path="/dashboard/kelolaPembayaran"
-            element={<KelolaPembayaran />}
-          />
-          <Route
-            path="/dashboard/detailPembayaran"
-            element={<DetailPembayaran />}
-          />
+          {/* CLIENT ROUTE */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT]} />}>
+            <Route path="/profile" element={<Profile />} /> // view client
+            dashboard
+            <Route path="/riwayat" element={<Riwayat />} /> // view payment
+            histories
+            <Route path="/order" element={<Order />} /> // view detail payment
+            <Route path="/pengaturan" element={<Setting />} /> // change account
+            setting
+            <Route path="/checkout" element={<Checkout />} /> // buy tour packet
+            form
+          </Route>
+          // ADMIN ONLY
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
+            <Route
+              path="/dashboard/kelolaArtikel"
+              element={<KelolaArtikel />}
+            />
+            <Route path="/dashboard/formArtikel" element={<FormArtikel />} />
+            <Route
+              path="/dashboard/kelolaPengguna"
+              element={<KelolaPengguna />}
+            />
+            <Route path="/dashboard/formEditUser" element={<FormEditUser />} />
+            <Route path="/dashboard/kelolaWisata" element={<KelolaWisata />} />
+            <Route path="/dashboard/formWisata" element={<FormWisata />} />
+            <Route
+              path="/dashboard/kelolaPaketWisata"
+              element={<KelolaPaketWisata />}
+            />
+            <Route
+              path="/dashboard/formPaketWisata"
+              element={<FormPaketWisata />}
+            />
+            <Route
+              path="/dashboard/kelolaPenginapan"
+              element={<KelolaPenginapan />}
+            />
+            <Route
+              path="/dashboard/formPenginapan"
+              element={<FormPenginapan />}
+            />
+            <Route
+              path="/dashboard/kelolaKuliner"
+              element={<KelolaKuliner />}
+            />
+            <Route path="/dashboard/formKuliner" element={<FormKuliner />} />
+            <Route
+              path="/dashboard/kelolaKomentar"
+              element={<KelolaKomentar />}
+            />
+            <Route
+              path="/dashboard/kelolaPembayaran"
+              element={<KelolaPembayaran />}
+            />
+            <Route
+              path="/dashboard/detailPembayaran"
+              element={<DetailPembayaran />}
+            />
+          </Route>
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/notfound" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       <ToastContainer />
