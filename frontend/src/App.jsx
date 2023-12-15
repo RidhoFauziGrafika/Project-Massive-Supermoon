@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Authentikasi/Login/Login";
 import Register from "./pages/Authentikasi/Register/Register";
 import Beranda from "./pages/Beranda/Beranda";
@@ -35,11 +35,20 @@ import KelolaPembayaran from "./pages/Admin/KelolaPembayaran/KelolaPembayaran";
 import DetailPembayaran from "./pages/Admin/KelolaPembayaran/DetailPembayaran";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
+import NotFound from "./pages/NotFound/NotFound";
+import Layout from "./components/Layout/Layout";
+
+const ROLES = {
+  CLIENT: "8912",
+  ADMIN: "6501",
+};
+
 function App() {
   return (
     <>
-      <Router>
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Layout />}>
           <Route path="/" element={<Beranda />} />
           <Route path="/authBeranda" element={<AuthBeranda />} />
           <Route path="/register" element={<Register />} />
@@ -99,8 +108,10 @@ function App() {
             path="/dashboard/detailPembayaran"
             element={<DetailPembayaran />}
           />
-        </Routes>
-      </Router>
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/notfound" element={<NotFound />} />
+        </Route>
+      </Routes>
       <ToastContainer />
     </>
   );

@@ -6,7 +6,7 @@ const fs = require("fs/promises");
 const jwt = require("jsonwebtoken");
 const { query } = require("../config/database");
 const toDatetime = require("../utils/datetime");
-const { SECRET } = require("../config/configs");
+const { SECRET, DB_USER } = require("../config/configs");
 
 // const createToken = async (user) => {
 //   const expiresIn = "15m";
@@ -17,6 +17,18 @@ const { SECRET } = require("../config/configs");
 //   });
 //   return token;
 // };
+
+const ROLES = {
+  CLIENT: "8912",
+  ADMIN: "6501",
+};
+
+const ADMIN = 1;
+const CLIENT = 2;
+
+function getRole(role_name) {
+  return role_name === ADMIN ? ROLES.ADMIN : ROLES.CLIENT;
+}
 
 const getRegister = asyncHandler(async (req, res) => {
   try {
@@ -77,13 +89,29 @@ WHERE u.email = ?;
 
     console.log(user);
 
-    const token = await jwt.sign({ fullname: user.fullname, email: user.email, role: user.role, id_uuid: user.id_uuid }, SECRET, {
-      expiresIn: "15m",
-      algorithm: "HS256",
-    });
+    const token = await jwt.sign(
+      {
+        fullname: user.fullname,
+        email: user.email,
+        role: user.role,
+        id_uuid: user.id_uuid,
+      },
+      SECRET,
+      {
+        expiresIn: "15m",
+        algorithm: "HS256",
+      }
+    );
 
+    console.log(getRole(user.role));
     console.log(token);
-    res.json({ succes: true, message: "Login berhasil!", token: token });
+    res.json({
+      succes: true,
+      message: "Login berhasil!",
+      user: user,
+      token: token,
+      access: getRole(user.role),
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal Server Error!" });

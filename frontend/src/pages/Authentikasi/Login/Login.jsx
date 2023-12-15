@@ -3,12 +3,19 @@ import logo from "../../../assets/logo/KUNINGANTOUR_1.png";
 import imgKuningan from "../../../assets/images/Login/kuningan.png";
 import { BiSolidHide, BiShow } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../../../hooks/useAuth";
 
 const Login = () => {
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -29,10 +36,17 @@ const Login = () => {
         formData
       );
 
-      const token = response.data.token;
+      const token = response?.data?.token;
+      const access = response?.data?.access;
+      const user = response?.data?.user;
+
       localStorage.setItem("token", token);
+      localStorage.setItem("access", access);
+      localStorage.setItem("user", user);
 
       toast.success("Login successful!");
+      setAuth({ user, token, roles: access });
+      navigate(from, { replace: true });
     } catch (error) {
       if (error.response) {
         toast.error(error.response.data.message);
