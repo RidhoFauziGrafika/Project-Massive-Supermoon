@@ -108,6 +108,8 @@ import ProfilePicture from "../../assets/images/Navbar/profile.png";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import useAuth from "../../hooks/useAuth"; // Import useAuth hook
 import logout from "../../services/LogOutService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
@@ -119,6 +121,7 @@ const Navbar = () => {
     logout();
     setAuth({});
     navigate("/login");
+    toast.success("Logout successful!");
   };
 
   return (

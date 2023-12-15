@@ -38,7 +38,7 @@ const Login = () => {
 
       const token = response?.data?.token;
       const access = response?.data?.access;
-      const user = response?.data?.user;
+      const user = JSON.stringify(response?.data?.user);
 
       localStorage.setItem("token", token);
       localStorage.setItem("access", access);

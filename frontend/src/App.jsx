@@ -74,7 +74,15 @@ function App() {
           <Route path="/detailPenginapan" element={<DetailPenginapan />} />
           <Route path="/detailKuliner" element={<DetailKuliner />} />
           {/* CLIENT ROUTE */}
-          <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT]} />}>
+          <Route
+            element={
+              <RequireAuth
+                allowedRoles={
+                  Array.isArray(ROLES.CLIENT) ? ROLES.CLIENT : [ROLES.CLIENT]
+                }
+              />
+            }
+          >
             <Route path="/profile" element={<Profile />} /> // view client
             dashboard
             <Route path="/riwayat" element={<Riwayat />} /> // view payment

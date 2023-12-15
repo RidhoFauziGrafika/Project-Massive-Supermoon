@@ -103,7 +103,7 @@ WHERE u.email = ?;
       }
     );
 
-    console.log(getRole(user.role));
+    console.log("role", getRole(user.role));
     console.log(token);
     res.json({
       succes: true,
