@@ -38,7 +38,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import NotFound from "./pages/NotFound/NotFound";
 import Layout from "./components/Layout/Layout";
-import RequireAuth from "./services/RequireAuth";
+import RequireAuth from "./middleware/RequireAuth";
+import PublicRoute from "./middleware/PublicRoute";
 
 const ROLES = {
   CLIENT: "8912",
@@ -53,8 +54,14 @@ function App() {
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Beranda />} />
           <Route path="/authBeranda" element={<AuthBeranda />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={<PublicRoute element={<Login />} redirectTo="/" />}
+          />
+          <Route
+            path="/register"
+            element={<PublicRoute element={<Register />} redirectTo="/" />}
+          />
           <Route path="/kontak" element={<Kontak />} />
           <Route path="/wisata" element={<Wisata />} />
           <Route path="/blog" element={<Blog />} />
