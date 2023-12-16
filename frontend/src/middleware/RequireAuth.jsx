@@ -6,12 +6,14 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  // console.log("allowedRoles", allowedRoles);
+  console.log("allowedRoles", allowedRoles || null);
+  console.log("userRoles", auth.roles || null);
+  console.log("user", auth || null);
 
   const hasAccess =
     auth?.roles &&
     (Array.isArray(allowedRoles)
-      ? allowedRoles.map(String).includes(auth.roles.toString())
+      ? allowedRoles.some((role) => auth.roles.includes(role))
       : false);
 
   return hasAccess ? (
@@ -22,8 +24,5 @@ const RequireAuth = ({ allowedRoles }) => {
     <Navigate to="/login" state={{ from: location }} replace />
   );
 };
-
-// Example usage:
-// <RequireAuth allowedRoles={[ROLES.CLIENT]} />
 
 export default RequireAuth;

@@ -18,17 +18,15 @@ const { SECRET, DB_USER } = require("../config/configs");
 //   return token;
 // };
 
-const ROLES = {
+const ROLES_NUMBER = {
   CLIENT: "8912",
   ADMIN: "6501",
 };
 
-const ADMIN = 1;
-const CLIENT = 2;
-
-function getRole(role_name) {
-  return role_name === ADMIN ? ROLES.ADMIN : ROLES.CLIENT;
-}
+const ROLES_NAME = {
+  CLIENT: "CLIENT",
+  ADMIN: "ADMIN",
+};
 
 const getRegister = asyncHandler(async (req, res) => {
   try {
@@ -87,7 +85,7 @@ WHERE u.email = ?;
       [req.body.email]
     );
 
-    console.log(user);
+    console.log(user[0]);
 
     const token = await jwt.sign(
       {
@@ -98,19 +96,22 @@ WHERE u.email = ?;
       },
       SECRET,
       {
-        expiresIn: "15m",
+        expiresIn: "30d",
         algorithm: "HS256",
       }
     );
 
-    console.log("role", getRole(user.role));
+    console.log("role", user[0].role === "ADMIN" ? "6501" : "8912");
     console.log(token);
     res.json({
       succes: true,
       message: "Login berhasil!",
       user: user,
       token: token,
-      access: getRole(user.role),
+      access:
+        user[0].role === ROLES_NAME.ADMIN
+          ? ROLES_NUMBER.ADMIN
+          : ROLES_NUMBER.CLIENT,
     });
   } catch (error) {
     console.log(error);
