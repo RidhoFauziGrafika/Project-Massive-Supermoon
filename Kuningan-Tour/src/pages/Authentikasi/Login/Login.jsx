@@ -63,11 +63,11 @@ const Login = () => {
                       Kata sandi harus berisi huruf kapital & angka
                     </span>
                   </div>
-                  <div className="absolute end-0">
+                  {/* <div className="absolute end-0">
                     <a href="#" className="text-base block">
                       Lupa Kata Sandi?
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="py-2">
                   <button className="bg-primary-main rounded-lg  w-full px-2 py-2 mt-4 text-neutral-10">

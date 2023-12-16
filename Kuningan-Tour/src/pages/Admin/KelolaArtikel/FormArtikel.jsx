@@ -1,10 +1,29 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Navbar } from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import SidebarAdmin from "../../../components/SidebarAdmin/SidebarAdmin";
+import { Link } from "react-router-dom";
 
 const FormArtikel = () => {
+  // const [values, setValues] = useState({
+  //   title: "",
+  //   slug: "",
+  //   content: "",
+  // });
+
+  // const navigate = useNavigate();
+
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+
+  //   axios
+  //     .post("/dashboard/formArtikel", values)
+  //     .then((res) => {
+  //       navigate("/");
+  //       console.log(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
   return (
     <>
       <Navbar />
@@ -13,7 +32,7 @@ const FormArtikel = () => {
         <div className="w-full px-4 py-10 overflow-x-auto">
           <div className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
             <div className="px-4 py-6">
-              <div className="w-full">
+              <form className="w-full">
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
                     Form Tambah Artikel
@@ -28,7 +47,7 @@ const FormArtikel = () => {
                     <div className="relative flex items-center gap-2">
                       <input
                         type="text"
-                        name="search"
+                        name="title"
                         placeholder="Judul Artikel"
                         className="w-full border border-neutral-50 rounded-lg py-2 px-3"
                       />
@@ -41,7 +60,8 @@ const FormArtikel = () => {
                     <div className="relative flex items-center gap-2">
                       <input
                         type="text"
-                        name="search"
+                        name="slug"
+                        placeholder="Slug"
                         className="w-full border border-neutral-50 rounded-lg py-2 px-3"
                       />
                     </div>
@@ -54,49 +74,49 @@ const FormArtikel = () => {
                   <div className="my-5">
                     <textarea
                       type="text"
-                      name="search"
-                      placeholder="Isi Artikel Wisata"
+                      name="content"
+                      placeholder="Isi Artikel"
                       autoComplete="off"
-                      className="w-full border border-neutral-50 rounded-lg py-2 px-3"
+                      className="w-full border border-neutral-50 rounded-lg py-2 px-3 h-100vh"
                     />
                   </div>
-                  <input
-                    type="file"
-                    className="block text-sm text-slate-500 file:mr-4 file:py-2
-              file:px-4 rounded-xl file:border-0 file:text-sm file:font-semibold"
-                  />
-                  <div className="my-5 flex lg:flex-row flex-col">
-                    <h6 className="lg:text-lg text-sm tracking-tight text-gray-900">
-                      Publikasikan Artikel:
-                    </h6>
-                    <div className="mx-8 text-lg">
-                      <div className="flex flex-row gap-3">
-                        <input type="checkbox" />
-                        <label className="lg:text-lg text-sm">Simpan</label>
-                      </div>
-                      <div className="flex flex-row gap-3">
-                        <input type="checkbox" />
-                        <label className="lg:text-lg text-sm">Publish</label>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-
                 <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
-                  <Link
-                    to="/"
-                    className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
-                  >
+                  <button className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main">
                     Publish
-                  </Link>
+                  </button>
                   <Link
-                    to="/"
+                    to="/dashboard/kelolaArtikel"
                     className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-primary-main bg-primary-surface border-primary-main"
                   >
                     Batal
                   </Link>
                 </div>
-              </div>
+              </form>
+            </div>
+          </div>
+          <div className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
+            <div className="px-4 py-6">
+              <form className="w-full">
+                <div className="m-8">
+                  <input
+                    type="file"
+                    className="block text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 rounded-xl file:border-0 file:text-sm file:font-semibold"
+                    name="file"
+                  />
+                </div>
+                <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                  <button className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main">
+                    Publish
+                  </button>
+                  <Link
+                    to="/dashboard/kelolaArtikel"
+                    className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-primary-main bg-primary-surface border-primary-main"
+                  >
+                    Batal
+                  </Link>
+                </div>
+              </form>
             </div>
           </div>
         </div>

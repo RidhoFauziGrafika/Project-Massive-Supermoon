@@ -10,6 +10,14 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 
 const KelolaArtikel = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/")
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <>
       <Navbar />
@@ -75,26 +83,30 @@ const KelolaArtikel = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg ">
-                    <tr className="text-center">
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        1
-                      </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        Gunung Ciremai: Keindahan Alam dan Peninggalan Sejarah
-                        yang Mengagumkan
-                      </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        Publish
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center border border-neutral-50 justify-center">
-                        <Link className="px-4 py-2 bg-[#0D6EFD] rounded-lg">
-                          <BiSolidPencil className="text-white" />
-                        </Link>
-                        <Link className="px-4 py-2 bg-[#FD3550] rounded-lg">
-                          <FaTrashCan className="text-white" />
-                        </Link>
-                      </td>
-                    </tr>
+                    {data.map((post, index) => {
+                      return (
+                        <tr key={index} className="text-center">
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                            {" "}
+                            {++index}
+                          </td>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                            {post.title}
+                          </td>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
+                            {post.is_published}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center border border-neutral-50 justify-center">
+                            <button className="px-4 py-2 bg-[#0D6EFD] rounded-lg">
+                              <BiSolidPencil className="text-white" />
+                            </button>
+                            <button className="px-4 py-2 bg-[#FD3550] rounded-lg">
+                              <FaTrashCan className="text-white" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
                 <nav aria-label="Page navigation example" className="mt-3">
