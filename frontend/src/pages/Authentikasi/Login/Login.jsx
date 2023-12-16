@@ -41,8 +41,8 @@ const Login = () => {
       const user = JSON.stringify(response?.data?.user);
 
       localStorage.setItem("token", token);
-      localStorage.setItem("access", access);
-      localStorage.setItem("user", user);
+      localStorage.setItem("access", JSON.stringify(access)); // Store roles without extra backslashes
+      localStorage.setItem("user", JSON.stringify(user));
 
       toast.success("Login successful!");
       setAuth({ user, token, roles: access });

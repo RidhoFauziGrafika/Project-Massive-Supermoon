@@ -40,6 +40,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Layout from "./components/Layout/Layout";
 import RequireAuth from "./middleware/RequireAuth";
 import PublicRoute from "./middleware/PublicRoute";
+import useAuth from "./hooks/useAuth";
 
 const ROLES = {
   CLIENT: "8912",
@@ -47,6 +48,9 @@ const ROLES = {
 };
 
 function App() {
+  // const { Auth } = useAuth;
+
+  // console.log(Auth.roles);
   return (
     <>
       <Routes>
@@ -78,7 +82,9 @@ function App() {
             element={
               <RequireAuth
                 allowedRoles={
-                  Array.isArray(ROLES.CLIENT) ? ROLES.CLIENT : [ROLES.CLIENT]
+                  Array.isArray(ROLES.CLIENT)
+                    ? ROLES.CLIENT
+                    : [ROLES.CLIENT, ROLES.ADMIN]
                 }
               />
             }

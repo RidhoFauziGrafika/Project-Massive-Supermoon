@@ -5,9 +5,12 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
     fullname: "",
     gender: "",
@@ -65,6 +68,7 @@ const Register = () => {
       // console.log("Registration successful:", response.data);
       // Show success toast
       toast.success("Registration successful");
+      navigate("/login", { replace: true });
     } catch (error) {
       // Handle registration errors
       if (error.response) {
