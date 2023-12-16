@@ -47,7 +47,7 @@ const register = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    await query(
+    let data = await query(
       `INSERT INTO users (id_uuid, fullname, email, phone_number, password, gender_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         uuidv4(),
@@ -60,7 +60,12 @@ const register = asyncHandler(async (req, res) => {
         toDatetime(Date.now()),
       ]
     );
-
+    if (!data.length > 0) {
+      return res.status(200).json({
+        success: false,
+        message: "Registrasi gagal!",
+      });
+    }
     return res.status(200).json({
       success: true,
       message: "Registrasi berhasil!",

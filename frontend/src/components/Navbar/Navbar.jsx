@@ -87,6 +87,7 @@ const Navbar = () => {
                 name="search"
                 placeholder="Pencarian"
                 className="w-full pr-3 pl-10 px-6 py-2 font-semibold placeholder-neutral-70 rounded-2xl border-2 bg-primary-surface"
+                autoComplete="off"
               />
             </div>
           </form>

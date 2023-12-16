@@ -2,18 +2,20 @@ require("dotenv").config();
 const express = require("express");
 const { NODE_PORT } = require("./config/configs");
 const cors = require("cors");
-const authRoutes = require('./routes/auth.routes')
-const errorHandler = require('./middleware/errorHandler.middleware')
+const authRoutes = require("./routes/auth.routes");
+const errorHandler = require("./middleware/errorHandler.middleware");
 const app = express();
 const morgan = require("morgan");
+const tourPacketRoutes = require("./routes/tourPacket.routes");
 
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({origin: '*'}));
+app.use(cors({ origin: "*" }));
 
 app.use(errorHandler);
-app.use('/api/auth', authRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/tour-packets", tourPacketRoutes);
 
 app.listen(NODE_PORT, () => {
   console.log(
