@@ -7,6 +7,7 @@ const errorHandler = require("./middleware/errorHandler.middleware");
 const app = express();
 const morgan = require("morgan");
 const tourPacketRoutes = require("./routes/tourPacket.routes");
+const path = require("path");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
 
 app.use(errorHandler);
+app.use("/storage", express.static(path.join(__dirname, "public")));
 app.use("/api/auth", authRoutes);
 app.use("/api/tour-packets", tourPacketRoutes);
 
