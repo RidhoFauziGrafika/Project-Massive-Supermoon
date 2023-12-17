@@ -4,7 +4,6 @@ import Footer from "../../components/Footer/Footer";
 import data from "../../utils/constants/PackageTours";
 import AllPaketWisata from "../../components/AllPaketWisata/AllPaketWisata";
 import { Link } from "react-router-dom";
-import AuthNavbar from "../../components/Navbar/AuthNavbar";
 
 const PaketWisata = () => {
   const [packageTours, setPackageTours] = useState(data);

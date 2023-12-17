@@ -236,14 +236,14 @@ const Register = () => {
                   <div>
                     <p className="text-center text-base">Atau</p>
                   </div>
-                  <div className="relative">
+                  {/* <div className="relative">
                     <div className="absolute py-4 start-2">
                       <FcGoogle className="w-6 h-6" />
                     </div>
                     <button className="border border-primary-main rounded-lg w-full px-2 py-2 mt-2 text-primary-main">
                       Masuk Dengan Google
                     </button>
-                  </div>
+                  </div> */}
                   <Link
                     to="/login"
                     className="text-base flex justify-center mt-2"

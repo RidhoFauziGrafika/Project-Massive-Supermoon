@@ -28,10 +28,9 @@ const createTour = asyncHandler(async (req, res) => {
 
   console.log(parseInt(price[1]));
   try {
-    const checkslug = await db.query(
-      "SELECT slug FROM tour_packets where slug = ?",
-      [slug]
-    );
+    const checkslug = await db.query("SELECT slug FROM tours where slug = ?", [
+      slug,
+    ]);
 
     if (checkslug.length > 1) {
       return res.status(400).json({
@@ -184,202 +183,220 @@ const deleteTour = asyncHandler(async (req, res) => {
   }
 });
 
-// BELOM DIRUBAH
-const getOneTour = asyncHandler(async (req, res) => {
-  const { id, slug } = req.body;
+const getAllTours = asyncHandler(async (req, res) => {
   try {
+    // Fetch tour details
     const tourDetails = await query(
       `
-    SELECT
-    tp.id,
-    tp.title,
-    tp.slug,
-    tp.price,
-    tp.address,
-    tp.address_link,
-    tp.description,
-    tp.tour_description,
-    tp.tour_link,
-    tp.culinary_description,
-    tp.culinary_link,
-    tp.lodging_description,
-    tp.lodging_link,
-    tp.created_at,
-    MAX(tpi.img_path) AS img_path,
-    MAX(tf_t.name) AS tour_facility_name,
-    MAX(cf.name) AS culinary_facility_name,
-    MAX(lf.name) AS lodging_facility_name
-FROM
-    tour_packets tp
-LEFT JOIN
-    tour_packets_images tpi ON tp.id = tpi.tour_packet_id AND tpi.is_deleted = FALSE
-LEFT JOIN
-    tour_packets_tour_facilities tptf ON tp.id = tptf.tour_packet_id
-LEFT JOIN
-    facilities tf_t ON tptf.facility_id = tf_t.id
-LEFT JOIN
-    tour_packets_culinary_facilities tpcf ON tp.id = tpcf.tour_packet_id
-LEFT JOIN
-    facilities cf ON tpcf.facility_id = cf.id
-LEFT JOIN
-    tour_packets_lodging_facilities tplf ON tp.id = tplf.tour_packet_id
-LEFT JOIN
-    facilities lf ON tplf.facility_id = lf.id
-WHERE
-    tp.id = ? AND tp.is_deleted = FALSE
-GROUP BY
-    tp.id;
+      SELECT
+        t.id,
+        t.title,
+        t.slug,
+        t.categories,
+        t.price,
+        t.address,
+        t.address_link,
+        t.description,
+        t.ticket_operasional,
+        t.created_at,
+        t.updated_at,
+        COALESCE(AVG(tr.rating), 0) AS average_rating
+      FROM
+        tours t
+      LEFT JOIN
+        tour_has_reviews tr ON t.id = tr.tour_id AND tr.is_deleted = FALSE
+      WHERE t.is_deleted = FALSE
+      GROUP BY
+        t.id;
+    `
+    );
 
-  `,
+    if (tourDetails.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Tour not found or has been deleted!",
+      });
+    }
+
+    // Fetch tour images
+    const tourImages = await query(
+      `
+      SELECT
+      tour_id,
+        id,
+        img_path
+      FROM
+        tour_images
+      WHERE
+        is_deleted = FALSE;
+    `
+    );
+
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        thf.tour_id, thf.facility_id, f.name
+      FROM
+        tour_has_facilities thf
+      JOIN
+        facilities f ON thf.facility_id = f.id
+      WHERE
+        thf.is_deleted = FALSE;
+    `
+    );
+
+    // Fetch reviews with user fullname
+    const reviews = await query(
+      `
+      SELECT
+      tr.tour_id,
+        tr.rating,
+        tr.content,
+        u.fullname
+      FROM
+        tour_has_reviews tr
+      JOIN
+        users u ON tr.user_id = u.id
+      WHERE
+        tr.is_deleted = FALSE;
+    `
+    );
+
+    // Format the data for the client
+    const formattedTourDetails = {
+      tours: tourDetails,
+      tour_images: tourImages,
+      tour_facilities: tourFacilities,
+      reviews: reviews,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: formattedTourDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+    throw new Error("Failed to fetch tour data!");
+  }
+});
+
+const getOneTour = asyncHandler(async (req, res) => {
+  const { id } = req.params; // Assuming the ID is in the request parameters
+
+  try {
+    // Fetch tour details
+    const tourDetails = await query(
+      `
+      SELECT
+        t.id,
+        t.title,
+        t.slug,
+        t.categories,
+        t.price,
+        t.address,
+        t.address_link,
+        t.description,
+        t.ticket_operasional,
+        t.created_at,
+        t.updated_at,
+        COALESCE(AVG(tr.rating), 0) AS average_rating
+      FROM
+        tours t
+      LEFT JOIN
+        tour_has_reviews tr ON t.id = tr.tour_id AND tr.is_deleted = FALSE
+      WHERE
+        t.id = ?
+        AND t.is_deleted = FALSE
+      GROUP BY
+        t.id;
+    `,
       [id]
     );
 
     if (tourDetails.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Paket wisata tidak ditemukan atau telah dihapus!",
+        message: "Tour not found or has been deleted!",
       });
     }
 
-    // Calculate average rating
+    // Fetch tour images
+    const tourImages = await query(
+      `
+      SELECT
+        id,
+        img_path
+      FROM
+        tour_images
+      WHERE
+        tour_id = ? AND is_deleted = FALSE;
+    `,
+      [id]
+    );
+
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        f.facility_id, f.name
+      FROM
+        tour_has_facilities thf
+      JOIN
+        facilities f ON thf.facility_id = f.id
+      WHERE
+        thf.tour_id = ? AND thf.is_deleted = FALSE;
+    `,
+      [id]
+    );
+
+    // Fetch reviews with user fullname
     const reviews = await query(
       `
-    SELECT
-        rating
-    FROM
-        reviews
-    WHERE
-        review_type_id = 2 AND
-        item_id = ?
-        AND is_deleted = FALSE;
-  `,
-      [tourDetails[0].id]
+      SELECT
+        tr.rating,
+        tr.content,
+        u.fullname
+      FROM
+        tour_has_reviews tr
+      JOIN
+        users u ON tr.user_id = u.id
+      WHERE
+        tr.tour_id = ? AND tr.is_deleted = FALSE;
+    `,
+      [id]
     );
-    // calculate reviews
-    function calculateAverageRating(reviews) {
-      if (reviews.length === 0) {
-        return 0;
-      }
 
-      const totalRating = reviews.reduce(
-        (sum, review) => sum + review.rating,
-        0
-      );
-      const averageRating = totalRating / reviews.length;
-      return averageRating;
-    }
-
-    const averageRating = calculateAverageRating(reviews);
-
-    // Format for the client
+    // Format the data for the client
     const formattedTourDetails = {
-      id: tourDetails[0]?.id,
-      title: tourDetails[0]?.title,
-      slug: tourDetails[0]?.slug,
-      price: tourDetails[0]?.price,
-      address: tourDetails[0]?.address,
-      address_link: tourDetails[0]?.address_link,
-      description: tourDetails[0]?.description,
-      tour_description: tourDetails[0]?.tour_description,
-      tour_link: tourDetails[0]?.tour_link,
-      culinary_description: tourDetails[0]?.culinary_description,
-      culinary_link: tourDetails[0]?.culinary_link,
-      lodging_description: tourDetails[0]?.lodging_description,
-      lodging_link: tourDetails[0]?.lodging_link,
-      created_at: tourDetails[0]?.created_at,
-      img_path: tourDetails[0]?.img_path,
-      tour_facility_name: tourDetails[0]?.tour_facility_name,
-      culinary_facility_name: tourDetails[0]?.culinary_facility_name,
-      lodging_facility_name: tourDetails[0]?.lodging_facility_name,
-      averageRating: averageRating,
+      id: tourDetails[0].id,
+      title: tourDetails[0].title,
+      slug: tourDetails[0].slug,
+      categories: tourDetails[0].categories,
+      price: tourDetails[0].price,
+      address: tourDetails[0].address,
+      address_link: tourDetails[0].address_link,
+      description: tourDetails[0].description,
+      ticket_operasional: tourDetails[0].ticket_operasional,
+      created_at: tourDetails[0].created_at,
+      updated_at: tourDetails[0].updated_at,
+      average_rating: tourDetails[0].average_rating || 0,
+      images: tourImages,
+      facilities: tourFacilities,
+      reviews,
     };
 
     res.status(200).json({
       success: true,
-      message: "Ok",
+      message: "Success",
       data: formattedTourDetails,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
-    throw new Error("Gagal saat mengambil data satu paket wisata!");
-  }
-});
-
-// BELOM DIRUBAH
-const getAllTour = asyncHandler(async (req, res) => {
-  try {
-    const allTourPacketsDetails = await query(`
-      SELECT
-          tp.id,
-          tp.title,
-          tp.slug,
-          tp.price,
-          tp.address,
-          tp.address_link,
-          tp.description,
-          tp.tour_description,
-          tp.tour_link,
-          tp.culinary_description,
-          tp.culinary_link,
-          tp.lodging_description,
-          tp.lodging_link,
-          tp.created_at
-      FROM tour_packets tp
-      WHERE tp.is_deleted = FALSE
-    `);
-
-    const tourPacketsWithReviews = [];
-
-    // Iterate over each tour packet and fetch reviews
-    for (const tourPacket of allTourPacketsDetails) {
-      const reviews = await dbExecute(
-        "SELECT rating FROM reviews WHERE review_type_id = ? AND item_id = ? AND is_deleted = FALSE",
-        [2, tourPacket.id] // Assuming review_type_id for TOUR_PACKET is 2
-      );
-
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length
-          : 0;
-
-      tourPacketsWithReviews.push({
-        ...tourPacket,
-        averageRating,
-      });
-    }
-
-    // Format the data for response
-    const formattedAllTourPacketsDetails = tourPacketsWithReviews.map(
-      (tourPacket) => ({
-        id: tourPacket.id,
-        title: tourPacket.title,
-        slug: tourPacket.slug,
-        price: tourPacket.price,
-        address: tourPacket.address,
-        address_link: tourPacket.address_link,
-        description: tourPacket.description,
-        tour_description: tourPacket.tour_description,
-        tour_link: tourPacket.tour_link,
-        culinary_description: tourPacket.culinary_description,
-        culinary_link: tourPacket.culinary_link,
-        lodging_description: tourPacket.lodging_description,
-        lodging_link: tourPacket.lodging_link,
-        created_at: tourPacket.created_at,
-        averageRating: tourPacket.averageRating || 0,
-      })
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Success",
-      data: formattedAllTourPacketsDetails,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error!" });
-    throw new Error("Eror saat mengambil semua data paket wisata!");
+    throw new Error("Failed to fetch tour data!");
   }
 });
 
@@ -485,7 +502,115 @@ const uploadImages = asyncHandler(async (req, res) => {
   }
 });
 
-const updateImages = asyncHandler(async (req, res) => {});
+const updateImages = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id || id === null) {
+      return res.status(400).json({
+        success: false,
+        message: "Tidak ada ID!",
+      });
+    }
+
+    // Delete old images associated with the tour ID
+    const oldImages = await query(
+      `SELECT img_path FROM tour_packets_images WHERE tour_packet_id = ?`,
+      [id]
+    );
+
+    await Promise.all(
+      oldImages.map(async (oldImage) => {
+        const fullPath = path.join(__dirname, "public", oldImage.img_path);
+        try {
+          await fs.unlink(fullPath);
+          console.log(`Old image ${fullPath} deleted successfully.`);
+        } catch (deleteError) {
+          console.error(
+            `Error deleting old image ${fullPath}: ${deleteError.message}`
+          );
+        }
+      })
+    );
+
+    // Access the file details using req.files
+    const newImagePaths = req.files.map((file) =>
+      path.join(__dirname, "public", `/${file.filename}`)
+    );
+
+    // Your logic to save data in the database
+    const allImages = await Promise.all(
+      newImagePaths.map(async (image) => {
+        try {
+          const data = await query(
+            `INSERT INTO tour_images (id_uuid, tour_packet_id, img_path) VALUES (?, ?, ?)`,
+            [uuidv4(), id, image]
+          );
+          return data;
+        } catch (insertError) {
+          console.error(
+            `Error inserting new image into the database: ${insertError.message}`
+          );
+          throw insertError;
+        }
+      })
+    );
+
+    await query(`DELETE FROM tour_images WHERE tour_packet_id = ?`, [id]);
+
+    if (allImages.every((data) => data.length > 0)) {
+      return res.json({
+        success: true,
+        message: "Gambar paket wisata diperbarui!",
+      });
+    } else {
+      // Rollback: Delete all newly uploaded images
+      await Promise.all(
+        newImagePaths.map(async (newImagePath) => {
+          try {
+            await fs.unlink(newImagePath);
+            console.log(
+              `Newly uploaded image ${newImagePath} deleted successfully.`
+            );
+          } catch (deleteError) {
+            console.error(
+              `Error deleting newly uploaded image ${newImagePath}: ${deleteError.message}`
+            );
+          }
+        })
+      );
+
+      return res.json({
+        success: false,
+        message: "Gambar wisata gagal diperbarui!",
+      });
+    }
+  } catch (error) {
+    console.error(`Error handling image update: ${error.message}`);
+
+    // Rollback: Delete all newly uploaded images
+    await Promise.all(
+      newImagePaths.map(async (newImagePath) => {
+        try {
+          await fs.unlink(newImagePath);
+          console.log(
+            `Newly uploaded image ${newImagePath} deleted successfully.`
+          );
+        } catch (deleteError) {
+          console.error(
+            `Error deleting newly uploaded image ${newImagePath}: ${deleteError.message}`
+          );
+        }
+      })
+    );
+
+    res.json({
+      success: false,
+      message: "Gambar wisata gagal diperbarui!",
+    });
+
+    throw new Error("Gambar wisata gagal diperbarui!");
+  }
+});
 
 // FASILITAS UNTUK PAKET WISATA, KULINER, PENGINAPAN DALAM PAKET WISATA
 const getAllFacilities = asyncHandler(async (req, res) => {

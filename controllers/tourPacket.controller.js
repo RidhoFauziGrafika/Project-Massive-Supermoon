@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
-const bcrypt = require("bcrypt");
 const path = require("path");
 const { query, db } = require("../config/database");
 const toDatetime = require("../utils/datetime");
@@ -207,198 +206,273 @@ const deleteTourPacket = asyncHandler(async (req, res) => {
 });
 
 const getOneTourPacket = asyncHandler(async (req, res) => {
-  const { id, slug } = req.body;
+  const { id } = req.params;
   try {
-    const tourDetails = await query(
+    // Fetch tour packet details
+    const tourPacketDetails = await query(
       `
-    SELECT
-    tp.id,
-    tp.title,
-    tp.slug,
-    tp.price,
-    tp.address,
-    tp.address_link,
-    tp.description,
-    tp.tour_description,
-    tp.tour_link,
-    tp.culinary_description,
-    tp.culinary_link,
-    tp.lodging_description,
-    tp.lodging_link,
-    tp.created_at,
-    MAX(tpi.img_path) AS img_path,
-    MAX(tf_t.name) AS tour_facility_name,
-    MAX(cf.name) AS culinary_facility_name,
-    MAX(lf.name) AS lodging_facility_name
+SELECT
+  tp.id,
+  tp.title,
+  tp.slug,
+  tp.price,
+  tp.address,
+  tp.address_link,
+  tp.description,
+  tp.tour_description,
+  tp.tour_link,
+  tp.culinary_description,
+  tp.culinary_link,
+  tp.lodging_description,
+  tp.lodging_link,
+  tp.created_at,
+  COALESCE(AVG(tpr.rating), 0) AS average_rating
 FROM
-    tour_packets tp
+  tour_packets tp
 LEFT JOIN
-    tour_packets_images tpi ON tp.id = tpi.tour_packet_id AND tpi.is_deleted = FALSE
-LEFT JOIN
-    tour_packets_tour_facilities tptf ON tp.id = tptf.tour_packet_id
-LEFT JOIN
-    facilities tf_t ON tptf.facility_id = tf_t.id
-LEFT JOIN
-    tour_packets_culinary_facilities tpcf ON tp.id = tpcf.tour_packet_id
-LEFT JOIN
-    facilities cf ON tpcf.facility_id = cf.id
-LEFT JOIN
-    tour_packets_lodging_facilities tplf ON tp.id = tplf.tour_packet_id
-LEFT JOIN
-    facilities lf ON tplf.facility_id = lf.id
+  tour_packet_has_reviews tpr ON tp.id = tpr.tour_packet_id AND tpr.is_deleted = FALSE
 WHERE
-    tp.id = ? AND tp.is_deleted = FALSE
-GROUP BY
-    tp.id;
-
-  `,
+  tp.id = ? AND tp.is_deleted = FALSE;
+    `,
       [id]
     );
 
-    if (tourDetails.length === 0) {
+    if (!tourPacketDetails[0]) {
       return res.status(404).json({
         success: false,
-        message: "Paket wisata tidak ditemukan atau telah dihapus!",
+        message: "Tour packet not found or has been deleted!",
       });
     }
 
-    // Calculate average rating
+    const tourImages = await query(
+      `SELECT
+  id,
+  id_uuid,
+  tour_packet_id,
+  img_path,
+  created_at,
+  updated_at
+FROM
+  tour_packets_images
+WHERE
+  tour_packet_id = ? AND is_deleted = FALSE;
+`,
+      [id]
+    );
+
+    // Fetch reviews
     const reviews = await query(
       `
-    SELECT
-        rating
-    FROM
-        tour_packet_has_reviews
-    WHERE
-        tour_packet_id = ?
-        AND is_deleted = FALSE;
-  `,
-      [tourDetails[0].id]
+      SELECT
+        tpr.rating,
+        tpr.content,
+        u.fullname
+      FROM
+        tour_packet_has_reviews tpr
+      JOIN
+        users u ON tpr.user_id = u.id
+      WHERE
+        tour_packet_id = ? AND is_deleted = FALSE
+    `,
+      [id]
     );
-    // calculate reviews
-    function calculateAverageRating(reviews) {
-      if (reviews.length === 0) {
-        return 0;
-      }
 
-      const totalRating = reviews.reduce(
-        (sum, review) => sum + review.rating,
-        0
-      );
-      const averageRating = totalRating / reviews.length;
-      return averageRating;
-    }
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        tf.facility_id, tf.name
+      FROM
+        tour_packets_tour_facilities tptf
+      JOIN
+        facilities tf ON tptf.facility_id = tf.id
+      WHERE
+        tptf.tour_packet_id = ? AND tptf.is_deleted = FALSE
+    `,
+      [id]
+    );
 
-    const averageRating = calculateAverageRating(reviews);
+    // Fetch culinary facilities
+    const culinaryFacilities = await query(
+      `
+      SELECT
+        cf.facility_id, cf.name
+      FROM
+        tour_packets_culinary_facilities tpcf
+      JOIN
+        facilities cf ON tpcf.facility_id = cf.id
+      WHERE
+        tpcf.tour_packet_id = ? AND tpcf.is_deleted = FALSE
+    `,
+      [id]
+    );
 
-    // Format for the client
-    const formattedTourDetails = {
-      id: tourDetails[0]?.id,
-      title: tourDetails[0]?.title,
-      slug: tourDetails[0]?.slug,
-      price: tourDetails[0]?.price,
-      address: tourDetails[0]?.address,
-      address_link: tourDetails[0]?.address_link,
-      description: tourDetails[0]?.description,
-      tour_description: tourDetails[0]?.tour_description,
-      tour_link: tourDetails[0]?.tour_link,
-      culinary_description: tourDetails[0]?.culinary_description,
-      culinary_link: tourDetails[0]?.culinary_link,
-      lodging_description: tourDetails[0]?.lodging_description,
-      lodging_link: tourDetails[0]?.lodging_link,
-      created_at: tourDetails[0]?.created_at,
-      img_path: tourDetails[0]?.img_path,
-      tour_facility_name: tourDetails[0]?.tour_facility_name,
-      culinary_facility_name: tourDetails[0]?.culinary_facility_name,
-      lodging_facility_name: tourDetails[0]?.lodging_facility_name,
-      averageRating: averageRating,
+    // Fetch lodging facilities
+    const lodgingFacilities = await query(
+      `
+      SELECT
+        lf.facility_id, lf.name
+      FROM
+        tour_packets_lodging_facilities tplf
+      JOIN
+        facilities lf ON tplf.facility_id = lf.id
+      WHERE
+        tplf.tour_packet_id = ? AND tplf.is_deleted = FALSE
+    `,
+      [id]
+    );
+
+    // Format the response
+    const formattedResponse = {
+      tour_packet: tourPacketDetails,
+      tour_images: tourImages,
+      tour_facilities: tourFacilities,
+      culinary_facilities: culinaryFacilities,
+      lodging_facilities: lodgingFacilities,
+      reviews: reviews,
     };
 
     res.status(200).json({
       success: true,
-      message: "Ok",
-      data: formattedTourDetails,
+      message: "Success",
+      data: formattedResponse,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
-    throw new Error("Gagal saat mengambil data satu paket wisata!");
+    throw new Error("Error fetching tour packet details!");
   }
 });
 
 const getAllTourPacket = asyncHandler(async (req, res) => {
   try {
-    const allTourPacketsDetails = await query(`
+    // Fetch tour packet details
+    const tourPacketDetails = await query(
+      `
       SELECT
-          tp.id,
-          tp.title,
-          tp.slug,
-          tp.price,
-          tp.address,
-          tp.address_link,
-          tp.description,
-          tp.tour_description,
-          tp.tour_link,
-          tp.culinary_description,
-          tp.culinary_link,
-          tp.lodging_description,
-          tp.lodging_link,
-          tp.created_at
-      FROM tour_packets tp
-      WHERE tp.is_deleted = FALSE
-    `);
+  tp.id,
+  tp.title,
+  tp.slug,
+  tp.price,
+  tp.address,
+  tp.address_link,
+  tp.description,
+  tp.tour_description,
+  tp.tour_link,
+  tp.culinary_description,
+  tp.culinary_link,
+  tp.lodging_description,
+  tp.lodging_link,
+  tp.created_at,
+  COALESCE(AVG(tpr.rating), 0) AS average_rating
+FROM
+  tour_packets tp
+LEFT JOIN
+  tour_packet_has_reviews tpr ON tp.id = tpr.tour_packet_id AND tpr.is_deleted = FALSE
+WHERE
+ tp.is_deleted = FALSE
+ GROUP BY tp.id;
+    `
+    );
 
-    const tourPacketsWithReviews = [];
-
-    // Iterate over each tour packet and fetch reviews
-    for (const tourPacket of allTourPacketsDetails) {
-      const reviews = await dbExecute(
-        "SELECT rating FROM tour_packet_has_reviews WHERE tour_packet_id = ? AND is_deleted = FALSE",
-        [tourPacket.id]
-      );
-
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length
-          : 0;
-
-      tourPacketsWithReviews.push({
-        ...tourPacket,
-        averageRating,
+    if (!tourPacketDetails[0]) {
+      return res.status(404).json({
+        success: false,
+        message: "Tour packet not found or has been deleted!",
       });
     }
 
-    // Format the data for response
-    const formattedAllTourPacketsDetails = tourPacketsWithReviews.map(
-      (tourPacket) => ({
-        id: tourPacket.id,
-        title: tourPacket.title,
-        slug: tourPacket.slug,
-        price: tourPacket.price,
-        address: tourPacket.address,
-        address_link: tourPacket.address_link,
-        description: tourPacket.description,
-        tour_description: tourPacket.tour_description,
-        tour_link: tourPacket.tour_link,
-        culinary_description: tourPacket.culinary_description,
-        culinary_link: tourPacket.culinary_link,
-        lodging_description: tourPacket.lodging_description,
-        lodging_link: tourPacket.lodging_link,
-        created_at: tourPacket.created_at,
-        averageRating: tourPacket.averageRating || 0,
-      })
+    const tourImages = await query(
+      `SELECT
+  id,
+  id_uuid,
+  tour_packet_id,
+  img_path,
+  created_at,
+  updated_at
+FROM
+  tour_packets_images
+WHERE
+  is_deleted = FALSE;
+`
     );
+
+    // Fetch reviews
+    const reviews = await query(
+      `
+      SELECT
+      tour_packet_id,
+        rating,
+        content,
+        user_id
+      FROM
+        tour_packet_has_reviews
+      WHERE
+        is_deleted = FALSE
+    `
+    );
+
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        tf.tour_packet_id, tf.name
+      FROM
+        tour_packets_tour_facilities tptf
+      JOIN
+        facilities tf ON tptf.facility_id = tf.id
+      WHERE
+       tptf.is_deleted = FALSE
+    `
+    );
+
+    // Fetch culinary facilities
+    const culinaryFacilities = await query(
+      `
+      SELECT
+        cf.tour_packet_id, cf.name
+      FROM
+        tour_packets_culinary_facilities tpcf
+      JOIN
+        facilities cf ON tpcf.facility_id = cf.id
+      WHERE
+        tpcf.is_deleted = FALSE
+    `
+    );
+
+    // Fetch lodging facilities
+    const lodgingFacilities = await query(
+      `
+      SELECT
+        lf.tour_packet_id, lf.name
+      FROM
+        tour_packets_lodging_facilities tplf
+      JOIN
+        facilities lf ON tplf.facility_id = lf.id
+      WHERE
+      tplf.is_deleted = FALSE
+    `
+    );
+
+    // Format the response
+    const formattedResponse = {
+      tour_packets: tourPacketDetails,
+      tour_images: tourImages,
+      reviews: reviews,
+      tour_facilities: tourFacilities,
+      culinary_facilities: culinaryFacilities,
+      lodging_facilities: lodgingFacilities,
+    };
 
     res.status(200).json({
       success: true,
       message: "Success",
-      data: formattedAllTourPacketsDetails,
+      data: formattedResponse,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
-    throw new Error("Eror saat mengambil semua data paket wisata!");
+    throw new Error("Error fetching tour packet details!");
   }
 });
 
@@ -564,7 +638,7 @@ const updateImages = asyncHandler(async (req, res) => {
     if (allImages.every((data) => data.length > 0)) {
       return res.json({
         success: true,
-        message: "Gambar fasilitas paket wisata diperbarui!",
+        message: "Gambar paket wisata diperbarui!",
       });
     } else {
       // Rollback: Delete all newly uploaded images

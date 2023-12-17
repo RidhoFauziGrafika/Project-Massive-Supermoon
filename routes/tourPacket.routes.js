@@ -39,7 +39,7 @@ Router.put("/inn-facilities", updateLodgingFacilities);
 Router.post("/culinary-facilities", addCulinaryFacility);
 Router.put("/culinary-facilities", updateCulinaryFacilities);
 
-Router.post("/image", [upload.array("images", 5), uploadImages]); // for uploading new image get id from json
-Router.put("/image", updateImages); // replace image get id from json
+Router.post("/image", [upload.array("images", 6), uploadImages]); // for uploading new image get id from json
+Router.put("/image", [upload.array("images", 6), updateImages]); // replace image get id from json
 
 module.exports = Router;
