@@ -165,7 +165,7 @@ function App() {
               element={<BuatPaketWisata />}
             />
             <Route
-              path="/dashboard/paket-wisata/edit/:id"
+              path="/dashboard/paket-wisata/edit/:slug"
               element={<EditPaketWisata />}
             />
             {/* <Route

@@ -1,15 +1,53 @@
-const Router = require("express").Router();
+const express = require("express");
+const multer = require("multer");
+const culinaryController = require("../controllers/culinary.controller");
 
-app.get("/"); // get data before creating culinary
-app.post("/"); // save data
-app.get("/:slug"); // get culinary's slug for getting infos
-app.put("/:slug"); // for updating culinary information
-app.delete("/:slug"); // for soft delete culinary
+const router = express.Router();
+const upload = multer(/* your multer setup */);
 
-// For handling user culinary image
-app.get("/image"); // get information about image
-app.post("/image"); // for uploading new image
-app.put("/image"); // replace image
-app.delete("/image"); // for deleting image
+// Routes for Culinary Controller
 
-module.exports = Router;
+// Create Culinary
+router.post("/culinaries", culinaryController.createCulinary);
+
+// Update Culinary
+router.put("/culinaries/:id", culinaryController.updateCulinary);
+
+// Delete Culinary
+router.delete("/culinaries/:id", culinaryController.deleteCulinary);
+
+// Get All Culinaries
+router.get("/culinaries", culinaryController.getAllCulinaries);
+
+// Get One Culinary
+router.get("/culinaries/:id", culinaryController.getOneCulinary);
+
+// Upload Culinary Images
+router.post(
+  "/culinaries/images",
+  upload.array("images", 6),
+  culinaryController.uploadCulinaryImages
+);
+
+// Update Culinary Images
+router.put(
+  "/culinaries/:id/images",
+  upload.array("images", 6),
+  culinaryController.updateImages
+);
+
+// Get All Facilities
+router.get("/facilities", culinaryController.getAllFacilities);
+
+// Add Culinary Facility
+router.post("/culinaries/facilities", culinaryController.addCulinaryFacility);
+
+// Update Culinary Facility
+router.put(
+  "/culinaries/:id/facilities",
+  culinaryController.updateCulinaryFacility
+);
+
+// Add more routes as needed...
+
+module.exports = router;

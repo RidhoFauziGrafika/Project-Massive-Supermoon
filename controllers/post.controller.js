@@ -144,13 +144,6 @@ const deleteOne = asyncHandler(async (req, res) => {
   }
 });
 
-function generateSlug(str) {
-  return str
-    .toLowerCase()
-    .replace(/[^\w\s]/gi, "")
-    .replace(/\s+/g, "-");
-}
-
 module.exports = {
   createOne,
   getAll,

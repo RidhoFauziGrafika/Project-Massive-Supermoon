@@ -17,9 +17,11 @@ const createOrder = asyncHandler(async (req, res) => {
       price,
       tax,
       total,
-      img_path,
       order_status_id,
     } = req.body;
+
+    // Handle image upload using Multer
+    const imgPath = req.file ? req.file.path : null;
 
     const result = await db.query(
       "INSERT INTO orders (id_uuid, tour_packet_id, user_id, bank_id, name, email, phone_number, bank_name, account_number, cardholder_name, price, tax, total, img_path, order_status_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
@@ -37,7 +39,7 @@ const createOrder = asyncHandler(async (req, res) => {
         price,
         tax,
         total,
-        img_path,
+        imgPath, // Use the Multer-uploaded image path
         order_status_id,
       ]
     );
@@ -50,11 +52,17 @@ const createOrder = asyncHandler(async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Order has been created",
+      message: "Pembelian Berhasil!",
       data: newOrder[0],
     });
   } catch (error) {
     console.error(error);
+
+    // Delete the uploaded image if there is an error
+    if (req.file) {
+      await fs.unlink(req.file.path);
+    }
+
     res.status(500).json({ message: "Internal Server Error" });
     throw new Error("Failed to create order");
   }

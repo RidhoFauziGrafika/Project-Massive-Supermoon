@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
@@ -7,8 +7,43 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Navbar from "../../../../components/Navbar/Navbar";
 import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import Footer from "../../../../components/Footer/Footer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const IndexPaketWisata = () => {
+  const [tourPackets, setTourPackets] = useState([]);
+
+  useEffect(() => {
+    const fetchTourPackets = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/tour-packets"
+        );
+        console.log(response?.data);
+        setTourPackets(response.data.data.tour_packets);
+      } catch (error) {
+        console.error("Error fetching tour packets:", error);
+      }
+    };
+
+    fetchTourPackets();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/tour-packets/delete/${id}`
+      );
+      toast.success(response.data.message);
+      // Update the state to reflect the changes
+      setTourPackets(tourPackets.filter((packet) => packet.id !== id));
+    } catch (error) {
+      console.error("Error deleting tour packet:", error);
+      toast.error("Error deleting tour packet!");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -49,17 +84,17 @@ const IndexPaketWisata = () => {
                   <form>
                     <input
                       type="text"
-                      placeholder="Cari Pengguna"
+                      placeholder="Cari"
                       className="w-full px-4 py-2 rounded-lg border border-neutral-60 "
                     />
                   </form>
                 </div>
               </div>
               <div className="w-full  overflow-x-auto">
-                <table className="min-w-full border-collapse border border-neutral-50  rounded-lg">
+                <table className="min-w-full border-collapse border border-neutral-50 rounded-lg">
                   <thead className="bg-primary-main divide-y-1 divide-x-2">
                     <tr>
-                      <th className="px-6 py-3 text-xs font-medium  tracking-wider text-center text-white uppercase border border-neutral-50">
+                      <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
                         No
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
@@ -73,32 +108,45 @@ const IndexPaketWisata = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg ">
-                    <tr>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
-                        1
-                      </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
-                        Paket Wisata 1
-                      </td>
-                      <td className="px-6 py-4 text-sm  border border-neutral-50">
-                        Paket wisata ini dibuat untuk memudahkan para wisatawan
-                        dalam merencanakan liburan di kabupaten kuningan. paket
-                        wisata ini terdiri dari kunjungan beberapa tempat
-                        wisata. Serta mendapatkan kuliner dan penginapan jika
-                        membeli paket wisata kuningan.
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
-                        <Link className="px-4 py-2 bg-[#0D6EFD] rounded-lg">
-                          <BiSolidPencil className="text-white" />
-                        </Link>
-                        <Link className="px-4 py-2 bg-[#FD3550] rounded-lg">
-                          <FaTrashCan className="text-white" />
-                        </Link>
-                      </td>
-                    </tr>
+                  <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg">
+                    {Array.isArray(tourPackets) && tourPackets.length > 0 ? (
+                      tourPackets.map((packet, index) => (
+                        <tr key={packet.id}>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
+                            {index + 1}
+                          </td>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
+                            {packet.title}
+                          </td>
+                          <td className="px-6 py-4 text-sm  border border-neutral-50">
+                            {packet.description}
+                          </td>
+                          <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
+                            <Link
+                              to={`/dashboard/paket-wisata/edit/${packet.slug}`}
+                              className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
+                            >
+                              <BiSolidPencil className="text-white" />
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(packet.id)}
+                              className="px-4 py-2 bg-[#FD3550] rounded-lg"
+                            >
+                              <FaTrashCan className="text-white" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="text-center py-4">
+                          Tidak ada paket wisata.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
+
                 <nav aria-label="Page navigation example" className="mt-3">
                   <ul className="inline-flex -space-x-px text-sm gap-3">
                     <li>

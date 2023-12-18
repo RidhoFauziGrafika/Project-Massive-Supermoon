@@ -1,15 +1,34 @@
-const Router = require("express").Router();
+const express = require("express");
+const router = express.Router();
+const multer = require("../config/multer");
+const {
+  createLodging,
+  updateLodging,
+  deleteLodging,
+  getAllLodgings,
+  getOneLodging,
+  uploadLodgingImages,
+  updateLodgingImages,
+  getAllFacilities,
+  addLodgingFacility,
+  updateLodgingFacility,
+} = require("../controllers/lodging.controller");
 
-app.get("/"); // get data before creating lodging
-app.post("/"); // save data
-app.get("/:slug"); // get lodging's slug for getting infos
-app.put("/:slug"); // for updating lodging information
-app.delete("/:slug"); // for soft delete lodging
+// Middleware to handle image upload using Multer
+const uploadLodgingImagesMiddleware = multer.array("images", 6);
 
-// For handling user lodging image
-app.get("/image"); // get information about image
-app.post("/image"); // for uploading new image
-app.put("/image"); // replace image
-app.delete("/image"); // for deleting image
+// Routes
+router.post("/", createLodging);
+router.put("/:id", updateLodging);
+router.delete("/:id", deleteLodging);
+router.get("/", getAllLodgings);
+router.get("/:id", getOneLodging);
 
-module.exports = Router;
+router.post("/:id/images", uploadLodgingImagesMiddleware, uploadLodgingImages);
+router.put("/:id/images", uploadLodgingImagesMiddleware, updateLodgingImages);
+
+router.get("/facilities", getAllFacilities);
+router.post("/:id/facilities", addLodgingFacility);
+router.put("/:id/facilities", updateLodgingFacility);
+
+module.exports = router;

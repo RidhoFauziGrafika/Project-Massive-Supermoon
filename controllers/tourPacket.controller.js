@@ -32,12 +32,12 @@ const createTourPacket = asyncHandler(async (req, res) => {
 
   console.log(parseInt(price[1]));
   try {
-    const checkslug = await db.query(
+    const [rows] = await db.query(
       "SELECT slug FROM tour_packets where slug = ?",
       [slug]
     );
 
-    if (checkslug.length > 1) {
+    if (rows.length > 1) {
       return res.status(400).json({
         success: false,
         message: "Slug sudah dipakai, silahkan ganti!",
@@ -65,14 +65,6 @@ const createTourPacket = asyncHandler(async (req, res) => {
       ]
     );
 
-    if (!data.length > 0) {
-      res.json({
-        success: false,
-        message: "Paket wisata gagal dibuat!",
-        data: "",
-      });
-    }
-
     res.json({
       success: true,
       message: "Paket wisata telah dibuat!",
@@ -83,10 +75,17 @@ const createTourPacket = asyncHandler(async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error!" });
     throw new Error("Error saat menyimpan data paket wisata!");
   }
-  res.json({ success: true, message: "Ok" });
 });
 
 const updateTourPacket = asyncHandler(async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({
+      success: false,
+      message: "Tidak ada ID",
+    });
+  }
+
+  // return console.log(req.body);
   const {
     title,
     slug,
@@ -118,6 +117,9 @@ const updateTourPacket = asyncHandler(async (req, res) => {
       });
     }
 
+    // Parse the price value only if it exists and is in the expected format
+    const parsedPrice = Array.isArray(price) ? parseInt(price[1]) : null;
+
     // Update the tour packet based on the provided ID
     const newDatetime = toDatetime(Date.now());
     const data = await query(
@@ -139,7 +141,7 @@ const updateTourPacket = asyncHandler(async (req, res) => {
       [
         title,
         formatSlug,
-        parseInt(price[1]),
+        parsedPrice, // Use the parsed price here
         address,
         address_link,
         description,
@@ -281,7 +283,7 @@ WHERE
     const tourFacilities = await query(
       `
       SELECT
-        tf.facility_id, tf.name
+        tptf.facility_id, tf.name
       FROM
         tour_packets_tour_facilities tptf
       JOIN
@@ -296,7 +298,7 @@ WHERE
     const culinaryFacilities = await query(
       `
       SELECT
-        cf.facility_id, cf.name
+        tpcf.facility_id, cf.name
       FROM
         tour_packets_culinary_facilities tpcf
       JOIN
@@ -311,7 +313,7 @@ WHERE
     const lodgingFacilities = await query(
       `
       SELECT
-        lf.facility_id, lf.name
+        tplf.facility_id, lf.name
       FROM
         tour_packets_lodging_facilities tplf
       JOIN
@@ -340,6 +342,150 @@ WHERE
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
+    throw new Error("Error fetching tour packet details!");
+  }
+});
+
+const getOneTourPacketBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+
+  try {
+    // Fetch tour packet details by slug
+    const tourPacketDetails = await query(
+      `
+     SELECT
+  tp.id,
+  tp.title,
+  tp.slug,
+  tp.price,
+  tp.address,
+  tp.address_link,
+  tp.description,
+  tp.tour_description,
+  tp.tour_link,
+  tp.culinary_description,
+  tp.culinary_link,
+  tp.lodging_description,
+  tp.lodging_link,
+  tp.created_at,
+  COALESCE(AVG(tpr.rating), 0) AS average_rating
+FROM
+  tour_packets tp
+LEFT JOIN
+  tour_packet_has_reviews tpr ON tp.id = tpr.tour_packet_id AND tpr.is_deleted = FALSE
+WHERE
+  tp.slug = ? AND tp.is_deleted = FALSE;
+
+      `,
+      [slug]
+    );
+
+    if (!tourPacketDetails[0]) {
+      return res.status(404).json({
+        success: false,
+        message: "Tour packet not found or has been deleted!",
+      });
+    }
+
+    // Fetch tour images
+    const tourImages = await query(
+      `
+      SELECT
+        id,
+        id_uuid,
+        tour_packet_id,
+        img_path,
+        created_at,
+        updated_at
+      FROM
+        tour_packets_images
+      WHERE
+        tour_packet_id = ? AND is_deleted = FALSE;
+      `,
+      [tourPacketDetails[0].id]
+    );
+
+    // Fetch reviews
+    const reviews = await query(
+      `
+      SELECT
+  tpr.rating,
+  tpr.content,
+  u.fullname
+FROM
+  tour_packet_has_reviews tpr
+JOIN
+  users u ON tpr.user_id = u.id
+WHERE
+  tpr.tour_packet_id = ? AND tpr.is_deleted = FALSE;
+
+    `,
+      [tourPacketDetails[0].id]
+    );
+
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        tptf.facility_id, tf.name
+      FROM
+        tour_packets_tour_facilities tptf
+      JOIN
+        facilities tf ON tptf.facility_id = tf.id
+      WHERE
+        tptf.tour_packet_id = ? AND tptf.is_deleted = FALSE;
+    `,
+      [tourPacketDetails[0].id]
+    );
+
+    // Fetch culinary facilities
+    const culinaryFacilities = await query(
+      `
+      SELECT
+        tpcf.facility_id, cf.name
+      FROM
+        tour_packets_culinary_facilities tpcf
+      JOIN
+        facilities cf ON tpcf.facility_id = cf.id
+      WHERE
+        tpcf.tour_packet_id = ? AND tpcf.is_deleted = FALSE;
+    `,
+      [tourPacketDetails[0].id]
+    );
+
+    // Fetch lodging facilities
+    const lodgingFacilities = await query(
+      `
+      SELECT
+        tplf.facility_id, lf.name
+      FROM
+        tour_packets_lodging_facilities tplf
+      JOIN
+        facilities lf ON tplf.facility_id = lf.id
+      WHERE
+        tplf.tour_packet_id = ? AND tplf.is_deleted = FALSE;
+    `,
+      [tourPacketDetails[0].id]
+    );
+
+    // Format the response
+    const formattedResponse = {
+      tour_packet: tourPacketDetails[0],
+      tour_images: tourImages,
+      tour_facilities: tourFacilities,
+      culinary_facilities: culinaryFacilities,
+      lodging_facilities: lodgingFacilities,
+      reviews: reviews,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: formattedResponse,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
     throw new Error("Error fetching tour packet details!");
   }
 });
@@ -415,22 +561,22 @@ WHERE
     // Fetch tour facilities
     const tourFacilities = await query(
       `
-      SELECT
-        tf.tour_packet_id, tf.name
-      FROM
-        tour_packets_tour_facilities tptf
-      JOIN
-        facilities tf ON tptf.facility_id = tf.id
-      WHERE
-       tptf.is_deleted = FALSE
-    `
+        SELECT
+          tptf.tour_packet_id, tf.name
+        FROM
+          tour_packets_tour_facilities tptf
+        JOIN
+          facilities tf ON tptf.facility_id = tf.id
+        WHERE
+          tptf.is_deleted = FALSE;
+      `
     );
 
     // Fetch culinary facilities
     const culinaryFacilities = await query(
       `
       SELECT
-        cf.tour_packet_id, cf.name
+        tpcf.tour_packet_id, cf.name
       FROM
         tour_packets_culinary_facilities tpcf
       JOIN
@@ -444,7 +590,7 @@ WHERE
     const lodgingFacilities = await query(
       `
       SELECT
-        lf.tour_packet_id, lf.name
+        tplf.tour_packet_id, lf.name
       FROM
         tour_packets_lodging_facilities tplf
       JOIN
@@ -495,7 +641,7 @@ const uploadImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -505,7 +651,7 @@ const uploadImages = asyncHandler(async (req, res) => {
 
     // Access the file details using req.files
     const imagePaths = req.files.map((file) =>
-      path.join(__dirname, "public", `/${file.filename}`)
+      path.join("/storage", `/${file.filename}`)
     );
 
     // Your logic to save data in the database
@@ -580,7 +726,7 @@ const uploadImages = asyncHandler(async (req, res) => {
 
 const updateImages = asyncHandler(async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -609,7 +755,10 @@ const updateImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files;
+    const newImagePaths = req.files.map((file) =>
+      path.join("/storage", `/${file.filename}`)
+    );
+
     // delete old images from db
     await query(`DELETE FROM tour_packets_images WHERE tour_packet_id = ?`, [
       id,
@@ -1030,4 +1179,5 @@ module.exports = {
   addLodgingFacility,
   updateLodgingFacilities,
   getAllFacilities,
+  getOneTourPacketBySlug,
 };

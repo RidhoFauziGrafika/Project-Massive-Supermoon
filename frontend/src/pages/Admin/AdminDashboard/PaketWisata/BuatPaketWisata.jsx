@@ -9,6 +9,7 @@ import axios from "axios";
 
 const BuatPaketWisata = () => {
   const navigate = useNavigate();
+  // menyimpan form data
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -24,11 +25,13 @@ const BuatPaketWisata = () => {
     lodging_link: "",
   });
 
+  // menangani perubahan data di form input
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // simpan ke server/ aksi ke server put post get delete
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,7 +65,7 @@ const BuatPaketWisata = () => {
               <div className="w-full">
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Form Tambah Paket Wisata
+                    Tambah Paket Wisata
                   </h6>
                 </div>
 

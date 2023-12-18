@@ -1,7 +1,20 @@
 const Router = require("express").Router();
+const {
+  createOrder,
+  getOrderById,
+  getAllPaymentsByUserId,
+  getAllPayments,
+  updateOrderStatus,
+  getAllOrderStatuses,
+} = require("../controllers/payment.controller");
+const upload = require("../config/multer");
+const uploadMiddleware = upload.single("image");
 
-app.get("/"); // get user data payments
-app.get("/:uuid"); // get user's uuid for getting user informations
-app.post("/:uuid"); // save payment data
+Router.post("/", uploadMiddleware, createOrder);
+Router.get("/:id", getOrderById);
+Router.get("/user/:userId", getAllPaymentsByUserId);
+Router.get("/", getAllPayments);
+Router.put("/:orderId/update-status", updateOrderStatus);
+Router.get("/order-statuses", getAllOrderStatuses);
 
 module.exports = Router;
