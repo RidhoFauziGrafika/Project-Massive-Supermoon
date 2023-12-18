@@ -1,7 +1,7 @@
 import Navbar from "../../../../components/Navbar/Navbar";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import Facility from "../../../../components/Facility/Facility";
+import Facility from "../../../../components/Facility/FacilityList";
 import { FaParking } from "react-icons/fa";
 
 export default function DetilPaketWisata() {

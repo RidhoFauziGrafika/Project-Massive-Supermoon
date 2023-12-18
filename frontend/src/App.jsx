@@ -41,8 +41,7 @@ import RequireAuth from "./middleware/RequireAuth";
 import PublicRoute from "./middleware/PublicRoute";
 import useAuth from "./hooks/useAuth";
 
-import IndexPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/BuatPaketWisata";
-import DetilPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/DetilPaketWisata";
+import IndexPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/IndexPaketWisata";
 import EditPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/EditPaketWisata";
 import BuatPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/BuatPaketWisata";
 
@@ -63,35 +62,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* PUBLIC ROUTES */}
-          <Route path="/" element={<Beranda />} />
-          {/* <Route path="/authBeranda" element={<AuthBeranda />} /> */}
-          <Route
-            path="/login"
-            element={<PublicRoute element={<Login />} redirectTo="/" />}
-          />
-          <Route
-            path="/register"
-            element={<PublicRoute element={<Register />} redirectTo="/" />}
-          />
-          {/* STATIC */}
-          <Route path="/kontak" element={<Kontak />} />
-          <Route path="/tentangkami" element={<TentangKami />} />
-
-          {/* DYNAMIC */}
-          {/* BLOG */}
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/detil/:slug" element={<DetailBlog />} />
-          {/* PAKET WISATA */}
-          <Route path="/paket-wisata" element={<PaketWisata />} />
-          <Route path="/paket-wisata/detil/:id" element={<DetailPaket />} />
-          {/* WISATA */}
-          <Route path="/wisata" element={<Wisata />} />
-          <Route path="/wisata/detail-wisata" element={<DetailWisata />} />
-          {/* DETIL PENGINAPAN/KULINER */}
-          <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} />
-          <Route path="/detail-kuliner/:id" element={<DetailKuliner />} />
-          {/* CLIENT ROUTE */}
+          {/* CLIENT ROUTE OLD */}
           {/* <Route
             element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.ADMIN]} />}
           >
@@ -105,7 +76,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} /> // buy tour packet
             form
           </Route>
-          // ADMIN ONLY
+          // ADMIN ONLY OLD
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
             <Route
               path="/dashboard/kelolaArtikel"
@@ -153,10 +124,39 @@ function App() {
               element={<DetailPembayaran />}
             />
           </Route> */}
+
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<Beranda />} />
+          <Route
+            path="/login"
+            element={<PublicRoute element={<Login />} redirectTo="/" />}
+          />
+          <Route
+            path="/register"
+            element={<PublicRoute element={<Register />} redirectTo="/" />}
+          />
+          {/* STATIC */}
+          <Route path="/kontak" element={<Kontak />} />
+          <Route path="/tentangkami" element={<TentangKami />} />
+
+          {/* DYNAMIC */}
+          {/* BLOG */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/detil/:slug" element={<DetailBlog />} />
+          {/* PAKET WISATA */}
+          <Route path="/paket-wisata" element={<PaketWisata />} />
+          <Route path="/paket-wisata/detil/:id" element={<DetailPaket />} />
+          {/* WISATA */}
+          <Route path="/wisata" element={<Wisata />} />
+          <Route path="/wisata/detail-wisata" element={<DetailWisata />} />
+          {/* DETIL PENGINAPAN/KULINER */}
+          <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} />
+          <Route path="/detail-kuliner/:id" element={<DetailKuliner />} />
+
           {/* DAHSBOARD ADMIN */}
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
             {/* PAKET WISATA */}
-            {/* <Route
+            <Route
               path="/dashboard/paket-wisata"
               element={<IndexPaketWisata />}
             />
@@ -168,9 +168,9 @@ function App() {
               path="/dashboard/paket-wisata/edit/:id"
               element={<EditPaketWisata />}
             />
-            <Route
+            {/* <Route
               path="/dashboard/paket-wisata/detil/:id"
-              element={<EditPaketWisata />}
+              element={<DetilPaketWisata />}
             /> */}
             {/* END PAKET WISATA */}
             {/* WISATA */}
@@ -204,9 +204,9 @@ function App() {
             {/* <Route path="/dashboard/penginapan/detil" element={<DetilWisataPenginapan />} /> */}
             {/* END PENGINAPAN */}
             {/* BLOG */}
-            <Route path="/dashboard/blog" element={<IndexBlog />} />
+            {/* <Route path="/dashboard/blog" element={<IndexBlog />} />
             <Route path="/dashboard/blog/baru" element={<BuatBlog />} />
-            <Route path="/dashboard/blog/edit/:id" element={<EditBlog />} /> */
+            <Route path="/dashboard/blog/edit/:id" element={<EditBlog />} /> */}
             {/* END BLOG */}
             {/* USER */}
             {/* <Route path="/dashboard/user" element={<IndexUser />} />

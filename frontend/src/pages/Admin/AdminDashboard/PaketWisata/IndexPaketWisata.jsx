@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import Navbar from "../../../../components/Navbar/Navbar";
+import React from "react";
 import { Link } from "react-router-dom";
-import Footer from "../../../../components/Footer/Footer";
 import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Navbar from "../../../../components/Navbar/Navbar";
 import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
+import Footer from "../../../../components/Footer/Footer";
 
-export default function IndexPaketWista() {
-  const [tourPackets, setTourPackets] = useState([]);
-
+const IndexPaketWisata = () => {
   return (
     <>
       <Navbar />
@@ -24,7 +22,7 @@ export default function IndexPaketWista() {
                   Kelola Paket Wisata
                 </h1>
                 <Link
-                  to="/dashboard/formPaketWisata"
+                  to="/dashboard/paket-wisata/baru"
                   className="w-fit lg:px-4 lg:py-2 px-3 py-2 bg-primary-main rounded-lg text-white lg:text-base text-xs flex gap-3 items-center"
                 >
                   <FaPlus className="lg:w-5 lg:h-5 w-3 h-3" />
@@ -155,4 +153,6 @@ export default function IndexPaketWista() {
       <Footer />
     </>
   );
-}
+};
+
+export default IndexPaketWisata;
