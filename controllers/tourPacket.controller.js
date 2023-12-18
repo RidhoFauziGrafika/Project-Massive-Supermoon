@@ -609,9 +609,11 @@ const updateImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files.map((file) =>
-      path.join(__dirname, "public", `/${file.filename}`)
-    );
+    const newImagePaths = req.files;
+    // delete old images from db
+    await query(`DELETE FROM tour_packets_images WHERE tour_packet_id = ?`, [
+      id,
+    ]);
 
     // Your logic to save data in the database
     const allImages = await Promise.all(
@@ -630,10 +632,6 @@ const updateImages = asyncHandler(async (req, res) => {
         }
       })
     );
-
-    await query(`DELETE FROM tour_packets_images WHERE tour_packet_id = ?`, [
-      id,
-    ]);
 
     if (allImages.every((data) => data.length > 0)) {
       return res.json({
