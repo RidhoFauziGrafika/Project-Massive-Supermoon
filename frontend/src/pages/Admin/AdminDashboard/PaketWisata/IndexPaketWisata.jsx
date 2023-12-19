@@ -10,9 +10,12 @@ import Footer from "../../../../components/Footer/Footer";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Modal from "react-modal";
 
 const IndexPaketWisata = () => {
   const [tourPackets, setTourPackets] = useState([]);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [packetToDelete, setPacketToDelete] = useState(null);
 
   useEffect(() => {
     const fetchTourPackets = async () => {
@@ -30,22 +33,75 @@ const IndexPaketWisata = () => {
     fetchTourPackets();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/tour-packets/delete/${id}`
+        `http://localhost:8000/api/tour-packets/delete/${packetToDelete}`
       );
       toast.success(response.data.message);
       // Update the state to reflect the changes
-      setTourPackets(tourPackets.filter((packet) => packet.id !== id));
+      setTourPackets(
+        tourPackets.filter((packet) => packet.id !== packetToDelete)
+      );
+      closeDeleteModal(); // Close the modal after deletion
     } catch (error) {
       console.error("Error deleting tour packet:", error);
       toast.error("Error deleting tour packet!");
     }
   };
 
+  const openDeleteModal = (id) => {
+    setPacketToDelete(id);
+    setDeleteModalIsOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setPacketToDelete(null);
+    setDeleteModalIsOpen(false);
+  };
+
   return (
     <>
+      <Modal
+        isOpen={deleteModalIsOpen}
+        onRequestClose={closeDeleteModal}
+        contentLabel="Delete Confirmation"
+        className="modal"
+        // overlayClassName="overlay"
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 99999999999999999,
+        }}
+      >
+        <div
+          className="p-8 bg-primary-main surface rounded-lg"
+          style={{
+            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h2 className="text-white">Confirmation</h2>
+          <p className="text-white">
+            Are you sure you want to delete this tour packet?
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 bg-secondary-main rounded-lg"
+            >
+              Yes
+            </button>
+            <button
+              onClick={closeDeleteModal}
+              className="px-4 py-2 bg-neutral-50 text-neutral-100 rounded-lg"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
       <Navbar />
       <div className="font-productSans bg-[#F7F7FF] flex flex-row">
         <SidebarAdmin />
@@ -129,11 +185,17 @@ const IndexPaketWisata = () => {
                               <BiSolidPencil className="text-white" />
                             </Link>
                             <button
-                              onClick={() => handleDelete(packet.id)}
+                              onClick={() => openDeleteModal(packet.id)}
                               className="px-4 py-2 bg-[#FD3550] rounded-lg"
                             >
                               <FaTrashCan className="text-white" />
                             </button>
+                            {/* <button
+                              onClick={() => handleDelete(packet.id)}
+                              className="px-4 py-2 bg-[#FD3550] rounded-lg"
+                            >
+                              <FaTrashCan className="text-white" />
+                            </button> */}
                           </td>
                         </tr>
                       ))

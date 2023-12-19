@@ -42,9 +42,9 @@ const SidebarAdmin = () => {
           <ul className="mt-10">
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaArtikel"
+                to="/dashboard/artikel"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaArtikel"
+                  url === "/dashboard/artikel"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -55,9 +55,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaPengguna"
+                to="/dashboard/pengguna"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaPengguna"
+                  url === "/dashboard/pengguna"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -68,9 +68,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaWisata"
+                to="/dashboard/wisata"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaWisata"
+                  url === "/dashboard/wisata"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -81,7 +81,7 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaPaketWisata"
+                to="/dashboard/paket-wisata"
                 className={`flex items-center gap-5 ${
                   url === "/dashboard/kelolaPaketWisata"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
@@ -96,9 +96,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaPenginapan"
+                to="/dashboard/penginapan"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaPenginapan"
+                  url === "/dashboard/penginapan"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -111,9 +111,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaKuliner"
+                to="/dashboard/kuliner"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaKuliner"
+                  url === "/dashboard/kuliner"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -124,7 +124,7 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaKomentar"
+                to="/dashboard/komentar"
                 className={`flex items-center gap-5 ${
                   url === "/dashboard/kelolaKomentar"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
@@ -137,9 +137,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/kelolaPembayaran"
+                to="/dashboard/transaksi"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/kelolaPembayaran"
+                  url === "/dashboard/transaksi"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}

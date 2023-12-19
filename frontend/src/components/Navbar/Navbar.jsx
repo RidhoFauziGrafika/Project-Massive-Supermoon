@@ -9,13 +9,15 @@ import useAuth from "../../hooks/useAuth"; // Import useAuth hook
 import logout from "../../services/LogOutService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ROLES } from "../../constants";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
-
+  const ADMIN = auth.roles.includes(ROLES.ADMIN);
+  const CLIENT = auth.roles.includes(ROLES.CLIENT);
   const handleLogout = () => {
     logout();
     setAuth({});
@@ -124,12 +126,26 @@ const Navbar = () => {
               {isOpen && (
                 <div className="bg-neutral-30 lg:absolute lg:top-20 rounded-lg lg:w-80 max-w-full overflow-hidden px-4 py-2 z-50 lg:right-10">
                   <div className="flex flex-col">
-                    <Link
-                      to="/profile"
-                      className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
-                    >
-                      Profile Saya
-                    </Link>
+                    {ADMIN && (
+                      <>
+                        <Link
+                          to="/dashboard"
+                          className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
+                        >
+                          Dashboard
+                        </Link>
+                      </>
+                    )}
+                    {CLIENT && (
+                      <>
+                        <Link
+                          to="/profile"
+                          className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
+                        >
+                          Profile Saya
+                        </Link>
+                      </>
+                    )}
                     <hr className="border-neutral-10" />
                     <button
                       to="/"

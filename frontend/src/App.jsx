@@ -44,6 +44,7 @@ import useAuth from "./hooks/useAuth";
 import IndexPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/IndexPaketWisata";
 import EditPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/EditPaketWisata";
 import BuatPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/BuatPaketWisata";
+import DetilPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/DetilPaketWisata";
 
 import IndexBlog from "./pages/Admin/AdminDashboard/Blog/IndexBlog";
 import BuatBlog from "./pages/Admin/AdminDashboard/Blog/BuatBlog";
@@ -55,76 +56,10 @@ const ROLES = {
 };
 
 function App() {
-  // const { Auth } = useAuth;
-
-  // console.log(Auth.roles);
   return (
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* CLIENT ROUTE OLD */}
-          {/* <Route
-            element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.ADMIN]} />}
-          >
-            <Route path="/profile" element={<Profile />} /> // view client
-            dashboard
-            <Route path="/riwayat" element={<Riwayat />} /> // view payment
-            histories
-            <Route path="/order" element={<Order />} /> // view detail payment
-            <Route path="/pengaturan" element={<Setting />} /> // change account
-            setting
-            <Route path="/checkout" element={<Checkout />} /> // buy tour packet
-            form
-          </Route>
-          // ADMIN ONLY OLD
-          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
-            <Route
-              path="/dashboard/kelolaArtikel"
-              element={<KelolaArtikel />}
-            />
-            <Route path="/dashboard/formArtikel" element={<FormArtikel />} />
-            <Route
-              path="/dashboard/kelolaPengguna"
-              element={<KelolaPengguna />}
-            />
-            <Route path="/dashboard/formEditUser" element={<FormEditUser />} />
-            <Route path="/dashboard/kelolaWisata" element={<KelolaWisata />} />
-            <Route path="/dashboard/formWisata" element={<FormWisata />} />
-            <Route
-              path="/dashboard/kelolaPaketWisata"
-              element={<KelolaPaketWisata />}
-            />
-            <Route
-              path="/dashboard/formPaketWisata"
-              element={<FormPaketWisata />}
-            />
-            <Route
-              path="/dashboard/kelolaPenginapan"
-              element={<KelolaPenginapan />}
-            />
-            <Route
-              path="/dashboard/formPenginapan"
-              element={<FormPenginapan />}
-            />
-            <Route
-              path="/dashboard/kelolaKuliner"
-              element={<KelolaKuliner />}
-            />
-            <Route path="/dashboard/formKuliner" element={<FormKuliner />} />
-            <Route
-              path="/dashboard/kelolaKomentar"
-              element={<KelolaKomentar />}
-            />
-            <Route
-              path="/dashboard/kelolaPembayaran"
-              element={<KelolaPembayaran />}
-            />
-            <Route
-              path="/dashboard/detailPembayaran"
-              element={<DetailPembayaran />}
-            />
-          </Route> */}
-
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Beranda />} />
           <Route
@@ -145,7 +80,10 @@ function App() {
           <Route path="/blog/detil/:slug" element={<DetailBlog />} />
           {/* PAKET WISATA */}
           <Route path="/paket-wisata" element={<PaketWisata />} />
-          <Route path="/paket-wisata/detil/:id" element={<DetailPaket />} />
+          <Route
+            path="/dashboard/paket-wisata/detil/:slug"
+            element={<DetilPaketWisata />}
+          />
           {/* WISATA */}
           <Route path="/wisata" element={<Wisata />} />
           <Route path="/wisata/detail-wisata" element={<DetailWisata />} />
@@ -168,10 +106,7 @@ function App() {
               path="/dashboard/paket-wisata/edit/:slug"
               element={<EditPaketWisata />}
             />
-            {/* <Route
-              path="/dashboard/paket-wisata/detil/:id"
-              element={<DetilPaketWisata />}
-            /> */}
+
             {/* END PAKET WISATA */}
             {/* WISATA */}
             {/* <Route path="/dashboard/wisata" element={<IndexWisata />} />

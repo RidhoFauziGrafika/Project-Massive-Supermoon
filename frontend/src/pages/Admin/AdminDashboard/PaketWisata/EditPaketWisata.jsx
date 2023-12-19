@@ -233,11 +233,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUploadTourFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUploadFacilitiesTour.map((option) => option.value);
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.post(
         `http://localhost:8000/api/tour-packets/tour-facilities/${id}`,
-        selectedUploadFacilitiesTour
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas wisata ditambahkan!");
@@ -255,11 +256,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUpdateTourFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUpdateFacilitiesTour.map((option) => option.value);
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.put(
         `http://localhost:8000/api/tour-packets/tour-facilities/${id}`,
-        selectedUpdateFacilitiesTour
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas wisata diubah!");
@@ -277,11 +279,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUploadCulinaryFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUploadFacilitiesCulinary.map((option) => option.value);
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.post(
         `http://localhost:8000/api/tour-packets/culinary-facilities/${id}`,
-        selectedUploadFacilitiesCulinary
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas kuliner ditambahkan!");
@@ -299,11 +302,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUpdateCulinaryFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUpdateFacilitiesCulinary.map((option) => option.value);
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.put(
         `http://localhost:8000/api/tour-packets/culinary-facilities/${id}`,
-        selectedUpdateFacilitiesCulinary
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas kuliner diubah!");
@@ -321,11 +325,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUploadLodgingFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUploadFacilitiesLodging.map((option) => option.value);
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.post(
         `http://localhost:8000/api/tour-packets/lodging-facilities/${id}`,
-        selectedUploadFacilitiesLodging
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas penginapan ditambahkan!");
@@ -343,11 +348,12 @@ const EditPaketWisata = () => {
 
   const handleSubmitUpdateLodgingFacility = async (e) => {
     e.preventDefault();
-
+    const data = selectedUpdateFacilitiesLodging;
+    const DataFacilities = { facilities: data };
     try {
       const response = await axios.put(
         `http://localhost:8000/api/tour-packets/lodging-facilities/${id}`,
-        selectedUpdateFacilitiesLodging
+        DataFacilities
       );
       console.log(response?.data);
       toast.success("Fasilitas penginapan diubah!");
@@ -746,7 +752,7 @@ const EditPaketWisata = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Tambah Fasilitas Wisata
+                    Update Fasilitas Wisata
                   </h6>
                 </div>
                 <div className="px-4 py-6">
@@ -785,7 +791,7 @@ const EditPaketWisata = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Tambah Kuliner Wisata
+                    Tambah Fasilitas Kuliner
                   </h6>
                 </div>
                 <div className="px-4 py-6">
@@ -823,7 +829,7 @@ const EditPaketWisata = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Tambah Kuliner Wisata
+                    Update Fasilitas Kuliner
                   </h6>
                 </div>
                 <div className="px-4 py-6">
@@ -862,7 +868,7 @@ const EditPaketWisata = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Tambah Penginapan
+                    Tambah Fasilitas Penginapan
                   </h6>
                 </div>
                 <div className="px-4 py-6">
@@ -899,7 +905,7 @@ const EditPaketWisata = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Update Penginapan
+                    Update Fasilitas Penginapan
                   </h6>
                 </div>
                 <div className="px-4 py-6">

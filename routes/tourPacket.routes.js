@@ -27,7 +27,7 @@ Router.get("/", getAllTourPacket); //get retrive all data
 // Router.put("/update/:id", [validateTourPacket, updateTourPacket]); // for updating tour information get slug and id from json
 Router.put("/update/:id", [validateTourPacketUpdate, updateTourPacket]); // for updating tour information get slug and id from json
 Router.get("/slug/:slug", getOneTourPacketBySlug); //MUST PROVIDE JSON ID
-Router.delete("/", deleteTourPacket); // for soft delete tour get id from json
+Router.delete("/delete/:id", deleteTourPacket); // for soft delete tour get id from json
 
 Router.get("/facilities", getAllFacilities); // get all facilities for adding or updating wisata, penginapan, kuliner
 // Wisata
