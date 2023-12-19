@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";

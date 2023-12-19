@@ -153,6 +153,7 @@ const deleteLodging = asyncHandler(async (req, res) => {
       return res.json({
         success: false,
         message: "Penginapan tidak ditemukan!",
+        data: [],
       });
     }
 
@@ -289,7 +290,7 @@ const getOneLodging = asyncHandler(async (req, res) => {
     if (lodgingDetails.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Akomodasi not found or has been deleted!",
+        message: "Penginapan not found or has been deleted!",
       });
     }
 
@@ -366,8 +367,123 @@ const getOneLodging = asyncHandler(async (req, res) => {
   }
 });
 
+const getOneLodgingBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+
+  try {
+    const lodgingDetails = await query(
+      `
+      SELECT
+        l.id,
+        l.title,
+        l.slug,
+        l.categories,
+        l.price,
+        l.address,
+        l.address_link,
+        l.description,
+        l.ticket_operasional,
+        l.created_at,
+        l.updated_at,
+        COALESCE(AVG(lr.rating), 0) AS average_rating
+      FROM
+        lodgings l
+      LEFT JOIN
+        lodging_has_reviews lr ON l.id = lr.lodging_id AND lr.is_deleted = FALSE
+      WHERE
+        l.slug = ?
+        AND l.is_deleted = FALSE
+      GROUP BY
+        l.id;
+    `,
+      [slug]
+    );
+
+    if (lodgingDetails.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Penginapan not found or has been deleted!",
+      });
+    }
+
+    const lodgingImages = await query(
+      `
+      SELECT
+        id,
+        img_path
+      FROM
+        lodging_images
+      WHERE
+        lodging_id = ? AND is_deleted = FALSE;
+    `,
+      [lodgingDetails[0].id]
+    );
+
+    const lodgingFacilities = await query(
+      `
+      SELECT
+        lhf.facility_id, f.name
+      FROM
+        lodging_has_facilities lhf
+      JOIN
+        facilities f ON lhf.facility_id = f.id
+      WHERE
+        lhf.lodging_id = ? AND lhf.is_deleted = FALSE;
+    `,
+      [lodgingDetails[0].id]
+    );
+
+    const reviews = await query(
+      `
+      SELECT
+        lr.rating,
+        lr.content,
+        u.fullname
+      FROM
+        lodging_has_reviews lr
+      JOIN
+        users u ON lr.user_id = u.id
+      WHERE
+        lr.lodging_id = ? AND lr.is_deleted = FALSE;
+    `,
+      [lodgingDetails[0].id]
+    );
+
+    const formattedLodgingDetails = {
+      id: lodgingDetails[0].id,
+      title: lodgingDetails[0].title,
+      slug: lodgingDetails[0].slug,
+      categories: lodgingDetails[0].categories,
+      price: lodgingDetails[0].price,
+      address: lodgingDetails[0].address,
+      address_link: lodgingDetails[0].address_link,
+      description: lodgingDetails[0].description,
+      ticket_operasional: lodgingDetails[0].ticket_operasional,
+      created_at: lodgingDetails[0].created_at,
+      updated_at: lodgingDetails[0].updated_at,
+      average_rating: lodgingDetails[0].average_rating || 0,
+      images: lodgingImages,
+      facilities: lodgingFacilities,
+      reviews,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: formattedLodgingDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+    throw new Error("Failed to fetch lodging data!");
+  }
+});
+
 // IMAGE UPLOADS
 const uploadLodgingImages = asyncHandler(async (req, res) => {
+  let imagePaths;
+  const { id } = req.params;
+  console.log(req.files);
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
@@ -383,7 +499,6 @@ const uploadLodgingImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const { id } = req.body;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -391,7 +506,9 @@ const uploadLodgingImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const imagePaths = req.files;
+    imagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
 
     const allImages = await Promise.all(
       imagePaths.map(async (image) => {
@@ -462,7 +579,7 @@ const uploadLodgingImages = asyncHandler(async (req, res) => {
 
 const updateLodgingImages = asyncHandler(async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -491,7 +608,9 @@ const updateLodgingImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files;
+    const newImagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
 
     //  delete old images from db
     await query(`DELETE FROM lodging_images WHERE lodging_id = ?`, [id]);
@@ -591,7 +710,7 @@ const getAllFacilities = asyncHandler(async (req, res) => {
 const addLodgingFacility = asyncHandler(async (req, res) => {
   const { facilities } = req.body;
   const { id } = req.params;
-
+  console.log(req.body);
   if (
     !facilities ||
     !Array.isArray(facilities) ||
@@ -635,6 +754,8 @@ const addLodgingFacility = asyncHandler(async (req, res) => {
 });
 
 const updateLodgingFacility = asyncHandler(async (req, res) => {
+  console.log(req.body);
+
   const { facilities } = req.body;
   const { id } = req.params;
 
@@ -697,4 +818,5 @@ module.exports = {
   getAllFacilities,
   addLodgingFacility,
   updateLodgingFacility,
+  getOneLodgingBySlug,
 };

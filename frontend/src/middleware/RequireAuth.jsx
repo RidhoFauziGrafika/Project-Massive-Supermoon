@@ -6,9 +6,9 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  console.log("allowedRoles", allowedRoles || null);
-  console.log("userRoles", auth.roles || null);
-  console.log("user", auth || null);
+  // console.log("allowedRoles", allowedRoles || null);
+  // console.log("userRoles", auth.roles || null);
+  // console.log("user", auth || null);
 
   const hasAccess =
     auth?.roles &&

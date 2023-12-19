@@ -73,11 +73,14 @@ function App() {
           />
           {/* <Route path="/wisata/detail-wisata/:slug" element={<DetilWisata />} /> */}
           {/* DETIL PENGINAPAN/KULINER */}
-          {/* <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} /> */}
           <Route
-            path="/dashboard/penginapan/:id"
+            path="/dashboard/penginapan/detil/:slug"
             element={<DetilPenginapan />}
           />
+          {/* <Route
+            path="/dashboard/penginapan/:id"
+            element={<DetilPenginapan />}
+          /> */}
 
           {/* DAHSBOARD ADMIN */}
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
@@ -121,7 +124,7 @@ function App() {
               element={<BuatPenginapan />}
             />
             <Route
-              path="/dashboard/penginapan/edit/:id"
+              path="/dashboard/penginapan/edit/:slug"
               element={<EditPenginapan />}
             />
             <Route path="/dashboard/penginapan" element={<IndexPenginapan />} />

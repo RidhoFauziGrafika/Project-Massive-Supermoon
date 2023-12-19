@@ -12,23 +12,25 @@ import Footer from "../../../../components/Footer/Footer";
 import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import Navbar from "../../../../components/Navbar/Navbar";
 
-export default function IndexPenginapan() {
-  const [data, setData] = useState([]);
+export default function IndexWista() {
+  const [lodgings, setLodgings] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [dataToDelete, setDataTodelete] = useState(null);
+  const [dataToDelete, setDataToDelete] = useState(null);
+
+  const UPDATE_URL = "/dashboard/penginapan/edit";
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTours = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/lodgings");
+        const response = await axios.get("http://localhost:8000/api/lodgings/");
         console.log(response?.data.data);
-        setData(response.data.data);
+        setLodgings(response.data.data.lodgings);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching lodging packets:", error);
       }
     };
 
-    fetchData();
+    fetchTours();
   }, []);
 
   const handleDelete = async () => {
@@ -38,21 +40,24 @@ export default function IndexPenginapan() {
       );
       toast.success(response.data.message);
       // Update the state to reflect the changes
-      setData(data.filter((d) => d.id !== dataToDelete));
+      setLodgings((prevData) =>
+        prevData.filter((lodgi) => lodgi.id !== dataToDelete)
+      );
       closeDeleteModal(); // Close the modal after deletion
+      // window.location.reload();
     } catch (error) {
-      console.error("Error deleting item:", error);
-      toast.error("Error deleting item!");
+      console.error("Error deleting tour packet:", error);
+      toast.error("Error deleting tour packet!");
     }
   };
 
   const openDeleteModal = (id) => {
-    setDataTodelete(id);
+    setDataToDelete(id);
     setDeleteModalIsOpen(true);
   };
 
   const closeDeleteModal = () => {
-    setDataTodelete(null);
+    setDataToDelete(null);
     setDeleteModalIsOpen(false);
   };
   return (
@@ -78,7 +83,7 @@ export default function IndexPenginapan() {
           }}
         >
           <h2 className="text-white">Hapus</h2>
-          <p className="text-white">Hapus Penginapan?</p>
+          <p className="text-white">Hapus Wisata?</p>
           <div className="flex gap-3">
             <button
               onClick={handleDelete}
@@ -158,28 +163,27 @@ export default function IndexPenginapan() {
                     </tr>
                   </thead>
                   <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg">
-                    {Array.isArray(data?.lodgings) &&
-                    data?.lodgings.length > 0 ? (
-                      data?.lodgings.map((d, index) => (
-                        <tr key={d.id}>
+                    {Array.isArray(lodgings) && lodgings.length > 0 ? (
+                      lodgings.map((lodging, index) => (
+                        <tr key={lodging.id}>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
                             {index + 1}
                           </td>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
-                            {d.title}
+                            {lodging.title}
                           </td>
                           <td className="px-6 py-4 text-sm  border border-neutral-50">
-                            {d.description}
+                            {lodging.description}
                           </td>
                           <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                             <Link
-                              to={`/dashboard/wisata/edit/${d.slug}`}
+                              to={`${UPDATE_URL}/${lodging.slug}`}
                               className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                             >
                               <BiSolidPencil className="text-white" />
                             </Link>
                             <button
-                              onClick={() => openDeleteModal(d.id)}
+                              onClick={() => openDeleteModal(lodging.id)}
                               className="px-4 py-2 bg-[#FD3550] rounded-lg"
                             >
                               <FaTrashCan className="text-white" />

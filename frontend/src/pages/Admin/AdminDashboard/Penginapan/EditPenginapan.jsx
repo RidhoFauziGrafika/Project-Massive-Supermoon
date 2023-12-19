@@ -113,7 +113,7 @@ const EditPenginapan = () => {
 
       // Check if there are new images to upload
       await axios.post(
-        `http://localhost:8000/api/lodging/image/${id}`,
+        `http://localhost:8000/api/lodgings/images/${id}`,
         formDataImage,
         {
           headers: {
@@ -153,7 +153,7 @@ const EditPenginapan = () => {
 
       // Check if there are new images to upload
       await axios.put(
-        `http://localhost:8000/api/lodging/image/${id}`,
+        `http://localhost:8000/api/lodgings/images/${id}`,
         formDataImage,
         {
           headers: {
@@ -274,14 +274,14 @@ const EditPenginapan = () => {
               <form className="w-full" onSubmit={handleSubmit}>
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Form Edit Wisata
+                    Form Edit Penginapan
                   </h6>
                 </div>
 
                 <div className="m-8">
                   <div className="my-5">
                     <h6 className="lg:text-lg text-sm tracking-tight text-gray-900">
-                      Judul Wisata
+                      Judul Penginapan
                     </h6>
                     <div className="relative flex items-center gap-2">
                       <input
@@ -528,7 +528,7 @@ const EditPenginapan = () => {
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Tambah Fasilitas Wisata
+                    Tambah Fasilitas Penginapan
                   </h6>
                 </div>
                 <div className="px-4 py-6">

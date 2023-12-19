@@ -5,40 +5,25 @@ import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import axios from "axios";
 import FacilityList from "../../../../components/Facility/FacilityList";
-import data from "../../../../utils/constants/PackageTours";
-import AllPaketWisata from "../../../../components/AllPaketWisata/AllPaketWisata";
+
 import { ROLES } from "../../../../constants";
 import useAuth from "../../../../hooks/useAuth";
 // FROM OLD
 // import data from "../../../../utils/constants/Data";
 import imgLokasi from "../../../../assets/images/DetailWisata/DetailWisata-1/lokasi.png";
-import imgAvatar from "../../../../assets/images/DetailWisata/DetailWisata-1/avatar.png";
-import imgProfile from "../../../../assets/images/DetailWisata/DetailWisata-1/profile.png";
-import {
-  FaToilet,
-  FaParking,
-  FaBuilding,
-  FaSwimmingPool,
-  FaCampground,
-} from "react-icons/fa";
-import { FaShop } from "react-icons/fa6";
-import { MdMosque } from "react-icons/md";
-import { GiFlyingFox } from "react-icons/gi";
-import CardKuliner from "../../../../components//CardKuliner/CardKuliner";
+// import imgAvatar from "../../../../assets/images/DetailWisata/DetailWisata-1/avatar.png";
+// import imgProfile from "../../../../assets/images/DetailWisata/DetailWisata-1/profile.png";
+
 import dataFood from "../../../../utils/constants/Kuliner";
 import dataLodge from "../../../../utils/constants/Penginapan";
-import CardPenginapan from "../../../../components/CardPenginapan/CardPenginapan";
+import iconStrangerp from "../../../../assets/images/DetailPenginapan/avatar_Stranger.png";
+import iconPersonap from "../../../../assets/images/DetailPenginapan/avatar_Persona.png";
 
 const DetilPenginapan = () => {
-  // FROM OLD
-  const [culinars, setCulinars] = useState(dataFood);
-  const [lodges, setLodges] = useState(dataLodge);
-  const [TOURS, SETTOURS] = useState(data);
-  // const [packageTours, setPackageTours] = useState(data);
   const { auth, setAuth } = useAuth();
   const ADMIN = auth.roles.includes(ROLES.ADMIN);
   const CLIENT = auth.roles.includes(ROLES.CLIENT);
-  const [tour, setTour] = useState({});
+  const [inn, setInn] = useState({});
   const [facilities, setFacilities] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [images, setImages] = useState([]);
@@ -48,14 +33,14 @@ const DetilPenginapan = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/tours/slug/${slug}`
+          `http://localhost:8000/api/lodgings/slug/${slug}`
         );
 
         const data = response.data.data;
         console.log("data", data);
 
         // Update state with the fetched data
-        setTour(data);
+        setInn(data);
         setImages(data.images ?? []);
         setFacilities(data.facilities ?? []);
         setReviews(data.reviews ?? []);
@@ -72,23 +57,10 @@ const DetilPenginapan = () => {
       <Navbar />
       <div className="font-productSans">
         <div className="lg:px-16 px-4 flex flex-col gap-8 py-6 lg:py-24">
-          <div className="grid grid-flow-col grid-rows-2 gap-3">
+          <div className="grid grid-rows-1 gap-3">
             <img
               src={`http://localhost:8000${images[0]?.img_path}`}
-              alt={""}
-              className="w-full rounded-lg object-cover row-span-2 h-full"
-            />
-            <img
-              src={`http://localhost:8000${images[1]?.img_path}`}
-              alt={""}
-              className="w-full rounded-lg object-cover"
-            />
-            <img
-              src={`http://localhost:8000${images[2]?.img_path}`}
-              className="w-full rounded-lg object-cover"
-            />
-            <img
-              src={`http://localhost:8000${images[3]?.img_path}`}
+              alt="Grage Sangkan Hotel"
               className="w-full rounded-lg object-cover row-span-2 h-full"
             />
           </div>
@@ -97,16 +69,16 @@ const DetilPenginapan = () => {
               <div className="flex flex-col gap-6 col-span-2 ">
                 <div className="flex lg:flex-row flex-col justify-between gap-8">
                   <h2 className="text-primary-main uppercase font-bold lg:text-[48px] text-2xl">
-                    {tour.title ?? "JUDUL"}
+                    {inn.title ?? "JUDUL"}
                   </h2>
                   <div className="flex gap-3 justify-start items-center">
                     <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
                     <div>
                       <h4 className="lg:text-[32px] text-[16px]  font-bold">
-                        {/* {tour.average_rating ?? 0} reviews */}
+                        {/* {inn.average_rating ?? 0} reviews */}
                       </h4>
                       <p className="text-neutral-60 lg:text-base text-sm">
-                        {tour.reviews.length ?? 0} reviews
+                        {inn.reviews?.length ?? 0} reviews
                       </p>
                     </div>
                   </div>
@@ -120,7 +92,7 @@ const DetilPenginapan = () => {
                   Deskripsi
                 </h3>
                 {/* DESCRP */}
-                <p className="lg:text-base text-sm">{tour.description}</p>
+                <p className="lg:text-base text-sm">{inn.description}</p>
               </div>
               <div className="flex flex-col gap-8 col-span-2">
                 <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
@@ -129,7 +101,7 @@ const DetilPenginapan = () => {
                 <ul className="list-disc px-5 lg:text-base text-sm">
                   {/* TICKET OPERASIONAL */}
                   <li>
-                    {tour.ticket_operasional ?? "HARGA DAN JAM OPERASIONAL"}
+                    {inn.ticket_operasional ?? "HARGA DAN JAM OPERASIONAL"}
                   </li>
                 </ul>
               </div>
@@ -137,10 +109,10 @@ const DetilPenginapan = () => {
             <div className=" flex flex-col gap-[20px] flex-1">
               <img src={imgLokasi} alt="" />
               {/* LOCATION DETAIL */}
-              <p className="lg:text-base text-sm">{tour.address ?? "ALAMAT"}</p>
+              <p className="lg:text-base text-sm">{inn.address ?? "ALAMAT"}</p>
               {/* LOCATION LINK */}
               <a
-                href={`${tour.address_link}`}
+                href={`${inn.address_link}`}
                 target="_blank"
                 className="text-neutral-60 lg:text-base text-sm"
               >
@@ -148,8 +120,8 @@ const DetilPenginapan = () => {
               </a>
             </div>
           </div>
+          {/* comments */}
           <div className="flex flex-col gap-8">
-            {/* COMMENT */}
             <h3 className="lg:text-[40px] font-bold text-primary-main text[20px]">
               Komentar
             </h3>
@@ -157,14 +129,12 @@ const DetilPenginapan = () => {
               <div className="flex flex-col w-full shadow-md rounded-lg p-3 gap-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <img src={imgAvatar} alt="profile" />
+                    <img src={iconStrangerp} alt="profile" />
                     <div>
                       <p className="lg:text-base text-sm font-bold">
-                        {TOURS[0].komentar[0].nama}
+                        Salsabila Abadi
                       </p>
-                      <p className="lg:text-sm text-xs">
-                        {TOURS[0].komentar[0].waktu}
-                      </p>
+                      <p className="lg:text-sm text-xs">Agustus 2023</p>
                     </div>
                   </div>
                   <div className="h-fit px-4 py-2 bg-primary-surface rounded-lg flex justify-center items-center gap-1">
@@ -176,20 +146,22 @@ const DetilPenginapan = () => {
                   </div>
                 </div>
                 <p className="lg:text-base text-sm px-[10px] line-clamp-3">
-                  {TOURS[0].komentar[0].description}
+                  Kamar yang saya tempati sangat bersih dan nyaman. Desain
+                  interior modern dan perabotan yang elegan menciptakan atmosfer
+                  yang menyenangkan. Kasur yang empuk memberikan kualitas tidur
+                  yang baik, dan kamar mandi dilengkapi dengan perlengkapan yang
+                  lengkap.
                 </p>
               </div>
               <div className="flex flex-col w-full shadow-md rounded-lg p-3 gap-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <img src={imgAvatar} alt="profile" />
+                    <img src={iconStrangerp} alt="profile" />
                     <div>
                       <p className="lg:text-base text-sm font-bold">
-                        {TOURS[0].komentar[0].nama}
+                        Farah Nabila
                       </p>
-                      <p className="lg:text-sm text-xs">
-                        {TOURS[0].komentar[0].waktu}
-                      </p>
+                      <p className="lg:text-sm text-xs">Oktober 2023</p>
                     </div>
                   </div>
                   <div className="h-fit px-4 py-2 bg-primary-surface rounded-lg flex justify-center items-center gap-1">
@@ -201,14 +173,17 @@ const DetilPenginapan = () => {
                   </div>
                 </div>
                 <p className="lg:text-base text-sm px-[10px] line-clamp-3">
-                  {TOURS[0].komentar[0].description}
+                  Secara keseluruhan, saya merekomendasikan Hotel ini untuk para
+                  wisatawan yang mencari pengalaman menginap yang menyenangkan
+                  dan layanan yang berkualitas. Saya pasti akan kembali menginap
+                  di sini pada kunjungan berikutnya.
                 </p>
               </div>
             </div>
             <div className="py-1 grid lg:grid-cols-1 gap-3">
               <div className="w-full shadow-md rounded-lg p-3 gap-3">
                 <div className="flex items-center gap-3 py-3">
-                  <img src={imgProfile} alt="" />
+                  <img src={iconPersonap} alt="" />
                   <p className="font-bold">Arin</p>
                 </div>
                 <input
@@ -235,26 +210,6 @@ const DetilPenginapan = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-[40px] font-bold text-primary-main">
-              Rekomendasi Penginapan
-            </h3>
-            <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
-              {lodges.map((lodge) => (
-                <CardPenginapan key={lodge.id} lodge={lodge} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 className="text-[40px] font-bold text-primary-main">
-              Rekomendasi Kuliner
-            </h3>
-            <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
-              {culinars.map((culinar) => (
-                <CardKuliner key={culinar.id} culinar={culinar} />
-              ))}
             </div>
           </div>
         </div>
