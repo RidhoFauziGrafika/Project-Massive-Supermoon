@@ -91,7 +91,10 @@ function App() {
             {/* WISATA */}
             <Route path="/dashboard/wisata" element={<IndexWisata />} />
             <Route path="/dashboard/wisata/baru" element={<BuatWisata />} />
-            <Route path="/dashboard/wisata/edit/:id" element={<EditWisata />} />
+            <Route
+              path="/dashboard/wisata/edit/:slug"
+              element={<EditWisata />}
+            />
 
             {/* END WISATA */}
             {/* KULINER */}

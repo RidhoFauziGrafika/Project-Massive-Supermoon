@@ -15,16 +15,14 @@ import Navbar from "../../../../components/Navbar/Navbar";
 export default function IndexWista() {
   const [tours, setTourPackets] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [packetToDelete, setPacketToDelete] = useState(null);
+  const [tourToDelete, setTourToDelete] = useState(null);
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/tour-packets"
-        );
-        console.log(response?.data);
-        setTourPackets(response.data.data.tour_packets);
+        const response = await axios.get("http://localhost:8000/api/tours/");
+        console.log(response?.data.data);
+        setTourPackets(response.data.data.tours);
       } catch (error) {
         console.error("Error fetching tour packets:", error);
       }
@@ -36,7 +34,7 @@ export default function IndexWista() {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/tour-packets/delete/${packetToDelete}`
+        `http://localhost:8000/api/tours/delete/${tourToDelete}`
       );
       toast.success(response.data.message);
       // Update the state to reflect the changes
@@ -49,12 +47,12 @@ export default function IndexWista() {
   };
 
   const openDeleteModal = (id) => {
-    setPacketToDelete(id);
+    setTourToDelete(id);
     setDeleteModalIsOpen(true);
   };
 
   const closeDeleteModal = () => {
-    setPacketToDelete(null);
+    setTourToDelete(null);
     setDeleteModalIsOpen(false);
   };
   return (
@@ -70,7 +68,7 @@ export default function IndexWista() {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          zIndex: 99999999999999999,
+          zIndex: 9999,
         }}
       >
         <div
@@ -105,14 +103,14 @@ export default function IndexWista() {
             <div className="px-4 py-6">
               <div className="flex lg:flex-row flex-col lg:justify-between px-6 py-10">
                 <h1 className="lg:text-2xl text-base font-bold mb-3">
-                  Kelola Paket Wisata
+                  Kelola Wisata
                 </h1>
                 <Link
-                  to="/dashboard/paket-wisata/baru"
+                  to="/dashboard/wisata/baru"
                   className="w-fit lg:px-4 lg:py-2 px-3 py-2 bg-primary-main rounded-lg text-white lg:text-base text-xs flex gap-3 items-center"
                 >
                   <FaPlus className="lg:w-5 lg:h-5 w-3 h-3" />
-                  Tambah Paket Wisata
+                  Tambah Wisata
                 </Link>
               </div>
               <div className="border border-neutral-30 px-4"></div>
@@ -152,7 +150,7 @@ export default function IndexWista() {
                         Judul Wisata
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
-                        Isi Artikel Wisata
+                        Isi Wisata
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
                         Aksi
@@ -174,7 +172,7 @@ export default function IndexWista() {
                           </td>
                           <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                             <Link
-                              to={`/dashboard/paket-wisata/edit/${tour.slug}`}
+                              to={`/dashboard/wisata/edit/${tour.slug}`}
                               className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                             >
                               <BiSolidPencil className="text-white" />
@@ -197,7 +195,7 @@ export default function IndexWista() {
                     ) : (
                       <tr>
                         <td colSpan="4" className="text-center py-4">
-                          Tidak ada paket wisata.
+                          Tidak ada wisata.
                         </td>
                       </tr>
                     )}

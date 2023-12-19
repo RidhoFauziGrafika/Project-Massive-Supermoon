@@ -129,7 +129,7 @@ const Navbar = () => {
                     {ADMIN && (
                       <>
                         <Link
-                          to="/dashboard"
+                          to="/dashboard/paket-wisata"
                           className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
                         >
                           Dashboard

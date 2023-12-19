@@ -33,7 +33,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/lodgings", lodgingRoutes);
 app.use("/api/culinaries", culinaryRoutes);
 app.use("/api/banks", bankRoutes);
-app.use("api/tours", tourRoutes);
+app.use("/api/tours", tourRoutes);
 
 app.use("/upload", upload.array("images", 4), (req, res) => {
   const imagePaths = req.files;

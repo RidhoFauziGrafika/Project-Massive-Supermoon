@@ -28,9 +28,10 @@ const createTour = asyncHandler(async (req, res) => {
 
   console.log(parseInt(price[1]));
   try {
-    const checkslug = await db.query("SELECT slug FROM tours where slug = ?", [
-      slug,
-    ]);
+    const [checkslug] = await db.query(
+      "SELECT slug FROM tours where slug = ?",
+      [slug]
+    );
 
     if (checkslug.length > 1) {
       return res.status(400).json({
@@ -92,11 +93,11 @@ const updateTour = asyncHandler(async (req, res) => {
 
   try {
     // Check if the given slug exists in the database
-    const checkSlug = await db.query(
+    const checkSlug = await query(
       "SELECT slug FROM tours WHERE slug = ? AND id != ?",
       [formatSlug, req.params.id]
     );
-
+    console.log(checkSlug);
     if (checkSlug.length > 0) {
       return res.status(400).json({
         success: false,
@@ -105,6 +106,7 @@ const updateTour = asyncHandler(async (req, res) => {
     }
 
     // Update the tour packet based on the provided ID
+    // const parsedPrice = Array.isArray(price) ? parseInt(price[1]) : null;
     const newDatetime = toDatetime(Date.now());
     const data = await query(
       `UPDATE tours SET 
@@ -122,7 +124,7 @@ const updateTour = asyncHandler(async (req, res) => {
         title,
         formatSlug,
         categories,
-        parseInt(price[1]),
+        price,
         address,
         address_link,
         description,
@@ -547,7 +549,7 @@ const uploadImages = asyncHandler(async (req, res) => {
 
     // Access the file details using req.files
     const imagePaths = req.files.map((file) =>
-      path.join(__dirname, "public", `/${file.filename}`)
+      path.join("/public/images/", `${file.filename}`)
     );
 
     // Your logic to save data in the database
@@ -555,7 +557,7 @@ const uploadImages = asyncHandler(async (req, res) => {
       imagePaths.map(async (image) => {
         try {
           const data = await query(
-            `INSERT INTO tour_images (id_uuid, tour_packet_id, img_path) VALUES (?, ?, ?)`,
+            `INSERT INTO tour_images (id_uuid, tour_id, img_path) VALUES (?, ?, ?)`,
             [uuidv4(), id, image]
           );
 
@@ -622,7 +624,7 @@ const uploadImages = asyncHandler(async (req, res) => {
 
 const updateImages = asyncHandler(async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -632,7 +634,7 @@ const updateImages = asyncHandler(async (req, res) => {
 
     // Delete old images associated with the tour ID
     const oldImages = await query(
-      `SELECT img_path FROM tour_packets_images WHERE tour_packet_id = ?`,
+      `SELECT img_path FROM tour_packets_images WHERE tour_id = ?`,
       [id]
     );
 
@@ -651,16 +653,18 @@ const updateImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files;
+    const newImagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
     // Delete old images from db
-    await query(`DELETE FROM tour_images WHERE tour_packet_id = ?`, [id]);
+    await query(`DELETE FROM tour_images WHERE tour_id = ?`, [id]);
 
     // Your logic to save data in the database
     const allImages = await Promise.all(
       newImagePaths.map(async (image) => {
         try {
           const data = await query(
-            `INSERT INTO tour_images (id_uuid, tour_packet_id, img_path) VALUES (?, ?, ?)`,
+            `INSERT INTO tour_images (id_uuid, tour_id, img_path) VALUES (?, ?, ?)`,
             [uuidv4(), id, image]
           );
           return data;
@@ -748,7 +752,8 @@ const getAllFacilities = asyncHandler(async (req, res) => {
 
 // TOUR FACILITIES POST AND PUT (CREATE AND UPDATE)
 const addTourFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -765,7 +770,7 @@ const addTourFacility = asyncHandler(async (req, res) => {
   try {
     const facilityInsertPromises = facilities.map(async (facility) => {
       const data = await query(
-        `INSERT INTO tour_has_facilities (tour_packet_id, facility_id) VALUES (?, ?)`,
+        `INSERT INTO tour_has_facilities (tour_id, facility_id) VALUES (?, ?)`,
         [id, facility]
       );
 
@@ -777,25 +782,24 @@ const addTourFacility = asyncHandler(async (req, res) => {
     if (insertedData.every((data) => data.length > 0)) {
       return res.json({
         success: true,
-        message: "Fasilitas wisata, paket wisata ditambahkan!",
+        message: "Fasilitas wisata ditambahkan!",
       });
     } else {
       return res.json({
         success: false,
-        message: "Fasilitas wisata, paket wisata gagal ditambahkan!",
+        message: "Fasilitas wisata gagal ditambahkan!",
       });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error!" });
-    throw new Error(
-      "Error saat menyimpan data fasilitas wisata di paket wisata!"
-    );
+    throw new Error("Error saat menyimpan data fasilitas wisata!");
   }
 });
 
 const updateTourFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -811,14 +815,12 @@ const updateTourFacility = asyncHandler(async (req, res) => {
 
   try {
     // Delete existing entries for the given id
-    await query(`DELETE FROM tour_has_facilities WHERE tour_packet_id = ?`, [
-      id,
-    ]);
+    await query(`DELETE FROM tour_has_facilities WHERE tour_id = ?`, [id]);
 
     // Insert new facilities
     const facilityInsertPromises = facilities.map(async (facility) => {
       const data = await query(
-        `INSERT INTO tour_has_facilities (tour_packet_id, facility_id) VALUES (?, ?)`,
+        `INSERT INTO tour_has_facilities (tour_id, facility_id) VALUES (?, ?)`,
         [id, facility]
       );
 
