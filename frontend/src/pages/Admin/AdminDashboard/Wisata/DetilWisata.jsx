@@ -126,6 +126,7 @@ const DetilWisata = () => {
                 {/* FACILITY */}
                 <div className="grid lg:grid-cols-4 grid-cols-2"></div>
                 {/* END FACILITY */}
+                <FacilityList facilities={facilities} />
               </div>
               <div className="flex flex-col gap-8 col-span-2">
                 <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
