@@ -338,12 +338,12 @@ const getOneTourBySlug = asyncHandler(async (req, res) => {
     `,
       [tourDetails[0].id]
     );
-
+    console.log(tourDetails[0].id);
     // Fetch tour facilities
     const tourFacilities = await query(
       `
       SELECT
-        f.facility_id, f.name
+        thf.facility_id, f.name
       FROM
         tour_has_facilities thf
       JOIN
@@ -522,6 +522,7 @@ const getOneTour = asyncHandler(async (req, res) => {
 
 // IMAGE UPLOADS
 const uploadImages = asyncHandler(async (req, res) => {
+  let imagePaths;
   try {
     // Check if no files were uploaded
     if (!req.files || req.files.length === 0) {
@@ -539,7 +540,7 @@ const uploadImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -548,7 +549,7 @@ const uploadImages = asyncHandler(async (req, res) => {
     }
 
     // Access the file details using req.files
-    const imagePaths = req.files.map((file) =>
+    imagePaths = req.files.map((file) =>
       path.join("/public/images/", `${file.filename}`)
     );
 
@@ -623,6 +624,7 @@ const uploadImages = asyncHandler(async (req, res) => {
 });
 
 const updateImages = asyncHandler(async (req, res) => {
+  let newImagePaths;
   try {
     const { id } = req.params;
     if (!id || id === null) {
@@ -653,7 +655,7 @@ const updateImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files.map((file) =>
+    newImagePaths = req.files.map((file) =>
       path.join("/public/images/", `${file.filename}`)
     );
     // Delete old images from db

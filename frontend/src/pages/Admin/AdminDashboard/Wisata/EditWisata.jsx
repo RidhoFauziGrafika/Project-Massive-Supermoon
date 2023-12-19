@@ -113,7 +113,7 @@ const EditWisata = () => {
 
       // Check if there are new images to upload
       await axios.post(
-        `http://localhost:8000/api/tour-packets/image/${id}`,
+        `http://localhost:8000/api/tours/image/${id}`,
         formDataImage,
         {
           headers: {
@@ -122,7 +122,7 @@ const EditWisata = () => {
         }
       );
 
-      toast.success("Gambar wisata diupload!");
+      toast.success("Gambar diupload!");
 
       console.log("Images submitted successfully");
     } catch (error) {
@@ -153,7 +153,7 @@ const EditWisata = () => {
 
       // Check if there are new images to upload
       await axios.put(
-        `http://localhost:8000/api/tour-packets/image/${id}`,
+        `http://localhost:8000/api/tours/image/${id}`,
         formDataImage,
         {
           headers: {
@@ -162,7 +162,7 @@ const EditWisata = () => {
         }
       );
 
-      toast.success("Gambar wisata diupdate!");
+      toast.success("Gambar diupdate!");
 
       console.log("Images submitted successfully");
     } catch (error) {
@@ -261,6 +261,7 @@ const EditWisata = () => {
       }
     }
   };
+  console.log(images);
   return (
     <>
       <Navbar />
@@ -561,7 +562,7 @@ const EditWisata = () => {
             <>
               <form
                 className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
-                onSubmit={handleSubmitUploadFacility}
+                onSubmit={handleSubmitUpdateFacility}
               >
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">

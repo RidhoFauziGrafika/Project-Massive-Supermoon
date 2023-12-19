@@ -12,8 +12,8 @@ import useAuth from "../../../../hooks/useAuth";
 // FROM OLD
 // import data from "../../../../utils/constants/Data";
 import imgLokasi from "../../../../assets/images/DetailWisata/DetailWisata-1/lokasi.png";
-// import imgAvatar from "../../../../assets/images/DetailWisata/DetailWisata-1/avatar.png";
-// import imgProfile from "../../../../assets/images/DetailWisata/DetailWisata-1/profile.png";
+import imgAvatar from "../../../../assets/images/DetailWisata/DetailWisata-1/avatar.png";
+import imgProfile from "../../../../assets/images/DetailWisata/DetailWisata-1/profile.png";
 import {
   FaToilet,
   FaParking,
@@ -55,10 +55,10 @@ const DetailPaketWisata = () => {
         console.log("data", data);
 
         // Update state with the fetched data
-        setTour(data.tour);
-        setImages(data.tour_images);
-        setFacilities(data.tour_facilities);
-        setReviews(data.reviews);
+        setTour(data);
+        setImages(data.images ?? []);
+        setFacilities(data.facilities ?? []);
+        setReviews(data.reviews ?? []);
       } catch (error) {
         console.error(error);
       }
@@ -103,10 +103,10 @@ const DetailPaketWisata = () => {
                     <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
                     <div>
                       <h4 className="lg:text-[32px] text-[16px]  font-bold">
-                        {tour.average_rating ?? 0}
+                        {/* {tour.average_rating ?? 0} reviews */}
                       </h4>
                       <p className="text-neutral-60 lg:text-base text-sm">
-                        {tour.reviews.lenght ?? 0} reviews
+                        {tour.reviews.length ?? 0} reviews
                       </p>
                     </div>
                   </div>
