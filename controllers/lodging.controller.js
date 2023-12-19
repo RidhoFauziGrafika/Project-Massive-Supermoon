@@ -21,11 +21,11 @@ const createLodging = asyncHandler(async (req, res) => {
   const formatSlug = generateSlug(slug);
 
   try {
-    const checkslug = await db.query(
+    const [checkslug] = await db.query(
       "SELECT slug FROM lodgings where slug = ?",
       [slug]
     );
-
+    console.log(checkslug);
     if (checkslug.length > 1) {
       return res.status(400).json({
         success: false,
@@ -51,16 +51,16 @@ const createLodging = asyncHandler(async (req, res) => {
     );
 
     if (!data.length > 0) {
-      res.json({
+      return res.json({
         success: false,
-        message: "Akomodasi gagal dibuat!",
+        message: "Penginapan gagal dibuat!",
         data: "",
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
-      message: "Akomodasi telah dibuat!",
+      message: "Penginapan telah dibuat!",
       data: "",
     });
   } catch (error) {
@@ -84,7 +84,7 @@ const updateLodging = asyncHandler(async (req, res) => {
   const formatSlug = generateSlug(slug);
 
   try {
-    const checkSlug = await db.query(
+    const [checkSlug] = await db.query(
       "SELECT slug FROM lodgings WHERE slug = ? AND id != ?",
       [formatSlug, req.params.id]
     );
@@ -126,13 +126,13 @@ const updateLodging = asyncHandler(async (req, res) => {
     if (!data.affectedRows) {
       return res.json({
         success: false,
-        message: "Akomodasi tidak ditemukan!",
+        message: "Penginapan tidak ditemukan!",
       });
     }
 
     return res.json({
       success: true,
-      message: "Akomodasi berhasil diperbarui!",
+      message: "Penginapan berhasil diperbarui!",
     });
   } catch (error) {
     console.error(error);
@@ -152,18 +152,18 @@ const deleteLodging = asyncHandler(async (req, res) => {
     if (!data.affectedRows) {
       return res.json({
         success: false,
-        message: "Akomodasi tidak ditemukan!",
+        message: "Penginapan tidak ditemukan!",
       });
     }
 
     return res.json({
       success: true,
-      message: "Akomodasi berhasil dihapus!",
+      message: "Penginapan berhasil dihapus!",
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error!" });
-    throw new Error("Error saat menghapus akomodasi!");
+    throw new Error("Error saat menghapus Penginapan!");
   }
 });
 
@@ -195,7 +195,7 @@ const getAllLodgings = asyncHandler(async (req, res) => {
     if (lodgingDetails.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Akomodasi not found or has been deleted!",
+        message: "Penginapan not found or has been deleted!",
       });
     }
 
@@ -589,7 +589,8 @@ const getAllFacilities = asyncHandler(async (req, res) => {
 
 // LODGING FACILITY POST AND PUT (CREATE AND UPDATE)
 const addLodgingFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -634,7 +635,8 @@ const addLodgingFacility = asyncHandler(async (req, res) => {
 });
 
 const updateLodgingFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||

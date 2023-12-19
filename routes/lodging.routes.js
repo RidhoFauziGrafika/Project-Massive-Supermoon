@@ -15,7 +15,7 @@ const {
 } = require("../controllers/lodging.controller");
 
 // Middleware to handle image upload using Multer
-const uploadLodgingImagesMiddleware = multer.array("images", 6);
+const uploadLodgingImagesMiddleware = multer.array("images", 4);
 
 // Routes
 router.post("/", createLodging);
@@ -23,9 +23,10 @@ router.put("/:id", updateLodging);
 router.delete("/:id", deleteLodging);
 router.get("/", getAllLodgings);
 router.get("/:id", getOneLodging);
+router.get("/slug/:slug", getOneLodging);
 
-router.post("/:id/images", uploadLodgingImagesMiddleware, uploadLodgingImages);
-router.put("/:id/images", uploadLodgingImagesMiddleware, updateLodgingImages);
+router.post("/images:id", uploadLodgingImagesMiddleware, uploadLodgingImages);
+router.put("/images/:id", uploadLodgingImagesMiddleware, updateLodgingImages);
 
 router.get("/facilities", getAllFacilities);
 router.post("/:id/facilities", addLodgingFacility);

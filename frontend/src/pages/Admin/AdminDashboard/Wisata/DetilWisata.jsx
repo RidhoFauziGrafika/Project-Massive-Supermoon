@@ -29,16 +29,16 @@ import dataFood from "../../../../utils/constants/Kuliner";
 import dataLodge from "../../../../utils/constants/Penginapan";
 import CardPenginapan from "../../../../components/CardPenginapan/CardPenginapan";
 
-const DetailPaketWisata = () => {
+const DetilWisata = () => {
   // FROM OLD
   const [culinars, setCulinars] = useState(dataFood);
   const [lodges, setLodges] = useState(dataLodge);
   const [TOURS, SETTOURS] = useState(data);
-  // const [packageTours, setPackageTours] = useState(data);
+  const [packageTours, setPackageTours] = useState(data);
   const { auth, setAuth } = useAuth();
   const ADMIN = auth.roles.includes(ROLES.ADMIN);
   const CLIENT = auth.roles.includes(ROLES.CLIENT);
-  const [tour, setTour] = useState({});
+  const [tourData, setTourData] = useState({});
   const [facilities, setFacilities] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [images, setImages] = useState([]);
@@ -51,22 +51,34 @@ const DetailPaketWisata = () => {
           `http://localhost:8000/api/tours/slug/${slug}`
         );
 
-        const data = response.data.data;
-        console.log("data", data);
+        const fetchingData = response.data.data;
+        console.log("Data from API:", fetchingData);
+        console.log("Data from API images:", fetchingData.images);
 
         // Update state with the fetched data
-        setTour(data);
-        setImages(data.images ?? []);
-        setFacilities(data.facilities ?? []);
-        setReviews(data.reviews ?? []);
+        setTourData(fetchingData);
+        setImages(fetchingData.images ?? []);
+        setFacilities(fetchingData.facilities ?? []);
+        setReviews(fetchingData.reviews ?? []);
+
+        console.log("Data state:", tourData);
+        console.log("Images state:", images);
+        console.log("Facilities state:", facilities);
+        console.log("Reviews state:", reviews);
       } catch (error) {
-        console.error(error);
+        console.error("Fetch data error:", error);
       }
     };
 
     // Immediately invoke the fetchData function
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Actions to perform after state has been updated
+    console.log("Updated state:", tourData);
+  }, [tourData]); // Add tourData as a dependency
+
   return (
     <>
       <Navbar />
@@ -97,16 +109,16 @@ const DetailPaketWisata = () => {
               <div className="flex flex-col gap-6 col-span-2 ">
                 <div className="flex lg:flex-row flex-col justify-between gap-8">
                   <h2 className="text-primary-main uppercase font-bold lg:text-[48px] text-2xl">
-                    {tour.title ?? "JUDUL"}
+                    {tourData.title ?? "JUDUL"}
                   </h2>
                   <div className="flex gap-3 justify-start items-center">
                     <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
                     <div>
                       <h4 className="lg:text-[32px] text-[16px]  font-bold">
-                        {/* {tour.average_rating ?? 0} reviews */}
+                        {tourData.categories ?? 0}
                       </h4>
                       <p className="text-neutral-60 lg:text-base text-sm">
-                        {tour.reviews.length ?? 0} reviews
+                        {tourData.reviews?.length ?? 0} reviews
                       </p>
                     </div>
                   </div>
@@ -120,7 +132,7 @@ const DetailPaketWisata = () => {
                   Deskripsi
                 </h3>
                 {/* DESCRP */}
-                <p className="lg:text-base text-sm">{tour.description}</p>
+                <p className="lg:text-base text-sm">{tourData.description}</p>
               </div>
               <div className="flex flex-col gap-8 col-span-2">
                 <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
@@ -129,7 +141,7 @@ const DetailPaketWisata = () => {
                 <ul className="list-disc px-5 lg:text-base text-sm">
                   {/* TICKET OPERASIONAL */}
                   <li>
-                    {tour.ticket_operasional ?? "HARGA DAN JAM OPERASIONAL"}
+                    {tourData.ticket_operasional ?? "HARGA DAN JAM OPERASIONAL"}
                   </li>
                 </ul>
               </div>
@@ -137,10 +149,12 @@ const DetailPaketWisata = () => {
             <div className=" flex flex-col gap-[20px] flex-1">
               <img src={imgLokasi} alt="" />
               {/* LOCATION DETAIL */}
-              <p className="lg:text-base text-sm">{tour.address ?? "ALAMAT"}</p>
+              <p className="lg:text-base text-sm">
+                {tourData.address ?? "ALAMAT"}
+              </p>
               {/* LOCATION LINK */}
               <a
-                href={`${tour.address_link}`}
+                href={`${tourData.address_link}`}
                 target="_blank"
                 className="text-neutral-60 lg:text-base text-sm"
               >
@@ -237,6 +251,7 @@ const DetailPaketWisata = () => {
               </div>
             </div>
           </div>
+          {/* rekomendasi penginapan */}
           <div>
             <h3 className="text-[40px] font-bold text-primary-main">
               Rekomendasi Penginapan
@@ -247,6 +262,7 @@ const DetailPaketWisata = () => {
               ))}
             </div>
           </div>
+          {/* rekomendasi kuliner */}
           <div>
             <h3 className="text-[40px] font-bold text-primary-main">
               Rekomendasi Kuliner
@@ -264,4 +280,4 @@ const DetailPaketWisata = () => {
   );
 };
 
-export default DetailPaketWisata;
+export default DetilWisata;

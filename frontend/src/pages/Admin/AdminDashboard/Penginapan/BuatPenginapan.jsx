@@ -10,7 +10,6 @@ import Select from "react-select";
 
 const BuatPenginapan = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState("");
   const [formData, setFormData] = useState({
     slug: "",
     title: "",
@@ -33,12 +32,12 @@ const BuatPenginapan = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/tours`,
+        `http://localhost:8000/api/lodgings`,
         formData
       );
       console.log(response?.data);
-      toast.success("Wisata diperbarui!");
-      navigate("/dashboard/wisata", { replace: true });
+      toast.success("Disimpan!");
+      navigate("/dashboard/penginapan", { replace: true });
     } catch (error) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -61,14 +60,14 @@ const BuatPenginapan = () => {
               <form className="w-full" onSubmit={handleSubmit}>
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                    Form Tambah Wisata
+                    Form Tambah Penginapan
                   </h6>
                 </div>
 
                 <div className="m-8">
                   <div className="my-5">
                     <h6 className="lg:text-lg text-sm tracking-tight text-gray-900">
-                      Judul Wisata
+                      Judul Penginapan
                     </h6>
                     <div className="relative flex items-center gap-2">
                       <input

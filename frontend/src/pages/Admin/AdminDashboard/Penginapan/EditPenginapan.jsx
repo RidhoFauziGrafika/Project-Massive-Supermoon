@@ -61,20 +61,20 @@ const EditPenginapan = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/tours/slug/${slug}`
+          `http://localhost:8000/api/lodgings/slug/${slug}`
         );
-        const tourData = response.data.data;
-        console.log(tourData);
-        setId(tourData.id);
+        const fetchData = response.data.data;
+        console.log(fetchData);
+        setId(fetchData.id);
         console.log("ID", id);
 
-        setImages(tourData.images ?? []);
+        setImages(fetchData.images ?? []);
         setFormData({
           ...formData,
-          ...tourData,
+          ...fetchData,
         });
-        const facilitiesArray = Array.isArray(tourData.facilities)
-          ? tourData.facilities
+        const facilitiesArray = Array.isArray(fetchData.facilities)
+          ? fetchData.facilities
           : [];
         setFacilities(facilitiesArray);
         console.log("Facilities", facilities);
@@ -113,7 +113,7 @@ const EditPenginapan = () => {
 
       // Check if there are new images to upload
       await axios.post(
-        `http://localhost:8000/api/tours/image/${id}`,
+        `http://localhost:8000/api/lodging/image/${id}`,
         formDataImage,
         {
           headers: {
@@ -153,7 +153,7 @@ const EditPenginapan = () => {
 
       // Check if there are new images to upload
       await axios.put(
-        `http://localhost:8000/api/tours/image/${id}`,
+        `http://localhost:8000/api/lodging/image/${id}`,
         formDataImage,
         {
           headers: {
@@ -198,7 +198,7 @@ const EditPenginapan = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/tours/update/${id}`,
+        `http://localhost:8000/api/lodgings/update/${id}`,
         formData
       );
       console.log(response?.data);
@@ -222,7 +222,7 @@ const EditPenginapan = () => {
     const DataFacilities = { facilities: data };
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/tours/facilities/${id}`,
+        `http://localhost:8000/api/lodgings/facilities/${id}`,
         DataFacilities
       );
       console.log(response?.data);
@@ -245,7 +245,7 @@ const EditPenginapan = () => {
     const DataFacilities = { facilities: data };
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/tours/facilities/${id}`,
+        `http://localhost:8000/api/lodgings/facilities/${id}`,
         DataFacilities
       );
       console.log(response?.data);

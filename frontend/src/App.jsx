@@ -26,6 +26,11 @@ import BuatWisata from "./pages/Admin/AdminDashboard/Wisata/BuatWisata";
 import EditWisata from "./pages/Admin/AdminDashboard/Wisata/EditWisata";
 import DetilWisata from "./pages/Admin/AdminDashboard/Wisata/DetilWisata";
 
+import IndexPenginapan from "./pages/Admin/AdminDashboard/Penginapan/IndexPenginapan";
+import BuatPenginapan from "./pages/Admin/AdminDashboard/Penginapan/BuatPenginapan";
+import EditPenginapan from "./pages/Admin/AdminDashboard/Penginapan/EditPenginapan";
+import DetilPenginapan from "./pages/Admin/AdminDashboard/Penginapan/DetilPenginapan";
+
 const ROLES = {
   CLIENT: "8912",
   ADMIN: "6501",
@@ -69,7 +74,10 @@ function App() {
           {/* <Route path="/wisata/detail-wisata/:slug" element={<DetilWisata />} /> */}
           {/* DETIL PENGINAPAN/KULINER */}
           {/* <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} /> */}
-          {/* <Route path="/detail-kuliner/:id" element={<DetailKuliner />} /> */}
+          <Route
+            path="/dashboard/penginapan/:id"
+            element={<DetilPenginapan />}
+          />
 
           {/* DAHSBOARD ADMIN */}
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
@@ -107,15 +115,16 @@ function App() {
             {/* <Route path="/dashboard/kuliner/detil" element={<DetilKuliner />} /> */}
             {/* END KULINER */}
             {/* PENGINAPAN */}
-            {/* <Route path="/dashboard/penginapan" element={<IndexPenginapan />} />
+            <Route path="/dashboard/penginapan" element={<IndexPenginapan />} />
             <Route
               path="/dashboard/penginapan/baru"
-              element={<BuatWisataPenginapan />}
+              element={<BuatPenginapan />}
             />
             <Route
               path="/dashboard/penginapan/edit/:id"
-              element={<EditWisataPenginapan />}
-            /> */}
+              element={<EditPenginapan />}
+            />
+            <Route path="/dashboard/penginapan" element={<IndexPenginapan />} />
             {/* <Route path="/dashboard/penginapan/detil" element={<DetilWisataPenginapan />} /> */}
             {/* END PENGINAPAN */}
             {/* BLOG */}

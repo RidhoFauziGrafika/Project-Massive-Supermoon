@@ -37,7 +37,7 @@ const BuatWisata = () => {
         formData
       );
       console.log(response?.data);
-      toast.success("Wisata diperbarui!");
+      toast.success("Wisata dibuat!");
       navigate("/dashboard/wisata", { replace: true });
     } catch (error) {
       if (error.response) {
