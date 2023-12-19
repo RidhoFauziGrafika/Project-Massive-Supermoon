@@ -283,6 +283,123 @@ const getAllTours = asyncHandler(async (req, res) => {
   }
 });
 
+const getOneTourBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+
+  try {
+    // Fetch tour details
+    const tourDetails = await query(
+      `
+      SELECT
+        t.id,
+        t.title,
+        t.slug,
+        t.categories,
+        t.price,
+        t.address,
+        t.address_link,
+        t.description,
+        t.ticket_operasional,
+        t.created_at,
+        t.updated_at,
+        COALESCE(AVG(tr.rating), 0) AS average_rating
+      FROM
+        tours t
+      LEFT JOIN
+        tour_has_reviews tr ON t.id = tr.tour_id AND tr.is_deleted = FALSE
+      WHERE
+        t.slug = ?
+        AND t.is_deleted = FALSE
+      GROUP BY
+        t.id;
+    `,
+      [slug]
+    );
+
+    if (tourDetails.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Tour not found or has been deleted!",
+      });
+    }
+
+    // Fetch tour images
+    const tourImages = await query(
+      `
+      SELECT
+        id,
+        img_path
+      FROM
+        tour_images
+      WHERE
+        tour_id = ? AND is_deleted = FALSE;
+    `,
+      [tourDetails[0].id]
+    );
+
+    // Fetch tour facilities
+    const tourFacilities = await query(
+      `
+      SELECT
+        f.facility_id, f.name
+      FROM
+        tour_has_facilities thf
+      JOIN
+        facilities f ON thf.facility_id = f.id
+      WHERE
+        thf.tour_id = ? AND thf.is_deleted = FALSE;
+    `,
+      [tourDetails[0].id]
+    );
+
+    // Fetch reviews with user fullname
+    const reviews = await query(
+      `
+      SELECT
+        tr.rating,
+        tr.content,
+        u.fullname
+      FROM
+        tour_has_reviews tr
+      JOIN
+        users u ON tr.user_id = u.id
+      WHERE
+        tr.tour_id = ? AND tr.is_deleted = FALSE;
+    `,
+      [tourDetails[0].id]
+    );
+
+    // Format the data for the client
+    const formattedTourDetails = {
+      id: tourDetails[0].id,
+      title: tourDetails[0].title,
+      slug: tourDetails[0].slug,
+      categories: tourDetails[0].categories,
+      price: tourDetails[0].price,
+      address: tourDetails[0].address,
+      address_link: tourDetails[0].address_link,
+      description: tourDetails[0].description,
+      ticket_operasional: tourDetails[0].ticket_operasional,
+      created_at: tourDetails[0].created_at,
+      updated_at: tourDetails[0].updated_at,
+      average_rating: tourDetails[0].average_rating || 0,
+      images: tourImages,
+      facilities: tourFacilities,
+      reviews,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: formattedTourDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+    throw new Error("Failed to fetch tour data!");
+  }
+});
+
 const getOneTour = asyncHandler(async (req, res) => {
   const { id } = req.params; // Assuming the ID is in the request parameters
 
@@ -399,6 +516,7 @@ const getOneTour = asyncHandler(async (req, res) => {
     throw new Error("Failed to fetch tour data!");
   }
 });
+// Use this route instead of the previous one
 
 // IMAGE UPLOADS
 const uploadImages = asyncHandler(async (req, res) => {
@@ -733,10 +851,11 @@ module.exports = {
   updateTour,
   deleteTour,
   getOneTour,
-  getAllTour,
+  getAllTours,
   uploadImages,
   updateImages,
   getAllFacilities,
   addTourFacility,
   updateTourFacility,
+  getOneTourBySlug,
 };

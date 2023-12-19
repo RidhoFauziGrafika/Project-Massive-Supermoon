@@ -1,19 +1,5 @@
 import React, { useEffect, useState } from "react";
-import imgAvatar from "../../../../assets/images/Paket Wisata/paket-wisata-1/detail/avatar.png";
-import imgProfile from "../../../../assets/images/Paket Wisata/paket-wisata-1/detail/profile.png";
 import { FaStar } from "react-icons/fa6";
-import { FaToilet } from "react-icons/fa";
-import { MdMuseum } from "react-icons/md";
-import { FaParking } from "react-icons/fa";
-import { FaLandmarkFlag } from "react-icons/fa6";
-import { FaShop } from "react-icons/fa6";
-import { GiChickenOven } from "react-icons/gi";
-import { GiSadCrab } from "react-icons/gi";
-import { FaGlassWater } from "react-icons/fa6";
-import { MdHotel } from "react-icons/md";
-import { FaCoffee } from "react-icons/fa";
-import { FaPersonSwimming } from "react-icons/fa6";
-import { GiHotSurface } from "react-icons/gi";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
@@ -23,18 +9,37 @@ import data from "../../../../utils/constants/PackageTours";
 import AllPaketWisata from "../../../../components/AllPaketWisata/AllPaketWisata";
 import { ROLES } from "../../../../constants";
 import useAuth from "../../../../hooks/useAuth";
+// FROM OLD
+// import data from "../../../../utils/constants/Data";
+import imgLokasi from "../../../../assets/images/DetailWisata/DetailWisata-1/lokasi.png";
+// import imgAvatar from "../../../../assets/images/DetailWisata/DetailWisata-1/avatar.png";
+// import imgProfile from "../../../../assets/images/DetailWisata/DetailWisata-1/profile.png";
+import {
+  FaToilet,
+  FaParking,
+  FaBuilding,
+  FaSwimmingPool,
+  FaCampground,
+} from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
+import { MdMosque } from "react-icons/md";
+import { GiFlyingFox } from "react-icons/gi";
+import CardKuliner from "../../../../components//CardKuliner/CardKuliner";
+import dataFood from "../../../../utils/constants/Kuliner";
+import dataLodge from "../../../../utils/constants/Penginapan";
+import CardPenginapan from "../../../../components/CardPenginapan/CardPenginapan";
 
 const DetailPaketWisata = () => {
-  // dummy
-  const [packageTours, setPackageTours] = useState(data);
-  // real
+  // FROM OLD
+  const [culinars, setCulinars] = useState(dataFood);
+  const [lodges, setLodges] = useState(dataLodge);
+  const [TOURS, SETTOURS] = useState(data);
+  // const [packageTours, setPackageTours] = useState(data);
   const { auth, setAuth } = useAuth();
   const ADMIN = auth.roles.includes(ROLES.ADMIN);
   const CLIENT = auth.roles.includes(ROLES.CLIENT);
-  const [tourPacket, setTourPacket] = useState({});
-  const [tourFacilities, setTourFacilities] = useState([]);
-  const [culinaryFacilities, setCulinaryFacilities] = useState([]);
-  const [lodgingFacilities, setLodgingFacilities] = useState([]);
+  const [tour, setTour] = useState({});
+  const [facilities, setFacilities] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [images, setImages] = useState([]);
   const { slug } = useParams();
@@ -43,25 +48,17 @@ const DetailPaketWisata = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/tour-packets/slug/${slug}`
+          `http://localhost:8000/api/tours/slug/${slug}`
         );
 
         const data = response.data.data;
         console.log("data", data);
 
         // Update state with the fetched data
-        setTourPacket(data.tour_packet);
+        setTour(data.tour);
         setImages(data.tour_images);
-        setTourFacilities(data.tour_facilities);
-        setCulinaryFacilities(data.culinary_facilities);
-        setLodgingFacilities(data.lodging_facilities);
+        setFacilities(data.tour_facilities);
         setReviews(data.reviews);
-
-        console.log("Paket", tourPacket);
-        console.log("gambar", images);
-        console.log("wisata fasilitas", tourFacilities);
-        console.log("kuliner fasilitas", culinaryFacilities);
-        console.log("penginapan fasilitas", lodgingFacilities);
       } catch (error) {
         console.error(error);
       }
@@ -78,119 +75,81 @@ const DetailPaketWisata = () => {
           <div className="grid grid-flow-col grid-rows-2 gap-3">
             <img
               src={`http://localhost:8000${images[0]?.img_path}`}
-              alt="Image-1"
+              alt={""}
               className="w-full rounded-lg object-cover row-span-2 h-full"
             />
             <img
               src={`http://localhost:8000${images[1]?.img_path}`}
-              alt="Image-2"
+              alt={""}
               className="w-full rounded-lg object-cover"
             />
             <img
               src={`http://localhost:8000${images[2]?.img_path}`}
-              alt="Image-3"
               className="w-full rounded-lg object-cover"
             />
             <img
               src={`http://localhost:8000${images[3]?.img_path}`}
-              alt="Image-4"
               className="w-full rounded-lg object-cover row-span-2 h-full"
             />
           </div>
           <div className="flex lg:flex-row gap-8 flex-col">
-            <div className="flex flex-col gap-8 flex-[2_2_0%]">
-              <div className="flex flex-col gap-6 col-span-2">
+            <div className="flex flex-col gap-8 flex-[2_2_0%] ">
+              <div className="flex flex-col gap-6 col-span-2 ">
                 <div className="flex lg:flex-row flex-col justify-between gap-8">
                   <h2 className="text-primary-main uppercase font-bold lg:text-[48px] text-2xl">
-                    {tourPacket.title ?? ""}
+                    {tour.title ?? "JUDUL"}
                   </h2>
+                  <div className="flex gap-3 justify-start items-center">
+                    <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
+                    <div>
+                      <h4 className="lg:text-[32px] text-[16px]  font-bold">
+                        {tour.average_rating ?? 0}
+                      </h4>
+                      <p className="text-neutral-60 lg:text-base text-sm">
+                        {tour.reviews.lenght ?? 0} reviews
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-8 col-span-2">
-                <p className="lg:text-base text-sm">{"Deskripsi"}</p>
-              </div>
-              <div className="flex flex-col gap-8 col-span-2">
-                <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
-                  Wisata
-                </h3>
-                <p>{tourPacket.tour_description ?? ""}</p>
-                <a
-                  href={tourPacket.tour_link ?? ""}
-                  target="_blank"
-                  className="text-neutral-60"
-                >
-                  Lihat Maps
-                </a>
-                <div className="flex flex-col lg:flex-row gap-32">
-                  <FacilityList facilities={tourFacilities ?? ""} />
-                </div>
+                {/* FACILITY */}
+                <div className="grid lg:grid-cols-4 grid-cols-2"></div>
+                {/* END FACILITY */}
               </div>
               <div className="flex flex-col gap-8 col-span-2">
                 <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
-                  Kuliner
+                  Deskripsi
                 </h3>
-                <p>{tourPacket.culinary_description ?? null}</p>
-                <a
-                  href={tourPacket.culinary_link ?? ""}
-                  target="_blank"
-                  className="text-neutral-60"
-                >
-                  Lihat Maps
-                </a>
-                <div className="flex flex-col lg:flex-row gap-32">
-                  {/* GANTI DENGAN KOMPONEN FASILITAS */}
-                  <FacilityList facilities={culinaryFacilities ?? null} />
-                </div>
+                {/* DESCRP */}
+                <p className="lg:text-base text-sm">{tour.description}</p>
               </div>
               <div className="flex flex-col gap-8 col-span-2">
                 <h3 className="lg:text-[40px] font-bold text-primary-main text-[20px]">
-                  Penginapan
+                  Tiket & Jam Operasional
                 </h3>
-                <p>{tourPacket.lodging_description ?? null}</p>
-                <a
-                  href={tourPacket.lodging_description ?? ""}
-                  target="_blank"
-                  className="text-neutral-60"
-                >
-                  Lihat Maps
-                </a>
-                <div className="flex flex-col lg:flex-row gap-32">
-                  {/* GANTI DENGAN KOMPONEN FASILITAS */}
-                  <FacilityList facilities={lodgingFacilities ?? null} />
-                </div>
+                <ul className="list-disc px-5 lg:text-base text-sm">
+                  {/* TICKET OPERASIONAL */}
+                  <li>
+                    {tour.ticket_operasional ?? "HARGA DAN JAM OPERASIONAL"}
+                  </li>
+                </ul>
               </div>
             </div>
-            {/* rating and checkout */}
-            <div className=" flex flex-col gap-6  flex-1">
-              <div className="flex gap-3">
-                <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
-                <div>
-                  <h4 className="lg:text-[32px] text-[16px]  font-bold">
-                    {Number(tourPacket.average_rating) ?? 0}
-                  </h4>
-                  <p className="text-neutral-60 lg:text-base text-sm">
-                    {reviews.length ?? 0} reviews
-                  </p>
-                  {/* <p className="text-neutral-60">{}</p> */}
-                  <h5 className="font-bold lg:text-2xl text-xl">
-                    Rp. {Number(tourPacket.price) ?? 0}
-                  </h5>
-                </div>
-              </div>
-              {CLIENT && (
-                <>
-                  <Link
-                    to={`/paket-wisata/beli/${tourPacket.id}`}
-                    className="w-full text-center py-2 bg-primary-surface border-2 rounded-lg border-primary-main"
-                  >
-                    Beli
-                  </Link>
-                </>
-              )}
+            <div className=" flex flex-col gap-[20px] flex-1">
+              <img src={imgLokasi} alt="" />
+              {/* LOCATION DETAIL */}
+              <p className="lg:text-base text-sm">{tour.address ?? "ALAMAT"}</p>
+              {/* LOCATION LINK */}
+              <a
+                href={`${tour.address_link}`}
+                target="_blank"
+                className="text-neutral-60 lg:text-base text-sm"
+              >
+                Lihat Maps
+              </a>
             </div>
           </div>
-          {/* komentar */}
           <div className="flex flex-col gap-8">
+            {/* COMMENT */}
             <h3 className="lg:text-[40px] font-bold text-primary-main text[20px]">
               Komentar
             </h3>
@@ -201,10 +160,10 @@ const DetailPaketWisata = () => {
                     <img src={imgAvatar} alt="profile" />
                     <div>
                       <p className="lg:text-base text-sm font-bold">
-                        {packageTours[0].komentar[0].nama}
+                        {TOURS[0].komentar[0].nama}
                       </p>
                       <p className="lg:text-sm text-xs">
-                        {packageTours[0].komentar[0].waktu}
+                        {TOURS[0].komentar[0].waktu}
                       </p>
                     </div>
                   </div>
@@ -217,7 +176,7 @@ const DetailPaketWisata = () => {
                   </div>
                 </div>
                 <p className="lg:text-base text-sm px-[10px] line-clamp-3">
-                  {packageTours[0].komentar[0].description}
+                  {TOURS[0].komentar[0].description}
                 </p>
               </div>
               <div className="flex flex-col w-full shadow-md rounded-lg p-3 gap-3">
@@ -226,10 +185,10 @@ const DetailPaketWisata = () => {
                     <img src={imgAvatar} alt="profile" />
                     <div>
                       <p className="lg:text-base text-sm font-bold">
-                        {packageTours[0].komentar[0].nama}
+                        {TOURS[0].komentar[0].nama}
                       </p>
                       <p className="lg:text-sm text-xs">
-                        {packageTours[0].komentar[0].waktu}
+                        {TOURS[0].komentar[0].waktu}
                       </p>
                     </div>
                   </div>
@@ -242,7 +201,7 @@ const DetailPaketWisata = () => {
                   </div>
                 </div>
                 <p className="lg:text-base text-sm px-[10px] line-clamp-3">
-                  {packageTours[0].komentar[0].description}
+                  {TOURS[0].komentar[0].description}
                 </p>
               </div>
             </div>
@@ -278,7 +237,26 @@ const DetailPaketWisata = () => {
               </div>
             </div>
           </div>
-          {/* end komentar */}
+          <div>
+            <h3 className="text-[40px] font-bold text-primary-main">
+              Rekomendasi Penginapan
+            </h3>
+            <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
+              {lodges.map((lodge) => (
+                <CardPenginapan key={lodge.id} lodge={lodge} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-[40px] font-bold text-primary-main">
+              Rekomendasi Kuliner
+            </h3>
+            <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
+              {culinars.map((culinar) => (
+                <CardKuliner key={culinar.id} culinar={culinar} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <Footer />

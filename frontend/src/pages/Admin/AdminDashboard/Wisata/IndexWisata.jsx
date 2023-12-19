@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Navbar from "../../../../components/Navbar/Navbar";
-import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
-import Footer from "../../../../components/Footer/Footer";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Modal from "react-modal";
+import Footer from "../../../../components/Footer/Footer";
+import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
+import Navbar from "../../../../components/Navbar/Navbar";
 
-const IndexPaketWisata = () => {
-  const [tourPackets, setTourPackets] = useState([]);
+export default function IndexWista() {
+  const [tours, setTourPackets] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [packetToDelete, setPacketToDelete] = useState(null);
 
   useEffect(() => {
-    const fetchTourPackets = async () => {
+    const fetchTours = async () => {
       try {
         const response = await axios.get(
           "http://localhost:8000/api/tour-packets"
@@ -30,7 +30,7 @@ const IndexPaketWisata = () => {
       }
     };
 
-    fetchTourPackets();
+    fetchTours();
   }, []);
 
   const handleDelete = async () => {
@@ -40,9 +40,7 @@ const IndexPaketWisata = () => {
       );
       toast.success(response.data.message);
       // Update the state to reflect the changes
-      setTourPackets(
-        tourPackets.filter((packet) => packet.id !== packetToDelete)
-      );
+      setTourPackets(tours.filter((tour) => tour.id !== tourToDelete));
       closeDeleteModal(); // Close the modal after deletion
     } catch (error) {
       console.error("Error deleting tour packet:", error);
@@ -59,7 +57,6 @@ const IndexPaketWisata = () => {
     setPacketToDelete(null);
     setDeleteModalIsOpen(false);
   };
-
   return (
     <>
       <Modal
@@ -83,7 +80,7 @@ const IndexPaketWisata = () => {
           }}
         >
           <h2 className="text-white">Hapus</h2>
-          <p className="text-white">Hapus Paket Wisata?</p>
+          <p className="text-white">Hapus Wisata?</p>
           <div className="flex gap-3">
             <button
               onClick={handleDelete}
@@ -152,10 +149,10 @@ const IndexPaketWisata = () => {
                         No
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
-                        Judul Paket
+                        Judul Wisata
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
-                        Isi Artikel Paket
+                        Isi Artikel Wisata
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
                         Aksi
@@ -163,37 +160,37 @@ const IndexPaketWisata = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg">
-                    {Array.isArray(tourPackets) && tourPackets.length > 0 ? (
-                      tourPackets.map((packet, index) => (
-                        <tr key={packet.id}>
+                    {Array.isArray(tours) && tours.length > 0 ? (
+                      tours.map((tour, index) => (
+                        <tr key={tour.id}>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
                             {index + 1}
                           </td>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
-                            {packet.title}
+                            {tour.title}
                           </td>
                           <td className="px-6 py-4 text-sm  border border-neutral-50">
-                            {packet.description}
+                            {tour.description}
                           </td>
                           <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                             <Link
-                              to={`/dashboard/paket-wisata/edit/${packet.slug}`}
+                              to={`/dashboard/paket-wisata/edit/${tour.slug}`}
                               className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                             >
                               <BiSolidPencil className="text-white" />
                             </Link>
                             <button
-                              onClick={() => openDeleteModal(packet.id)}
+                              onClick={() => openDeleteModal(tour.id)}
                               className="px-4 py-2 bg-[#FD3550] rounded-lg"
                             >
                               <FaTrashCan className="text-white" />
                             </button>
                             {/* <button
-                              onClick={() => handleDelete(packet.id)}
-                              className="px-4 py-2 bg-[#FD3550] rounded-lg"
-                            >
-                              <FaTrashCan className="text-white" />
-                            </button> */}
+                          onClick={() => handleDelete(packet.id)}
+                          className="px-4 py-2 bg-[#FD3550] rounded-lg"
+                        >
+                          <FaTrashCan className="text-white" />
+                        </button> */}
                           </td>
                         </tr>
                       ))
@@ -261,6 +258,4 @@ const IndexPaketWisata = () => {
       <Footer />
     </>
   );
-};
-
-export default IndexPaketWisata;
+}

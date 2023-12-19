@@ -152,7 +152,6 @@ const renderFacilityIcon = (facilityId) => {
 };
 
 const FacilityList = ({ facilities }) => {
-  console.log(facilities);
   return (
     <div className="flex flex-wrap gap-3">
       {facilities.map((facility) => (

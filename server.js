@@ -13,6 +13,7 @@ const postRoutes = require("./routes/post.routes");
 const lodgingRoutes = require("./routes/lodging.routes");
 const culinaryRoutes = require("./routes/culinary.routes");
 const bankRoutes = require("./routes/bank.routes");
+const tourRoutes = require("./routes/tour.routes");
 const upload = require("./config/multer");
 
 app.use(morgan("dev"));
@@ -32,6 +33,8 @@ app.use("/api/posts", postRoutes);
 app.use("/api/lodgings", lodgingRoutes);
 app.use("/api/culinaries", culinaryRoutes);
 app.use("/api/banks", bankRoutes);
+app.use("api/tours", tourRoutes);
+
 app.use("/upload", upload.array("images", 4), (req, res) => {
   const imagePaths = req.files;
   console.log(imagePaths);

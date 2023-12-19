@@ -1,15 +1,32 @@
 const Router = require("express").Router();
+const {
+  createTour,
+  updateTour,
+  deleteTour,
+  getOneTour,
+  getAllTours,
+  uploadImages,
+  updateImages,
+  getAllFacilities,
+  addTourFacility,
+  updateTourFacility,
+  getOneTourBySlug,
+} = require("../controllers/tour.controller");
+const upload = require("../config/multer");
 
-app.get("/"); // get data before creating tour
-app.post("/"); // save data
-app.get("/:slug"); // get tour's slug for getting infos
-app.put("/:slug"); // for updating tour information
-app.delete("/:slug"); // for soft delete tour
+Router.get("/", getAllTours);
+Router.post("/", createTour);
+Router.get("/slug/:slug", getOneTourBySlug);
+Router.get("/:id", getOneTour);
+Router.put("/update/:id", updateTour);
+Router.delete("/delete/:id", deleteTour);
+
+// add and update facilities
+Router.post("/facilities/:id", addTourFacility);
+Router.put("/facilities/:id", updateTourFacility);
 
 // For handling user tour image
-app.get("/image"); // get information about image
-app.post("/image"); // for uploading new image
-app.put("/image"); // replace image
-app.delete("/image"); // for deleting image
+Router.post("/image/:id", [upload.array("images", 4), uploadImages]);
+Router.put("/image/:id", [upload.array("images", 4), updateImages]);
 
 module.exports = Router;

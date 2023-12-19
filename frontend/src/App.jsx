@@ -2,36 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Authentikasi/Login/Login";
 import Register from "./pages/Authentikasi/Register/Register";
 import Beranda from "./pages/Beranda/Beranda";
-import DetailKuliner from "./pages/DetailKuliner/DetailKuliner";
-import DetailPaket from "./pages/DetailPaket/DetailPaket";
-import DetailPenginapan from "./pages/DetailPenginapan/DetailPenginapan";
-import DetailWisata from "./pages/DetailWisata/DetailWisata";
 import Kontak from "./pages/Kontak/Kontak";
-import PaketWisata from "./pages/PaketWisata/PaketWisata";
 import TentangKami from "./pages/TentangKami/TentangKami";
 import Wisata from "./pages/Wisata/Wisata";
 import Blog from "./pages/Blog/Blog";
 import DetailBlog from "./pages/Blog/DetailBlog";
-// import Profile from "./pages/Profile/Profile";
-// import Riwayat from "./pages/Profile/Riwayat";
-// import Order from "./pages/Profile/Order";
-// import Setting from "./pages/Profile/Setting";
-// import Checkout from "./pages/Checkout/Checkout";
-// import KelolaArtikel from "./pages/AdminOld/KelolaArtikel/KelolaArtikel";
-// import FormArtikel from "./pages/AdminOld/KelolaArtikel/formArtikel";
-// import KelolaPengguna from "./pages/AdminOld/KelolaPengguna/KelolaPengguna";
-// import FormEditUser from "./pages/AdminOld/KelolaPengguna/FormEditUser";
-// import KelolaWisata from "./pages/AdminOld/KelolaWisata/KelolaWisata";
-// import FormWisata from "./pages/AdminOld/KelolaWisata/FormWisata";
-// import KelolaPaketWisata from "./pages/AdminOld/KelolaPaketWisata/KelolaPaketWisata";
-// import FormPaketWisata from "./pages/AdminOld/KelolaPaketWisata/FormPaketWisata";
-// import KelolaPenginapan from "./pages/AdminOld/KelolaPenginapan/KelolaPenginapan";
-// import FormPenginapan from "./pages/AdminOld/KelolaPenginapan/FormPenginapan";
-// import KelolaKuliner from "./pages/AdminOld/KelolaKuliner/KelolaKuliner";
-// import FormKuliner from "./pages/AdminOld/KelolaKuliner/FormKuliner";
-// import KelolaKomentar from "./pages/AdminOld/KelolaKomentar/KelolaKomentar";
-// import KelolaPembayaran from "./pages/AdminOld/KelolaPembayaran/KelolaPembayaran";
-// import DetailPembayaran from "./pages/AdminOld/KelolaPembayaran/DetailPembayaran";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
@@ -46,9 +21,10 @@ import EditPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/EditPaketW
 import BuatPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/BuatPaketWisata";
 import DetilPaketWisata from "./pages/Admin/AdminDashboard/PaketWisata/DetilPaketWisata";
 
-import IndexBlog from "./pages/Admin/AdminDashboard/Blog/IndexBlog";
-import BuatBlog from "./pages/Admin/AdminDashboard/Blog/BuatBlog";
-import EditBlog from "./pages/Admin/AdminDashboard/Blog/IndexBlog";
+import IndexWisata from "./pages/Admin/AdminDashboard/Wisata/IndexWisata";
+import BuatWisata from "./pages/Admin/AdminDashboard/Wisata/BuatWisata";
+import EditWisata from "./pages/Admin/AdminDashboard/Wisata/EditWisata";
+import DetilWisata from "./pages/Admin/AdminDashboard/Wisata/DetilWisata";
 
 const ROLES = {
   CLIENT: "8912",
@@ -79,17 +55,21 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/detil/:slug" element={<DetailBlog />} />
           {/* PAKET WISATA */}
-          <Route path="/paket-wisata" element={<PaketWisata />} />
+          {/* <Route path="/paket-wisata" element={<PaketWisata />} /> */}
           <Route
             path="/dashboard/paket-wisata/detil/:slug"
             element={<DetilPaketWisata />}
           />
           {/* WISATA */}
-          <Route path="/wisata" element={<Wisata />} />
-          <Route path="/wisata/detail-wisata" element={<DetailWisata />} />
+          {/* <Route path="/wisata" element={<Wisata />} /> */}
+          <Route
+            path="/dashboard/wisata/detil/:slug"
+            element={<DetilWisata />}
+          />
+          {/* <Route path="/wisata/detail-wisata/:slug" element={<DetilWisata />} /> */}
           {/* DETIL PENGINAPAN/KULINER */}
-          <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} />
-          <Route path="/detail-kuliner/:id" element={<DetailKuliner />} />
+          {/* <Route path="/detail-penginapan/:id" element={<DetailPenginapan />} /> */}
+          {/* <Route path="/detail-kuliner/:id" element={<DetailKuliner />} /> */}
 
           {/* DAHSBOARD ADMIN */}
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
@@ -109,13 +89,10 @@ function App() {
 
             {/* END PAKET WISATA */}
             {/* WISATA */}
-            {/* <Route path="/dashboard/wisata" element={<IndexWisata />} />
+            <Route path="/dashboard/wisata" element={<IndexWisata />} />
             <Route path="/dashboard/wisata/baru" element={<BuatWisata />} />
-            <Route path="/dashboard/wisata/edit/:id" element={<EditWisata />} /> */}
-            {/* <Route
-              path="/dashboard/wisata/detil"
-              element={<EditWisata />}
-            /> */}
+            <Route path="/dashboard/wisata/edit/:id" element={<EditWisata />} />
+
             {/* END WISATA */}
             {/* KULINER */}
             {/* <Route path="/dashboard/kuliner" element={<IndexKuliner />} />
