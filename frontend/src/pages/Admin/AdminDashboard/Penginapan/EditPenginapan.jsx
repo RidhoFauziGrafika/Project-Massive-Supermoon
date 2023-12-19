@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Select from "react-select";
 
-const EditWisata = () => {
+const EditPenginapan = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [id, setId] = useState("");
@@ -48,6 +48,7 @@ const EditWisata = () => {
     title: "",
     price: "",
     categories: "",
+    price: "",
     address: "",
     address_link: "",
     description: "",
@@ -601,4 +602,4 @@ const EditWisata = () => {
   );
 };
 
-export default EditWisata;
+export default EditPenginapan;

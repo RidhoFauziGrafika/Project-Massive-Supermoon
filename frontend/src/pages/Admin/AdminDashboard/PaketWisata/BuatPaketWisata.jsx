@@ -80,7 +80,6 @@ const BuatPaketWisata = () => {
                         <input
                           type="text"
                           name="title"
-                          placeholder="Nama Paket"
                           className="w-full border border-neutral-50 rounded-lg py-2 px-3"
                           value={formData.title}
                           onChange={handleChange}

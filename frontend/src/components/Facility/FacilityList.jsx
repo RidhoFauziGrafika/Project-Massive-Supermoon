@@ -5,6 +5,7 @@ import {
   FaCarAlt,
   FaCarSide,
   FaHorse,
+  FaMosque,
   FaParking,
   FaPlane,
   FaRunning,
@@ -44,7 +45,11 @@ import {
 } from "react-icons/md";
 import { RiLifebuoyFill } from "react-icons/ri";
 import { SiGooglehome } from "react-icons/si";
-import { PiParkBold, PiTelevisionSimpleFill } from "react-icons/pi";
+import {
+  PiMotorcycleBold,
+  PiParkBold,
+  PiTelevisionSimpleFill,
+} from "react-icons/pi";
 import { CgGym, CgSmartHomeRefrigerator } from "react-icons/cg";
 import { TbMassage } from "react-icons/tb";
 
