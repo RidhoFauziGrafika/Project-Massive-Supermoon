@@ -650,8 +650,9 @@ const uploadImages = asyncHandler(async (req, res) => {
     }
 
     // Access the file details using req.files
+    // const imagePaths = req.files.map((file) => `uploads/${file.filename}`);
     const imagePaths = req.files.map((file) =>
-      path.join("/storage", `/${file.filename}`)
+      path.join("/public/images/", `${file.filename}`)
     );
 
     // Your logic to save data in the database
@@ -683,7 +684,7 @@ const uploadImages = asyncHandler(async (req, res) => {
       await Promise.all(
         imagePaths.map(async (imagePath) => {
           try {
-            await fs.unlink(imagePath);
+            await fs.unlink(path.join(__dirname, imagePath));
             console.log(`File ${imagePath} deleted successfully.`);
           } catch (deleteError) {
             console.error(
@@ -742,7 +743,11 @@ const updateImages = asyncHandler(async (req, res) => {
 
     await Promise.all(
       oldImages.map(async (oldImage) => {
-        const fullPath = path.join(__dirname, "public", oldImage.img_path);
+        const fullPath = path.join(
+          __dirname,
+          "public/images/",
+          oldImage.img_path
+        );
         try {
           await fs.unlink(fullPath);
           console.log(`Old image ${fullPath} deleted successfully.`);
@@ -756,7 +761,7 @@ const updateImages = asyncHandler(async (req, res) => {
 
     // Access the file details using req.files
     const newImagePaths = req.files.map((file) =>
-      path.join("/storage", `/${file.filename}`)
+      path.join("/public/images/", `${file.filename}`)
     );
 
     // delete old images from db
@@ -792,7 +797,7 @@ const updateImages = asyncHandler(async (req, res) => {
       await Promise.all(
         newImagePaths.map(async (newImagePath) => {
           try {
-            await fs.unlink(newImagePath);
+            await fs.unlink(path.join(__dirname, newImagePath));
             console.log(
               `Newly uploaded image ${newImagePath} deleted successfully.`
             );
@@ -859,7 +864,8 @@ const getAllFacilities = asyncHandler(async (req, res) => {
 
 // TOUR FACILITIES POST AND PUT (CREATE AND UPDATE)
 const addTourFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -906,7 +912,8 @@ const addTourFacility = asyncHandler(async (req, res) => {
 });
 
 const updateTourFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -961,7 +968,8 @@ const updateTourFacility = asyncHandler(async (req, res) => {
 
 // CULINARY FACILITIES POST AND PUT (CREATE AND UPDATE)
 const addCulinaryFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -1008,7 +1016,8 @@ const addCulinaryFacility = asyncHandler(async (req, res) => {
 });
 
 const updateCulinaryFacilities = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -1063,7 +1072,8 @@ const updateCulinaryFacilities = asyncHandler(async (req, res) => {
 
 // LODGING FACILITIES POST AND PUT (CREATE AND UPDATE)
 const addLodgingFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -1110,7 +1120,8 @@ const addLodgingFacility = asyncHandler(async (req, res) => {
 });
 
 const updateLodgingFacilities = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||

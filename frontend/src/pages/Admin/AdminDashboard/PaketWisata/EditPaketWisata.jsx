@@ -16,13 +16,29 @@ const EditPaketWisata = () => {
   const [imagesUpload, setImagesUpload] = useState({});
   const [imagesUpdate, setImagesUpdate] = useState({});
   const [facilitiesOptions, setFacilitiesOptions] = useState([]);
-  const [selectedFacilitiesTour, setSelectedFacilitiesTour] = useState([]);
-  const [selectedFacilitiesCulinary, setSelectedFacilitiesCulinary] = useState(
-    []
-  );
-  const [selectedFacilitiesLodging, setSelectedFacilitiesLodging] = useState(
-    []
-  );
+
+  const [tourFacilities, setTourFacilities] = useState([]);
+  const [culinaryFacilities, setCulinaryFacilities] = useState([]);
+  const [lodgingFacilities, setLodgingFacilities] = useState([]);
+
+  const [selectedUploadFacilitiesTour, setSelectedUploadFacilitiesTour] =
+    useState([]);
+  const [selectedUpdateFacilitiesTour, setSelectedUpdateFacilitiesTour] =
+    useState([]);
+
+  const [
+    selectedUploadFacilitiesCulinary,
+    setSelectedUploadFacilitiesCulinary,
+  ] = useState([]);
+  const [
+    selectedUpdateFacilitiesCulinary,
+    setSelectedUpdateFacilitiesCulinary,
+  ] = useState([]);
+
+  const [selectedUploadFacilitiesLodging, setSelectedUploadFacilitiesLodging] =
+    useState([]);
+  const [selectedUpdateFacilitiesLodging, setSelectedUpdateFacilitiesLodging] =
+    useState([]);
 
   useEffect(() => {
     // Fetch facilities data from the API
@@ -74,8 +90,14 @@ const EditPaketWisata = () => {
         setImages(tourPacketData.tour_images ?? []);
         setFormData({
           ...formData,
-          ...tourPacketData.tour_packet, // Assuming the tour packet data is nested under "tour_packet" key
+          ...tourPacketData.tour_packet,
         });
+        setTourFacilities(tourPacketData.tour_facilities);
+        console.log("Tour Facilities", tourFacilities);
+        setCulinaryFacilities(tourPacketData.culinary_facilities);
+        console.log("Culinary Culinary", culinaryFacilities);
+        setLodgingFacilities(tourPacketData.lodging_facilities);
+        console.log("Lodging Culinary", lodgingFacilities);
       } catch (error) {
         console.error("Error fetching tour packet data:", error);
       }
@@ -183,6 +205,10 @@ const EditPaketWisata = () => {
     console.log("gambar di update", imagesUpdate);
   }, [imagesUpdate]);
 
+  useEffect(() => {
+    console.log("wisata fasilitas upload", selectedUpdateFacilitiesTour);
+  }, [selectedUpdateFacilitiesTour]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -205,6 +231,137 @@ const EditPaketWisata = () => {
     }
   };
 
+  const handleSubmitUploadTourFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/tour-packets/tour-facilities/${id}`,
+        selectedUploadFacilitiesTour
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas wisata ditambahkan!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
+
+  const handleSubmitUpdateTourFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/tour-packets/tour-facilities/${id}`,
+        selectedUpdateFacilitiesTour
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas wisata diubah!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
+
+  const handleSubmitUploadCulinaryFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/tour-packets/culinary-facilities/${id}`,
+        selectedUploadFacilitiesCulinary
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas kuliner ditambahkan!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
+
+  const handleSubmitUpdateCulinaryFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/tour-packets/culinary-facilities/${id}`,
+        selectedUpdateFacilitiesCulinary
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas kuliner diubah!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
+
+  const handleSubmitUploadLodgingFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/tour-packets/lodging-facilities/${id}`,
+        selectedUploadFacilitiesLodging
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas penginapan ditambahkan!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
+
+  const handleSubmitUpdateLodgingFacility = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/tour-packets/lodging-facilities/${id}`,
+        selectedUpdateFacilitiesLodging
+      );
+      console.log(response?.data);
+      toast.success("Fasilitas penginapan diubah!");
+      // navigate("/dashboard/paket-wisata", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        toast.error("Can't connect to a server!");
+      } else {
+        toast.error("Error setting up the request!");
+      }
+    }
+  };
   return (
     <>
       <Navbar />
@@ -543,99 +700,234 @@ const EditPaketWisata = () => {
             </>
           )}
           {/* FASILITAS WISATA */}
-          <form className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
-            <div className="m-8">
-              <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                Tambah Fasilitas Wisata
-              </h6>
-            </div>
-            <div className="px-4 py-6">
-              <div className="w-full">
+          {tourFacilities.length === 0 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUploadTourFacility}
+              >
                 <div className="m-8">
-                  <Select
-                    className="input-cont"
-                    placeholder="Pilih"
-                    options={facilitiesOptions}
-                    isMulti={true}
-                    onChange={(selectedOptions) =>
-                      setSelectedFacilitiesTour(selectedOptions)
-                    }
-                  />
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Tambah Fasilitas Wisata
+                  </h6>
                 </div>
-                <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
-                  <button
-                    type="submit"
-                    className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
-                  >
-                    Tambah
-                  </button>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) => {
+                          console.log("Selected Options:", selectedOptions);
+                          setSelectedUploadFacilitiesTour(selectedOptions);
+                        }}
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </form>
-          {/* FASILITAS KULINER */}
-          <form className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
-            <div className="m-8">
-              <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                Tambah Kuliner Wisata
-              </h6>
-            </div>
-            <div className="px-4 py-6">
-              <div className="w-full">
+              </form>
+            </>
+          )}
+          {tourFacilities.length > 1 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUpdateTourFacility}
+              >
                 <div className="m-8">
-                  <Select
-                    className="input-cont"
-                    placeholder="Pilih"
-                    options={facilitiesOptions}
-                    isMulti={true}
-                    onChange={(selectedOptions) =>
-                      setSelectedFacilitiesCulinary(selectedOptions)
-                    }
-                  />
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Tambah Fasilitas Wisata
+                  </h6>
                 </div>
-                <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
-                  <button
-                    type="submit"
-                    className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
-                  >
-                    Tambah
-                  </button>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) =>
+                          setSelectedUpdateFacilitiesTour(selectedOptions)
+                        }
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </form>
+              </form>
+            </>
+          )}
 
           {/* FASILITAS KULINER */}
-          <form className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
-            <div className="m-8">
-              <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
-                Tambah Penginapan
-              </h6>
-            </div>
-            <div className="px-4 py-6">
-              <div className="w-full">
+          {culinaryFacilities.length === 0 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUploadCulinaryFacility}
+              >
                 <div className="m-8">
-                  <Select
-                    className="input-cont"
-                    placeholder="Pilih"
-                    options={facilitiesOptions}
-                    isMulti={true}
-                    onChange={(selectedOptions) =>
-                      setSelectedFacilitiesLodging(selectedOptions)
-                    }
-                  />
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Tambah Kuliner Wisata
+                  </h6>
                 </div>
-                <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
-                  <button
-                    type="submit"
-                    className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
-                  >
-                    Tambah
-                  </button>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) =>
+                          setSelectedUploadFacilitiesCulinary(selectedOptions)
+                        }
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </form>
+              </form>
+            </>
+          )}
+
+          {culinaryFacilities.length > 0 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUpdateCulinaryFacility}
+              >
+                <div className="m-8">
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Tambah Kuliner Wisata
+                  </h6>
+                </div>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) =>
+                          setSelectedUpdateFacilitiesCulinary(selectedOptions)
+                        }
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          )}
+
+          {/* FASILITAS PENGINAPAN */}
+          {lodgingFacilities.length === 0 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUploadLodgingFacility}
+              >
+                <div className="m-8">
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Tambah Penginapan
+                  </h6>
+                </div>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) =>
+                          setSelectedUploadFacilitiesLodging(selectedOptions)
+                        }
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          )}
+          {lodgingFacilities.length > 0 && (
+            <>
+              <form
+                className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8"
+                onSubmit={handleSubmitUpdateLodgingFacility}
+              >
+                <div className="m-8">
+                  <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
+                    Update Penginapan
+                  </h6>
+                </div>
+                <div className="px-4 py-6">
+                  <div className="w-full">
+                    <div className="m-8">
+                      <Select
+                        className="input-cont"
+                        placeholder="Pilih"
+                        options={facilitiesOptions}
+                        isMulti={true}
+                        onChange={(selectedOptions) =>
+                          setSelectedUpdateFacilitiesLodging(selectedOptions)
+                        }
+                      />
+                    </div>
+                    <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
+                      <button
+                        type="submit"
+                        className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
+                      >
+                        Tambah
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          )}
         </div>
       </div>
 

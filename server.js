@@ -21,7 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
 
 app.use(errorHandler);
-app.use("/storage", express.static(path.join(__dirname, "public")));
+app.use(
+  "/public/images/",
+  express.static(path.join(__dirname, "public/images/"))
+);
 app.use("/api/auth", authRoutes);
 app.use("/api/tour-packets", tourPacketRoutes);
 app.use("/api/payments", paymentRoutes);

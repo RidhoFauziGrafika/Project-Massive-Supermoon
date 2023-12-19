@@ -32,16 +32,20 @@ Router.delete("/", deleteTourPacket); // for soft delete tour get id from json
 Router.get("/facilities", getAllFacilities); // get all facilities for adding or updating wisata, penginapan, kuliner
 // Wisata
 Router.get("/:id", getOneTourPacket); //MUST PROVIDE JSON ID
-Router.post("/tour-facilities", addTourFacility);
-Router.put("/tour-facilities", updateTourFacility);
+Router.post("/tour-facilities/:id", addTourFacility);
+// Router.post("/tour-facilities/:id", (req, res) => {
+//   req.body;
+//   res.json({ success: true });
+// });
+Router.put("/tour-facilities/:id", updateTourFacility);
 
 // Penginapan
-Router.post("/inn-facilities", addLodgingFacility);
-Router.put("/inn-facilities", updateLodgingFacilities);
+Router.post("/lodging-facilities/:id", addLodgingFacility);
+Router.put("/lodging-facilities/:id", updateLodgingFacilities);
 
 // kuliner
-Router.post("/culinary-facilities", addCulinaryFacility);
-Router.put("/culinary-facilities", updateCulinaryFacilities);
+Router.post("/culinary-facilities/:id", addCulinaryFacility);
+Router.put("/culinary-facilities/:id", updateCulinaryFacilities);
 
 Router.post("/image/:id", [upload.array("images", 4), uploadImages]);
 
