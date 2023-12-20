@@ -38,7 +38,7 @@ const Riwayat = () => {
           </div>
           <div className="flex justify-center">
             <Link
-              to="/order"
+              to="/tabel-order"
               className="items-center px-3 py-1 lg:px-4 lg:py-2 lg:text-base text-sm text-center text-white border-solid border-2 border-primary-main bg-primary-main rounded-lg"
             >
               Lihat Semua

@@ -33,6 +33,7 @@ import FormKuliner from "./pages/Admin/KelolaKuliner/FormKuliner";
 import KelolaKomentar from "./pages/Admin/KelolaKomentar/KelolaKomentar";
 import KelolaPembayaran from "./pages/Admin/KelolaPembayaran/KelolaPembayaran";
 import DetailPembayaran from "./pages/Admin/KelolaPembayaran/DetailPembayaran";
+import TabelOrder from "./pages/Profile/TabelOrder";
 
 function App() {
   return (
@@ -98,6 +99,7 @@ function App() {
             path="/dashboard/detailPembayaran"
             element={<DetailPembayaran />}
           />
+          <Route path="/tabel-order" element={<TabelOrder />} />
         </Routes>
       </Router>
     </>

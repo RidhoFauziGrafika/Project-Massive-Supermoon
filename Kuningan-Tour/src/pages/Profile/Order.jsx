@@ -1,5 +1,5 @@
 import React from "react";
-import AuthNavbar from "../../components/Navbar/AuthNavbar";
+import buktiTransaksi from "../../assets/images/Detail-order/Bukti-transaksi.png";
 import Footer from "../../components/Footer/Footer";
 import { Navbar } from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -71,6 +71,16 @@ const Order = () => {
             <div className="flex justify-between items-center">
               <p className="lg:text-base text-xs">Nomor Telepon</p>
               <p className="lg:text-base text-xs">08954162748523</p>
+            </div>
+          </div>
+          <div className="w-full bg-neutral-10  rounded-lg mb-5 px-4 py-8">
+            <div className="flex justify-between items-center mb-10">
+              <h6 className="lg:text-xl text-base font-bold">
+                Bukti Transaksi
+              </h6>
+            </div>
+            <div className="flex justify-between items-center mb-10">
+              <img src={buktiTransaksi} width="300" />
             </div>
           </div>
           <Link
