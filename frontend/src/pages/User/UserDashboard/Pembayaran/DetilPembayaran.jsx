@@ -7,7 +7,7 @@ import Select from "react-select";
 import { FaBullseye } from "react-icons/fa";
 import axios from "axios";
 
-const DetilTransaksi = () => {
+const DetilPembayaran = () => {
   const [id, setId] = useState("");
   const [isDone, setIsDone] = useState(false);
   const [transaction, setTransaction] = useState({});
@@ -219,4 +219,4 @@ const DetilTransaksi = () => {
   );
 };
 
-export default DetilTransaksi;
+export default DetilPembayaran;

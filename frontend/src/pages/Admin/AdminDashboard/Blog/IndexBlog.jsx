@@ -7,8 +7,9 @@ import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
+import Footer from "../../../../components/Footer/Footer";
 
-export default function Blog() {
+export default function IndexBlog() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function Blog() {
                   Kelola Artikel
                 </h1>
                 <Link
-                  to="/dashboard/formArtikel"
+                  to="/dashboard/artikel/baru"
                   className="w-fit lg:px-4 lg:py-2 px-3 py-2 bg-primary-main rounded-lg text-white lg:text-base text-xs flex gap-3 items-center"
                 >
                   <FaPlus className="lg:w-5 lg:h-5 w-3 h-3" />

@@ -8,7 +8,6 @@ const app = express();
 const morgan = require("morgan");
 const tourPacketRoutes = require("./routes/tourPacket.routes");
 const path = require("path");
-const paymentRoutes = require("./routes/payment.routes");
 const postRoutes = require("./routes/post.routes");
 const lodgingRoutes = require("./routes/lodging.routes");
 const culinaryRoutes = require("./routes/culinary.routes");
@@ -28,7 +27,6 @@ app.use(
 );
 app.use("/api/auth", authRoutes);
 app.use("/api/tour-packets", tourPacketRoutes);
-app.use("/api/payments", paymentRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/lodgings", lodgingRoutes);
 app.use("/api/culinaries", culinaryRoutes);

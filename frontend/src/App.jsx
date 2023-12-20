@@ -4,7 +4,6 @@ import Register from "./pages/Authentikasi/Register/Register";
 import Beranda from "./pages/Beranda/Beranda";
 import Kontak from "./pages/Kontak/Kontak";
 import TentangKami from "./pages/TentangKami/TentangKami";
-import Wisata from "./pages/Wisata/Wisata";
 import Blog from "./pages/Blog/Blog";
 import DetailBlog from "./pages/Blog/DetailBlog";
 import { ToastContainer } from "react-toastify";
@@ -36,6 +35,22 @@ import BuatKuliner from "./pages/Admin/AdminDashboard/Kuliner/BuatKuliner";
 import EditKuliner from "./pages/Admin/AdminDashboard/Kuliner/EditKuliner";
 import DetilKuliner from "./pages/Admin/AdminDashboard/Kuliner/DetilKuliner";
 
+import IndexTransaksi from "./pages/Admin/AdminDashboard/Transaksi/IndexTransaksi";
+import DetilTransaksi from "./pages/Admin/AdminDashboard/Transaksi/DetilTransaksi";
+
+import IndexBlog from "./pages/Admin/AdminDashboard/Blog/IndexBlog";
+import BuatBlog from "./pages/Admin/AdminDashboard/Blog/BuatBlog";
+import EditBlog from "./pages/Admin/AdminDashboard/Blog/EditBlog";
+import DetilBlog from "./pages/Admin/AdminDashboard/Blog/DetilBlog";
+
+import PaketWisata from "./pages/Public/PaketWisata";
+import Wisata from "./pages/Public/Wisata";
+import Checkout from "./pages/User/Checkout/Checkout";
+
+import DetilPembayaran from "./pages/User/UserDashboard/Pembayaran/DetilPembayaran";
+import IndexPembayaran from "./pages/User/UserDashboard/Pembayaran/IndexPembayaran";
+import MyDashboard from "./pages/User/UserDashboard/Mydashboard";
+
 const ROLES = {
   CLIENT: "8912",
   ADMIN: "6501",
@@ -64,14 +79,14 @@ function App() {
           {/* BLOG */}
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/detil/:slug" element={<DetailBlog />} />
-          {/* PAKET WISATA */}
-          {/* <Route path="/paket-wisata" element={<PaketWisata />} /> */}
           <Route
             path="/dashboard/paket-wisata/detil/:slug"
             element={<DetilPaketWisata />}
           />
+          {/* PAKET WISATA */}
+          <Route path="/paket-wisata" element={<PaketWisata />} />
           {/* WISATA */}
-          {/* <Route path="/wisata" element={<Wisata />} /> */}
+          <Route path="/wisata" element={<Wisata />} />
           <Route
             path="/dashboard/wisata/detil/:slug"
             element={<DetilWisata />}
@@ -139,9 +154,12 @@ function App() {
             {/* <Route path="/dashboard/penginapan/detil" element={<DetilWisataPenginapan />} /> */}
             {/* END PENGINAPAN */}
             {/* BLOG */}
-            {/* <Route path="/dashboard/blog" element={<IndexBlog />} />
-            <Route path="/dashboard/blog/baru" element={<BuatBlog />} />
-            <Route path="/dashboard/blog/edit/:id" element={<EditBlog />} /> */}
+            <Route path="/dashboard/artikel" element={<IndexBlog />} />
+            <Route path="/dashboard/artikel/baru" element={<BuatBlog />} />
+            <Route
+              path="/dashboard/artikel/edit/:slug"
+              element={<EditBlog />}
+            />
             {/* END BLOG */}
             {/* USER */}
             {/* <Route path="/dashboard/user" element={<IndexUser />} />
@@ -149,37 +167,27 @@ function App() {
             <Route path="/dashboard/user/edit/:id" element={<EditUser />} />
             <Route path="/dashboard/user/detil/:id" element={<DetilUser />} /> */}
             {/* END USER */}
-            {/* BANK */}
-            {/* <Route path="/dashboard/bank" element={<IndexBank />} />
-            <Route path="/dashboard/bank/baru" element={<BuatBank />} />
-            <Route path="/dashboard/bank/edit/:id" element={<EditBank />} />
-            <Route path="/dashboard/bank/detil/:id" element={<DetilBank />} /> */}
-            {/* END BANK */}
             {/* TRANSAKSI */}
-            {/* <Route path="/dashboard/transaksi" element={<IndexTransaksi />} />
+            <Route path="/dashboard/transaksi" element={<IndexTransaksi />} />
             <Route
               path="/dashboard/transaksi/detil/:id"
               element={<DetilTransaksi />}
-            /> */}
+            />
             {/* <Route path="/dashboard/transaksi/edit" element={<EditTransaksi />} /> */}
             {/* END TRANSAKSI */}
           </Route>
           {/* END OF DASHBOARD ADMIN */}
 
           {/* USERS */}
-          {/* <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT]} />}>
-            <Route path="profil" element={<IndexProfil />} />
-            <Route path="profil/transaksi" element={<IndexUserTransaksi />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT]} />}>
+            <Route path="mydashboard" element={<MyDashboard />} />
+            <Route path="mydashboard/transaksi" element={<IndexPembayaran />} />
             <Route
-              path="profil/transaksi/detil/:id"
-              element={<DetilUserTransaksi />}
+              path="mydashboard/transaksi/detil/:id"
+              element={<DetilPembayaran />}
             />
-            <Route path="profil/akun" element={<DetilUserTransaksi />} />
-            <Route
-              path="/paket-wisata/detil/:slug/beli"
-              element={<BeliPaketWisata />}
-            />
-          </Route> */}
+            <Route path="/paket-wisata/beli/:id" element={<Checkout />} />
+          </Route>
           {/* END OF USERS */}
 
           <Route path="/unauthorized" element={<Unauthorized />} />

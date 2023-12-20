@@ -1,109 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Navbar from "../../../../components/Navbar/Navbar";
-import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
-import Footer from "../../../../components/Footer/Footer";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import Modal from "react-modal";
+import Sidebar from "../../../../components/Sidebar/Sidebar";
 
-const IndexTransaksi = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [dataToDelete, setDataToDelete] = useState(null);
-
-  const UPDATE_URL = "/dashboard/penginapan/edit";
-
-  useEffect(() => {
-    const fetchTours = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/transactions"
-        );
-        console.log(response?.data.data);
-        setTransactions(response.data.data.transactions);
-      } catch (error) {
-        console.error("Error fetching lodging packets:", error);
-      }
-    };
-
-    fetchTours();
-  }, []);
-
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/lodgings/delete/${dataToDelete}`
-      );
-      toast.success(response.data.message);
-      // Update the state to reflect the changes
-      setTransactions((prevData) =>
-        prevData.filter((lodgi) => lodgi.id !== dataToDelete)
-      );
-      closeDeleteModal(); // Close the modal after deletion
-      // window.location.reload();
-    } catch (error) {
-      console.error("Error deleting tour packet:", error);
-      toast.error("Error deleting tour packet!");
-    }
-  };
-
-  const openDeleteModal = (id) => {
-    setDataToDelete(id);
-    setDeleteModalIsOpen(true);
-  };
-
-  const closeDeleteModal = () => {
-    setDataToDelete(null);
-    setDeleteModalIsOpen(false);
-  };
+const DetilPembayaran = () => {
   return (
     <>
-      <Modal
-        isOpen={deleteModalIsOpen}
-        onRequestClose={closeDeleteModal}
-        contentLabel="Delete Confirmation"
-        className="modal"
-        // overlayClassName="overlay"
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 9999,
-        }}
-      >
-        <div
-          className="p-8 bg-primary-main surface rounded-lg"
-          style={{
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h2 className="text-white">Hapus</h2>
-          <p className="text-white">Hapus Wisata?</p>
-          <div className="flex gap-3">
-            <button
-              onClick={handleDelete}
-              className="px-4 py-2 bg-secondary-main rounded-lg"
-            >
-              Ya
-            </button>
-            <button
-              onClick={closeDeleteModal}
-              className="px-4 py-2 bg-neutral-50 text-neutral-100 rounded-lg"
-            >
-              Tidak
-            </button>
-          </div>
-        </div>
-      </Modal>
       <Navbar />
       <div className="font-productSans bg-[#F7F7FF] flex flex-row">
-        <SidebarAdmin />
+        <Sidebar />
         <div className="w-full px-6 py-10 overflow-auto">
           <div className="w-full bg-neutral-10 rounded-lg">
             <div className="px-4 py-6">
@@ -181,7 +89,7 @@ const IndexTransaksi = () => {
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                         <Link
-                          to="/dashboard/transaksi/detil/:id"
+                          to="/order"
                           className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                         >
                           <FaEye className="text-white" />
@@ -246,4 +154,4 @@ const IndexTransaksi = () => {
   );
 };
 
-export default IndexTransaksi;
+export default DetilPembayaran;

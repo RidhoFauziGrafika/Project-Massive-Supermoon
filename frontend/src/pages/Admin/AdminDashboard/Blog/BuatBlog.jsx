@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../../../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
+import Navbar from "../../../../components/Navbar/Navbar";
 
 export default function BuatBlog() {
+  const [formData, setFormData] = useState({
+    title: "",
+    slug: "",
+    content: "",
+    image: null,
+    is_published: false,
+  });
   return (
     <>
       <Navbar />
@@ -12,7 +20,7 @@ export default function BuatBlog() {
         <div className="w-full px-4 py-10 overflow-x-auto">
           <div className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
             <div className="px-4 py-6">
-              <div className="w-full">
+              <form className="w-full">
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
                     Form Tambah Artikel
@@ -74,7 +82,7 @@ export default function BuatBlog() {
                         <label className="lg:text-lg text-sm">Simpan</label>
                       </div>
                       <div className="flex flex-row gap-3">
-                        <input type="checkbox" />
+                        <input type="checkbox" name="is_published" required />
                         <label className="lg:text-lg text-sm">Publish</label>
                       </div>
                     </div>
@@ -82,12 +90,13 @@ export default function BuatBlog() {
                 </div>
 
                 <div className="flex lg:flex-row flex-col justify-start m-8 gap-3">
-                  <Link
+                  <button
+                    type="submit"
                     to="/"
                     className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
                   >
                     Publish
-                  </Link>
+                  </button>
                   <Link
                     to="/"
                     className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-primary-main bg-primary-surface border-primary-main"
@@ -95,7 +104,7 @@ export default function BuatBlog() {
                     Batal
                   </Link>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
