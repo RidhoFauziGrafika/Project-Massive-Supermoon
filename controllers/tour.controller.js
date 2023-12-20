@@ -849,6 +849,62 @@ const updateTourFacility = asyncHandler(async (req, res) => {
   }
 });
 
+const getAll = asyncHandler(async (req, res) => {
+  try {
+    const dataAll = await query(`SELECT
+    t.id,
+    t.title,
+    t.slug,
+    t.categories,
+    t.price,
+    t.address,
+    t.address_link,
+    t.description,
+    t.ticket_operasional,
+    t.created_at,
+    COALESCE(AVG(tr.rating), 0) AS average_rating,
+    MIN(ti.img_path) AS image
+  FROM
+    tours t
+  LEFT JOIN
+    tour_has_reviews tr ON t.id = tr.tour_id AND tr.is_deleted = FALSE
+  LEFT JOIN (
+    SELECT
+      tour_id,
+      MIN(img_path) AS img_path
+    FROM
+      tour_images
+    GROUP BY
+      tour_id
+  ) ti ON t.id = ti.tour_id
+  WHERE
+    t.is_deleted = FALSE
+  GROUP BY
+    t.id;
+  `);
+
+    if (dataAll.length === 0) {
+      return res.json({
+        message: "not found",
+        success: true,
+        data: dataAll,
+      });
+    }
+
+    return res.json({
+      message: "ok",
+      success: true,
+      data: dataAll,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+});
+
 module.exports = {
   getCreateTour,
   createTour,
@@ -862,4 +918,5 @@ module.exports = {
   addTourFacility,
   updateTourFacility,
   getOneTourBySlug,
+  getAll
 };

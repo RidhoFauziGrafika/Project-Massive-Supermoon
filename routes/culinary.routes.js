@@ -35,4 +35,5 @@ router.put("/facilities/:id", culinaryController.updateCulinaryFacility);
 
 // Add more routes as needed...
 
+router.get("/all", culinaryController.getAll);
 module.exports = router;

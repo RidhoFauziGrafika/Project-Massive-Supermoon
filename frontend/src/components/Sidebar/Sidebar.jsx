@@ -41,9 +41,9 @@ const Sidebar = () => {
           <ul className="mt-10">
             <li className="py-6">
               <Link
-                to="/profile"
+                to="/mydashboard"
                 className={`flex items-center gap-5 ${
-                  url === "/profile"
+                  url === "/mydashboard"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -54,9 +54,9 @@ const Sidebar = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/riwayat"
+                to="/mydashboard/transaksi"
                 className={`flex items-center gap-5 ${
-                  url === "/riwayat"
+                  url === "/mydashboard/transaksi"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}
@@ -67,9 +67,9 @@ const Sidebar = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/pengaturan"
+                to="/mydashboard/akun"
                 className={`flex items-center gap-5 ${
-                  url === "/pengaturan"
+                  url === "/mydashboard/akun"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}

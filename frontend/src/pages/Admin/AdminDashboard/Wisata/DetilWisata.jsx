@@ -28,6 +28,7 @@ import CardKuliner from "../../../../components//CardKuliner/CardKuliner";
 import dataFood from "../../../../utils/constants/Kuliner";
 import dataLodge from "../../../../utils/constants/Penginapan";
 import CardPenginapan from "../../../../components/CardPenginapan/CardPenginapan";
+import splitComa from "../../../../utils/SplitComaToArray";
 
 const DetilWisata = () => {
   // FROM OLD
@@ -44,6 +45,38 @@ const DetilWisata = () => {
   const [images, setImages] = useState([]);
   const { slug } = useParams();
 
+  const [inns, setInns] = useState([]);
+  const [culinaries, setCulinaries] = useState([]);
+
+  // REKOMENDASI KULINER
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/culinaries/all`
+        );
+        console.log(response.data?.data ?? []);
+        setCulinaries(response.data?.data ?? []);
+      } catch (error) {}
+    }
+    fetchData();
+  }, []);
+
+  // REKOMENDASI PENGINAPAN
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/lodgings/all`
+        );
+        console.log(response.data?.data ?? []);
+        setInns(response.data?.data ?? []);
+      } catch (error) {}
+    }
+    fetchData();
+  }, []);
+
+  // WISATA
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -258,9 +291,63 @@ const DetilWisata = () => {
               Rekomendasi Penginapan
             </h3>
             <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
-              {lodges.map((lodge) => (
-                <CardPenginapan key={lodge.id} lodge={lodge} />
-              ))}
+              {/* CARDS */}
+              {inns.map((inn) => {
+                return (
+                  <>
+                    <div className="p-4 font-productSans">
+                      <div className="p-4 font-productSans">
+                        <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
+                          <img
+                            className="rounded-t-lg"
+                            src={inn?.image}
+                            alt="image"
+                          />
+                          <div className="p-5">
+                            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
+                              {inn?.title}
+                            </h5>
+                            <div className="flex flex-row gap-2">
+                              <a className="text-primary-pressed">
+                                {splitComa(inn.categories)[0]}
+                              </a>
+                              <a className="text-primary-pressed">
+                                {splitComa(inn.categories)[1]}
+                              </a>
+                              <a className="text-primary-pressed">
+                                {splitComa(inn.categories)[2]}
+                              </a>
+                            </div>
+                            <div className="flex flex-row justify-between p-3">
+                              <div className="flex flex-row">
+                                <BsStarFill
+                                  className="w-10 h-10"
+                                  fill="#EE9C22"
+                                />
+                                <div className="ml-4">
+                                  <p className="text-sm font-bold">
+                                    {inn.rating}
+                                  </p>
+                                  <p className="text-sm text-neutral-70">
+                                    {inn?.review} Reviews
+                                  </p>
+                                </div>
+                              </div>
+                              <Link
+                                to={`/dashboard/penginapan/detil/${inn?.slug}`}
+                                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                              >
+                                Detail
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+              {/* END CARDS */}
             </div>
           </div>
           {/* rekomendasi kuliner */}
@@ -269,9 +356,61 @@ const DetilWisata = () => {
               Rekomendasi Kuliner
             </h3>
             <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
-              {culinars.map((culinar) => (
-                <CardKuliner key={culinar.id} culinar={culinar} />
-              ))}
+              {culinaries.map((culinary) => {
+                return (
+                  <>
+                    <div className="p-4 font-productSans">
+                      <div className="p-4 font-productSans">
+                        <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
+                          <img
+                            className="rounded-t-lg"
+                            src={culinary?.image}
+                            alt="image"
+                          />
+                          <div className="p-5">
+                            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
+                              {culinary?.title}
+                            </h5>
+                            <div className="flex flex-row gap-2">
+                              <a className="text-primary-pressed">
+                                {splitComa(culinary.categories)[0]}
+                              </a>
+                              <a className="text-primary-pressed">
+                                {splitComa(culinary.categories)[1]}
+                              </a>
+                              <a className="text-primary-pressed">
+                                {splitComa(culinary.categories)[2]}
+                              </a>
+                            </div>
+                            <div className="flex flex-row justify-between p-3">
+                              <div className="flex flex-row">
+                                <BsStarFill
+                                  className="w-10 h-10"
+                                  fill="#EE9C22"
+                                />
+                                <div className="ml-4">
+                                  <p className="text-sm font-bold">
+                                    {culinary.rating}
+                                  </p>
+                                  <p className="text-sm text-neutral-70">
+                                    {culinary?.review} Reviews
+                                  </p>
+                                </div>
+                              </div>
+                              <Link
+                                to={`/dashboard/penginapan/detil/${culinary?.slug}`}
+                                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                              >
+                                Detail
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Navbar from "../../../../components/Navbar/Navbar";
 import Sidebar from "../../../../components/Sidebar/Sidebar";
+import Footer from "../../../../components/Footer/Footer";
 
 const DetilPembayaran = () => {
+  const { id } = useParams();
   return (
     <>
       <Navbar />
@@ -89,7 +91,7 @@ const DetilPembayaran = () => {
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                         <Link
-                          to="/order"
+                          to={`/mydashboard/transaksi/detil/${id}`}
                           className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                         >
                           <FaEye className="text-white" />

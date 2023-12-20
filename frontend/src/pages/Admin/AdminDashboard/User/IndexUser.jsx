@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -9,6 +9,7 @@ import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import Footer from "../../../../components/Footer/Footer";
 
 const IndexUser = () => {
+  const { id } = useParams();
   return (
     <>
       <Navbar />
@@ -79,7 +80,7 @@ const IndexUser = () => {
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                         <Link
-                          to="/dashboard/formEditUser"
+                          to={`/dashboard/user/detil/${id}`}
                           className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                         >
                           <BiSolidPencil className="text-white" />

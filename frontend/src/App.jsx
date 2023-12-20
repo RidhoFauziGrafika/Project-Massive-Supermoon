@@ -50,6 +50,12 @@ import Checkout from "./pages/User/Checkout/Checkout";
 import DetilPembayaran from "./pages/User/UserDashboard/Pembayaran/DetilPembayaran";
 import IndexPembayaran from "./pages/User/UserDashboard/Pembayaran/IndexPembayaran";
 import MyDashboard from "./pages/User/UserDashboard/Mydashboard";
+import Akun from "./pages/User/UserDashboard/Akun";
+
+import DetilUser from "./pages/Admin/AdminDashboard/User/DetilUser";
+import IndexUser from "./pages/Admin/AdminDashboard/User/IndexUser";
+
+import IndexKomentar from "./pages/Admin/AdminDashboard/Komentar/IndexKomentar";
 
 const ROLES = {
   CLIENT: "8912",
@@ -162,10 +168,10 @@ function App() {
             />
             {/* END BLOG */}
             {/* USER */}
-            {/* <Route path="/dashboard/user" element={<IndexUser />} />
-            <Route path="/dashboard/user/baru" element={<BuatUser />} />
-            <Route path="/dashboard/user/edit/:id" element={<EditUser />} />
-            <Route path="/dashboard/user/detil/:id" element={<DetilUser />} /> */}
+            <Route path="/dashboard/user" element={<IndexUser />} />
+            {/* <Route path="/dashboard/user/baru" element={<BuatUser />} /> */}
+            {/* <Route path="/dashboard/user/edit/:id" element={<EditUser />} /> */}
+            <Route path="/dashboard/user/detil/:id" element={<DetilUser />} />
             {/* END USER */}
             {/* TRANSAKSI */}
             <Route path="/dashboard/transaksi" element={<IndexTransaksi />} />
@@ -175,18 +181,24 @@ function App() {
             />
             {/* <Route path="/dashboard/transaksi/edit" element={<EditTransaksi />} /> */}
             {/* END TRANSAKSI */}
+            {/* KOMENTAR */}
+            <Route path="/dashboard/komentar" element={<IndexKomentar />} />
           </Route>
           {/* END OF DASHBOARD ADMIN */}
 
           {/* USERS */}
           <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT]} />}>
-            <Route path="mydashboard" element={<MyDashboard />} />
-            <Route path="mydashboard/transaksi" element={<IndexPembayaran />} />
+            <Route path="/mydashboard" element={<MyDashboard />} />
             <Route
-              path="mydashboard/transaksi/detil/:id"
+              path="/mydashboard/transaksi"
+              element={<IndexPembayaran />}
+            />
+            <Route
+              path="/mydashboard/transaksi/detil/:id"
               element={<DetilPembayaran />}
             />
             <Route path="/paket-wisata/beli/:id" element={<Checkout />} />
+            <Route path="/mydashboard/akun" element={<Akun />} />
           </Route>
           {/* END OF USERS */}
 

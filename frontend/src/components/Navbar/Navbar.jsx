@@ -139,7 +139,7 @@ const Navbar = () => {
                     {CLIENT && (
                       <>
                         <Link
-                          to="/profile"
+                          to="/mydashboard"
                           className="p-3 hover:bg-primary-main hover:rounded-lg  hover:text-neutral-10"
                         >
                           Profile Saya

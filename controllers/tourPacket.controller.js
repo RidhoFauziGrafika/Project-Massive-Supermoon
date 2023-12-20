@@ -1123,7 +1123,7 @@ const addLodgingFacility = asyncHandler(async (req, res) => {
 const updateLodgingFacilities = asyncHandler(async (req, res) => {
   const { facilities } = req.body;
   const { id } = req.params;
-
+  // return console.log(facilities);
   if (
     !facilities ||
     !Array.isArray(facilities) ||
@@ -1147,7 +1147,7 @@ const updateLodgingFacilities = asyncHandler(async (req, res) => {
     const facilityInsertPromises = facilities.map(async (facility) => {
       const data = await query(
         `INSERT INTO tour_packets_lodging_facilities (tour_packet_id, facility_id) VALUES (?, ?)`,
-        [id, facility]
+        [id, facility.value]
       );
 
       return data;
@@ -1175,6 +1175,67 @@ const updateLodgingFacilities = asyncHandler(async (req, res) => {
   }
 });
 
+const getAll = asyncHandler(async (req, res) => {
+  try {
+    const allData = await query(`SELECT
+    tp.id,
+    tp.title,
+    tp.slug,
+    tp.price,
+    tp.address,
+    tp.address_link,
+    tp.description,
+    tp.tour_description,
+    tp.tour_link,
+    tp.culinary_description,
+    tp.culinary_link,
+    tp.lodging_description,
+    tp.lodging_link,
+    tp.created_at,
+    COALESCE(AVG(tpr.rating), 0) AS average_rating,
+    COUNT(tpr.id) AS review_count,
+    MIN(tpi.img_path) AS image
+  FROM
+    tour_packets tp
+  LEFT JOIN
+    tour_packet_has_reviews tpr ON tp.id = tpr.tour_packet_id AND tpr.is_deleted = FALSE
+  LEFT JOIN (
+    SELECT
+      tour_packet_id,
+      MIN(img_path) AS img_path
+    FROM
+      tour_packets_images
+    GROUP BY
+      tour_packet_id
+  ) tpi ON tp.id = tpi.tour_packet_id
+  WHERE
+    tp.is_deleted = FALSE
+  GROUP BY
+    tp.id;
+  
+  
+  `);
+    if (allData.length === 0) {
+      return res.json({
+        message: "Not FOund",
+        data: allData,
+        success: true,
+      });
+    }
+    return res.json({
+      message: "ok",
+      data: allData,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      data: allData,
+      success: false,
+    });
+  }
+});
 module.exports = {
   getCreateTourPacket,
   createTourPacket,
@@ -1192,4 +1253,5 @@ module.exports = {
   updateLodgingFacilities,
   getAllFacilities,
   getOneTourPacketBySlug,
+  getAll,
 };

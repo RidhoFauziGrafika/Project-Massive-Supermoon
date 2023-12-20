@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import data from "../../utils/constants/Data";
 import CardWisata from "../../components/CardWisata/CardWisata";
 import AuthNavbar from "../../components/Navbar/AuthNavbar";
 import { Link } from "react-router-dom";
+import { BsFillStarFill } from "react-icons/bs";
+import axios from "axios";
 
 const Wisata = () => {
-  const [tours, setTours] = useState(data);
+  const [tours, setTours] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/tours/all`);
+        console.log(response.data?.data ?? []);
+        setTours(response.data?.data ?? []);
+      } catch (error) {}
+    }
+    fetchData();
+  }, []);
   return (
     <>
       <Navbar />
@@ -37,9 +49,52 @@ const Wisata = () => {
           </div>
           <div>
             <div className="flex flex-wrap justify-evenly gap-7">
-              {tours.map((tour) => (
-                <CardWisata key={tour.id} tour={tour} />
-              ))}
+              {/* cards */}
+              {tours.map((tour) => {
+                return (
+                  <div className="p-4 font-productSans" key={tour?.title ?? ""}>
+                    <div className="w-full bg-neutral-card rounded-lg drop-shadow-xl">
+                      <img
+                        className="rounded-t-lg"
+                        src={`http://localhost:8000${tour?.image}` ?? ""}
+                        alt={""}
+                      />
+                      <div className="p-5">
+                        <h5 className="mb-2 text-xl font-bold tracking-tight text-neutral-100">
+                          {tour?.title ?? ""}
+                        </h5>
+                        <div className="flex flex-row gap-3">
+                          <a className="text-primary-pressed">
+                            {/* {tour.categories} */}
+                          </a>
+                        </div>
+                        <div className="flex flex-row justify-between p-3">
+                          <div className="flex flex-row">
+                            <BsFillStarFill
+                              className="w-10 h-10"
+                              fill="#EE9C22"
+                            />
+                            <div className="ml-4">
+                              <p className="text-sm font-bold">
+                                {tour?.average_rating ?? ""}
+                              </p>
+                              <p className="text-sm">
+                                {tour?.review_count ?? 0} Reviews
+                              </p>
+                            </div>
+                          </div>
+                          <Link
+                            to={`/dashboard/wisata/detil/${tour?.slug}`}
+                            className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                          >
+                            Detail
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

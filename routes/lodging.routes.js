@@ -13,6 +13,7 @@ const {
   addLodgingFacility,
   updateLodgingFacility,
   getOneLodgingBySlug,
+  getAll,
 } = require("../controllers/lodging.controller");
 
 // Middleware to handle image upload using Multer
@@ -33,4 +34,5 @@ router.get("/facilities", getAllFacilities);
 router.post("/facilities/:id", addLodgingFacility);
 router.put("/facilities/:id", updateLodgingFacility);
 
+router.get("/all", getAll);
 module.exports = router;

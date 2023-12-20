@@ -11,6 +11,7 @@ const {
   addTourFacility,
   updateTourFacility,
   getOneTourBySlug,
+  getAll,
 } = require("../controllers/tour.controller");
 const upload = require("../config/multer");
 
@@ -29,4 +30,5 @@ Router.put("/facilities/:id", updateTourFacility);
 Router.post("/image/:id", [upload.array("images", 4), uploadImages]);
 Router.put("/image/:id", [upload.array("images", 4), updateImages]);
 
+Router.get("/all", getAll);
 module.exports = Router;

@@ -55,9 +55,9 @@ const SidebarAdmin = () => {
             </li>
             <li className="py-6">
               <Link
-                to="/dashboard/pengguna"
+                to="/dashboard/user"
                 className={`flex items-center gap-5 ${
-                  url === "/dashboard/pengguna"
+                  url === "/dashboard/user"
                     ? "bg-primary-main px-4 py-2 rounded-lg text-white"
                     : ""
                 }`}

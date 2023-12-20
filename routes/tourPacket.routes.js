@@ -16,10 +16,13 @@ const {
   updateLodgingFacilities,
   getAllFacilities,
   getOneTourPacketBySlug,
+  getAll,
 } = require("../controllers/tourPacket.controller");
 const validateTourPacket = require("../validation/validateTourPacket");
 const validateTourPacketUpdate = require("../validation/validateTourPacketUpdate");
 const upload = require("../config/multer");
+
+Router.get("/all", getAll);
 
 Router.get("/create", getCreateTourPacket); // get data before creating tour
 Router.post("/create", [validateTourPacket, createTourPacket]); // save data

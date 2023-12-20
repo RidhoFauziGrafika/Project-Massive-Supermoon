@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CardProfile from "../../../components/CardProfile/CardProfile";
 import Navbar from "../../../components/Navbar/Navbar";
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import Footer from "../../../components/Footer/Footer";
 
 const MyDashboard = () => {
   let user = JSON.parse(localStorage.getItem("user")) || "No user";

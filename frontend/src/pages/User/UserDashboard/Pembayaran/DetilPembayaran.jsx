@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../../../../components/Navbar/Navbar";
-import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import Footer from "../../../../components/Footer/Footer";
 import Select from "react-select";
 import { FaBullseye } from "react-icons/fa";
 import axios from "axios";
+import Sidebar from "../../../../components/Sidebar/Sidebar";
 
 const DetilPembayaran = () => {
-  const [id, setId] = useState("");
+  const { id } = useParams();
   const [isDone, setIsDone] = useState(false);
   const [transaction, setTransaction] = useState({});
-
-  //   console.log(slug);
-  const [formData, setFormData] = useState({
-    slug: "",
-    title: "",
-    price: "",
-    categories: "",
-    price: "",
-    address: "",
-    address_link: "",
-    description: "",
-    ticket_operasional: "",
-  });
 
   //   GETTING DATA
   useEffect(() => {
@@ -87,7 +74,7 @@ const DetilPembayaran = () => {
       <Navbar />
       <div className="flex flex-row font-productSans bg-[#F7F7FF]">
         <div className="row-span-3">
-          <SidebarAdmin />
+          <Sidebar />
         </div>
         <div className="w-full px-4 py-10 bg">
           <div className="px-4 flex flex-col gap-3 bg-neutral-10 mb-10">
@@ -164,50 +151,9 @@ const DetilPembayaran = () => {
               <h6 className="lg:text-xl text-base font-bold">Status</h6>
               <span className="block text-2xl">Status</span>
             </div>
-            <div className="mb-10">
-              {isDone === false && (
-                <>
-                  <form
-                    className="w-[400px] grow-0 bg-neutral-10 rounded-lg mb-10 px-4 py-8"
-                    // onSubmit={handleSubmitUpdateFacility}
-                  >
-                    <div className="px-4 py-6">
-                      <div className="">
-                        <div className="m-8">
-                          <h6 className="text-gray-900">
-                            Update Status Pesanan
-                          </h6>
-                          <Select
-                            className="input-cont"
-                            placeholder="Pilih"
-                            // options={facilitiesOptions}
-                            isMulti={false}
-                            name="status_id"
-                            // onChange={(selectedOptions) =>
-                            //   setSelectedFacilityUpdate(selectedOptions)
-                            // }
-                          />
-                        </div>
-                        <div className="flex flex-col justify-start m-8 gap-3">
-                          <button
-                            type="submit"
-                            className="lg:px-4 px-2 py-2 lg:text-base text-sm rounded-lg text-center border-solid border-2 text-white bg-primary-main border-primary-main"
-                          >
-                            Simpan
-                          </button>
-                          <h6 className="lg:text-lg text-sm tracking-tight text-gray-900">
-                            Status hanya bisa diupdate 1 kali!
-                          </h6>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </>
-              )}
-            </div>
           </div>
           <Link
-            to="/dashboard/transaksi"
+            to="/mydashboard/transaksi"
             className="items-center px-3 py-1 lg:px-4 lg:py-2 lg:text-base text-sm text-center text-white border-solid border-2 border-primary-main bg-primary-main rounded-lg"
           >
             Lihat Riwayat Pesanan

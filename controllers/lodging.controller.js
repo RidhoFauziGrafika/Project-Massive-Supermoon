@@ -807,6 +807,61 @@ const updateLodgingFacility = asyncHandler(async (req, res) => {
   }
 });
 
+const getAll = asyncHandler(async (req, res) => {
+  try {
+    const dataAll = await query(`SELECT
+  l.id,
+  l.title,
+  l.slug,
+  l.categories,
+  l.price,
+  l.address,
+  l.address_link,
+  l.description,
+  l.ticket_operasional,
+  l.created_at,
+  COALESCE(AVG(lr.rating), 0) AS average_rating,
+  MIN(li.img_path) AS image
+FROM
+  lodgings l
+LEFT JOIN
+  lodging_has_reviews lr ON l.id = lr.lodging_id AND lr.is_deleted = FALSE
+LEFT JOIN (
+  SELECT
+    lodging_id,
+    MIN(img_path) AS img_path
+  FROM
+    lodging_images
+  GROUP BY
+    lodging_id
+) li ON l.id = li.lodging_id
+WHERE
+  l.is_deleted = FALSE
+GROUP BY
+  l.id;
+`);
+
+    if (dataAll.length === 0) {
+      return res.status(404).json({
+        message: "Not FOund",
+        success: true,
+        data: dataAll,
+      });
+    }
+    return res.status(200).json({
+      message: "ok",
+      success: true,
+      data: dataAll,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+});
+
 module.exports = {
   createLodging,
   updateLodging,
@@ -819,4 +874,5 @@ module.exports = {
   addLodgingFacility,
   updateLodgingFacility,
   getOneLodgingBySlug,
+  getAll,
 };

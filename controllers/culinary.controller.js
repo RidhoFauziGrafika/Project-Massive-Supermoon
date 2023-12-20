@@ -807,6 +807,62 @@ const updateCulinaryFacility = asyncHandler(async (req, res) => {
   }
 });
 
+const getAll = asyncHandler(async (req, res) => {
+  try {
+    const dataAll = await query(`SELECT
+    c.id,
+    c.title,
+    c.slug,
+    c.categories,
+    c.price,
+    c.address,
+    c.address_link,
+    c.description,
+    c.ticket_operasional,
+    c.created_at,
+    COALESCE(AVG(cr.rating), 0) AS average_rating,
+    MIN(ci.img_path) AS image
+  FROM
+    culinaries c
+  LEFT JOIN
+    culinary_has_reviews cr ON c.id = cr.culinary_id AND cr.is_deleted = FALSE
+  LEFT JOIN (
+    SELECT
+      culinary_id,
+      MIN(img_path) AS img_path
+    FROM
+      culinary_images
+    GROUP BY
+      culinary_id
+  ) ci ON c.id = ci.culinary_id
+  WHERE
+    c.is_deleted = FALSE
+  GROUP BY
+    c.id;
+  `);
+
+    if (dataAll.length === 0) {
+      return res.json({
+        message: "Not FOund",
+        success: true,
+        data: dataAll,
+      });
+    }
+    return res.json({
+      message: "ok",
+      success: true,
+      data: dataAll,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      data: dataAll,
+    });
+  }
+});
+
 module.exports = {
   createCulinary,
   updateCulinary,
@@ -819,4 +875,5 @@ module.exports = {
   updateCulinaryFacility,
   getCulinaryBySlug,
   uploadCulinaryImage,
+  getAll,
 };
