@@ -4,6 +4,7 @@ import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
+
 import { FaTrashCan } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
@@ -11,20 +12,21 @@ import Footer from "../../../../components/Footer/Footer";
 
 export default function IndexBlog() {
   const [posts, setPosts] = useState([]);
-
+  const UPDATE_URL = "http://localhost:8000/api/posts";
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/posts")
       .then((response) => {
         // Handle the successful response here
         console.log("Data from server:", response.data);
-        setPosts(response.data);
+        setPosts(response.data.data);
       })
       .catch((error) => {
         // Handle errors here
         console.error("Error fetching data:", error);
       });
   }, []);
+  console.log(slug);
   return (
     <>
       <Navbar />
@@ -90,26 +92,49 @@ export default function IndexBlog() {
                     </tr>
                   </thead>
                   <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg ">
-                    <tr className="text-center">
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        1
-                      </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        Gunung Ciremai: Keindahan Alam dan Peninggalan Sejarah
-                        yang Mengagumkan
-                      </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50">
-                        Publish
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center border border-neutral-50 justify-center">
-                        <Link className="px-4 py-2 bg-[#0D6EFD] rounded-lg">
-                          <BiSolidPencil className="text-white" />
-                        </Link>
-                        <Link className="px-4 py-2 bg-[#FD3550] rounded-lg">
+                    {/* CONTENT */}
+                    {Array.isArray(posts) && posts.length > 0 ? (
+                      posts.map((post, index) => (
+                        <tr key={post.slug}>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
+                            {index + 1}
+                          </td>
+                          <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
+                            {post?.title}
+                          </td>
+                          <td className="px-6 py-4 text-sm  border border-neutral-50">
+                            {post?.content}
+                          </td>
+                          <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
+                            <Link
+                              to={`${UPDATE_URL}/${post.slug}`}
+                              className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
+                            >
+                              <BiSolidPencil className="text-white" />
+                            </Link>
+                            <button
+                              onClick={() => openDeleteModal(post?.id)}
+                              className="px-4 py-2 bg-[#FD3550] rounded-lg"
+                            >
+                              <FaTrashCan className="text-white" />
+                            </button>
+                            {/* <button
+                          onClick={() => handleDelete(packet.id)}
+                          className="px-4 py-2 bg-[#FD3550] rounded-lg"
+                        >
                           <FaTrashCan className="text-white" />
-                        </Link>
-                      </td>
-                    </tr>
+                        </button> */}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="text-center py-4">
+                          Tidak ada artikel.
+                        </td>
+                      </tr>
+                    )}
+                    {/* CONTENT */}
                   </tbody>
                 </table>
                 <nav aria-label="Page navigation example" className="mt-3">

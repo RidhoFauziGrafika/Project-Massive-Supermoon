@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import data from "../../../../utils/constants/Blog";
 import Navbar from "../../../../components/Navbar/Navbar";
 import Footer from "../../../../components/Footer/Footer";
+import axios from "axios";
 
 const DetilBlog = () => {
-  const [posts, setPosts] = useState(data);
+  // const [posts, setPosts] = useState(data);
+  const [post, setPost] = useState([]);
+  const { slug } = useParams();
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/posts/slug/${slug}`)
+      .then((response) => {
+        // Handle the successful response here
+        console.log("Data from server:", response.data);
+        setPost(response.data.data);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error fetching data:", error);
+      });
+  }, []);
   return (
     <>
       <Navbar />
@@ -14,14 +30,14 @@ const DetilBlog = () => {
         <Link to="/blog" className="text-3xl">
           <FaArrowLeftLong />
         </Link>
-        <h2 className="py-5 text-4xl font-bold">{posts[0].title}</h2>
+        <h2 className="py-5 text-4xl font-bold">{post?.title}</h2>
         <img
           className="rounded-lg items-center"
-          src={posts[0].image_thumb}
+          src={`http://localhost:8000${post?.img_path}`}
           alt="image"
         />
         <p className="py-5 text-xl tracking-tight text-gray-900">
-          {posts[0].description}
+          {post?.content}
         </p>
       </div>
       <Footer />

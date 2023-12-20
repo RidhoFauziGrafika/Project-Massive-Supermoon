@@ -6,14 +6,23 @@ const toDatetime = require("../utils/datetime");
 const generateSlug = require("../utils/generateSlug");
 const fs = require("fs/promises");
 
+function fixImagePath(imagePath) {
+  return imagePath.replace(/\\\\/g, "/");
+}
+
 const createOne = asyncHandler(async (req, res) => {
+  let imagePaths = [];
   try {
     const { title, content } = req.body;
-    const imgPath = req.file ? req.file.path : null;
+
+    // Access the file details using req.files
+    imagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
 
     const result = await db.query(
-      "INSERT INTO posts (title, slug, content, created_at, updated_at, img_path) VALUES (?, ?, ?, NOW(), NOW(), ?)",
-      [title, generateSlug(title), content, imgPath]
+      "INSERT INTO posts (title, slug, content, img_path, is_published) VALUES (?, ?, ?, ?, ?)",
+      [title, generateSlug(title), content, fixImagePath(imagePaths[0]), true]
     );
 
     const insertedPostId = result[0].insertId;
@@ -63,6 +72,30 @@ const getOne = asyncHandler(async (req, res) => {
     const post = await db.query(
       "SELECT * FROM posts WHERE id = ? AND is_deleted = FALSE",
       [id]
+    );
+
+    if (post[0].length === 0) {
+      res.status(404).json({ message: "Artikel tidak ditemukan" });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Success",
+        data: post[0][0],
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+    throw new Error("Gagal mendapatkan data post");
+  }
+});
+
+const getOneBySlug = asyncHandler(async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const post = await db.query(
+      "SELECT * FROM posts WHERE slug = ? AND is_deleted = FALSE",
+      [slug]
     );
 
     if (post[0].length === 0) {
@@ -150,4 +183,5 @@ module.exports = {
   getOne,
   update,
   deleteOne,
+  getOneBySlug,
 };

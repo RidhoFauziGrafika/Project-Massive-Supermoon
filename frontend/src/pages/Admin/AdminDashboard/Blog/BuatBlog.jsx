@@ -20,10 +20,6 @@ export default function BuatBlog() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (step !== 2) {
-      // Handle form submission only when step is not 2
-      return;
-    }
     try {
       const submitData = new FormData();
       submitData.append("title", formData.title);
@@ -36,10 +32,11 @@ export default function BuatBlog() {
       });
 
       const response = await axios.post(
-        `http:localhost:8000/api/transactions/user/${id}`,
+        `http://localhost:8000/api/posts/`,
         submitData
       );
-      toast.success("Berhasil!");
+
+      toast.success(response.data.message);
       navigate("/dashboard/artikel", { replace: true });
       console.log("Images submitted successfully");
     } catch (error) {
@@ -55,6 +52,7 @@ export default function BuatBlog() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(`Updating ${name} to:`, value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -66,7 +64,7 @@ export default function BuatBlog() {
         <div className="w-full px-4 py-10 overflow-x-auto">
           <div className="w-full bg-neutral-10 rounded-lg mb-10 px-4 py-8">
             <div className="px-4 py-6">
-              <form className="w-full">
+              <form className="w-full" onSubmit={handleSubmit}>
                 <div className="m-8">
                   <h6 className="lg:text-3xl text-xl font-bold tracking-tight text-gray-900">
                     Form Tambah Artikel
@@ -84,7 +82,7 @@ export default function BuatBlog() {
                         required
                         name="title"
                         onChange={handleChange}
-                        value={handleChange}
+                        value={formData.title}
                         placeholder="Judul Artikel"
                         className="w-full border border-neutral-50 rounded-lg py-2 px-3"
                       />
@@ -127,6 +125,7 @@ export default function BuatBlog() {
                     className="block text-sm text-slate-500 file:mr-4 file:py-2
               file:px-4 rounded-xl file:border-0 file:text-sm file:font-semibold"
                     name="img_path"
+                    multiple
                     onChange={(e) => {
                       const images = Array.from(e.target.files);
                       setImages(

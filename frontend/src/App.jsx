@@ -5,7 +5,7 @@ import Beranda from "./pages/Beranda/Beranda";
 import Kontak from "./pages/Kontak/Kontak";
 import TentangKami from "./pages/TentangKami/TentangKami";
 import Blog from "./pages/Blog/Blog";
-import DetailBlog from "./pages/Blog/DetailBlog";
+import DetailBlog from "./pages/Admin/AdminDashboard/Blog/DetilBlog";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";

@@ -6,12 +6,14 @@ const {
   getOne,
   update,
   deleteOne,
+  getOneBySlug,
 } = require("../controllers/post.controller");
 
-Router.post("/", [upload.single("image"), createOne]);
+Router.post("/", [upload.array("images", 2), createOne]);
 Router.get("/", getAll);
 Router.get("/:id", getOne);
-Router.put("/:id", [upload.single("image"), update]);
+Router.get("/slug/:slug", getOneBySlug);
+Router.put("/:id", [upload.array("images", 2), update]);
 Router.delete("/:id", deleteOne);
 
 module.exports = Router;
