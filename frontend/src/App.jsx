@@ -31,6 +31,11 @@ import BuatPenginapan from "./pages/Admin/AdminDashboard/Penginapan/BuatPenginap
 import EditPenginapan from "./pages/Admin/AdminDashboard/Penginapan/EditPenginapan";
 import DetilPenginapan from "./pages/Admin/AdminDashboard/Penginapan/DetilPenginapan";
 
+import IndexKuliner from "./pages/Admin/AdminDashboard/Kuliner/IndexKuliner";
+import BuatKuliner from "./pages/Admin/AdminDashboard/Kuliner/BuatKuliner";
+import EditKuliner from "./pages/Admin/AdminDashboard/Kuliner/EditKuliner";
+import DetilKuliner from "./pages/Admin/AdminDashboard/Kuliner/DetilKuliner";
+
 const ROLES = {
   CLIENT: "8912",
   ADMIN: "6501",
@@ -109,13 +114,16 @@ function App() {
 
             {/* END WISATA */}
             {/* KULINER */}
-            {/* <Route path="/dashboard/kuliner" element={<IndexKuliner />} />
+            <Route path="/dashboard/kuliner" element={<IndexKuliner />} />
             <Route path="/dashboard/kuliner/baru" element={<BuatKuliner />} />
             <Route
-              path="/dashboard/kuliner/edit/:id"
+              path="/dashboard/kuliner/edit/:slug"
               element={<EditKuliner />}
-            /> */}
-            {/* <Route path="/dashboard/kuliner/detil" element={<DetilKuliner />} /> */}
+            />
+            <Route
+              path="/dashboard/kuliner/detil/:slug"
+              element={<DetilKuliner />}
+            />
             {/* END KULINER */}
             {/* PENGINAPAN */}
             <Route path="/dashboard/penginapan" element={<IndexPenginapan />} />

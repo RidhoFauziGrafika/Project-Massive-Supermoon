@@ -1,52 +1,37 @@
 const express = require("express");
-const multer = require("multer");
 const culinaryController = require("../controllers/culinary.controller");
+const upload = require("../config/multer");
 
 const router = express.Router();
-const upload = multer(/* your multer setup */);
 
-// Routes for Culinary Controller
+router.post("/", culinaryController.createCulinary);
+router.put("/:id", culinaryController.updateCulinary);
+router.delete("/delete/:id", culinaryController.deleteCulinary);
+router.get("/", culinaryController.getAllCulinaries);
 
-// Create Culinary
-router.post("/culinaries", culinaryController.createCulinary);
-
-// Update Culinary
-router.put("/culinaries/:id", culinaryController.updateCulinary);
-
-// Delete Culinary
-router.delete("/culinaries/:id", culinaryController.deleteCulinary);
-
-// Get All Culinaries
-router.get("/culinaries", culinaryController.getAllCulinaries);
-
-// Get One Culinary
-router.get("/culinaries/:id", culinaryController.getOneCulinary);
+router.get("/:id", culinaryController.getOneCulinary);
+router.get("/slug/:slug", culinaryController.getCulinaryBySlug);
 
 // Upload Culinary Images
-router.post(
-  "/culinaries/images",
-  upload.array("images", 6),
-  culinaryController.uploadCulinaryImages
-);
+router.post("/images/:id", [
+  upload.array("images", 4),
+  culinaryController.uploadCulinaryImage,
+]);
 
-// Update Culinary Images
-router.put(
-  "/culinaries/:id/images",
-  upload.array("images", 6),
-  culinaryController.updateImages
-);
+// Update Culinary Image
+router.put("/images/:id", [
+  upload.array("images", 4),
+  culinaryController.updateImage,
+]);
 
 // Get All Facilities
-router.get("/facilities", culinaryController.getAllFacilities);
+// router.get("/facilities", culinaryController.getAllFacilities);
 
 // Add Culinary Facility
-router.post("/culinaries/facilities", culinaryController.addCulinaryFacility);
+router.post("/facilities/:id", culinaryController.addCulinaryFacility);
 
 // Update Culinary Facility
-router.put(
-  "/culinaries/:id/facilities",
-  culinaryController.updateCulinaryFacility
-);
+router.put("/facilities/:id", culinaryController.updateCulinaryFacility);
 
 // Add more routes as needed...
 

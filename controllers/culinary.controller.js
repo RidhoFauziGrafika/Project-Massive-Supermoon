@@ -21,7 +21,7 @@ const createCulinary = asyncHandler(async (req, res) => {
   const formatSlug = generateSlug(slug);
 
   try {
-    const checkslug = await db.query(
+    const [checkslug] = await db.query(
       "SELECT slug FROM culinaries where slug = ?",
       [slug]
     );
@@ -84,7 +84,7 @@ const updateCulinary = asyncHandler(async (req, res) => {
   const formatSlug = generateSlug(slug);
 
   try {
-    const checkSlug = await db.query(
+    const [checkSlug] = await db.query(
       "SELECT slug FROM culinaries WHERE slug = ? AND id != ?",
       [formatSlug, req.params.id]
     );
@@ -366,8 +366,124 @@ const getOneCulinary = asyncHandler(async (req, res) => {
   }
 });
 
+const getCulinaryBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+
+  try {
+    const culinaryDetails = await query(
+      `
+      SELECT
+        c.id,
+        c.title,
+        c.slug,
+        c.categories,
+        c.price,
+        c.address,
+        c.address_link,
+        c.description,
+        c.ticket_operasional,
+        c.created_at,
+        c.updated_at,
+        COALESCE(AVG(cr.rating), 0) AS average_rating
+      FROM
+        culinaries c
+      LEFT JOIN
+        culinary_has_reviews cr ON c.id = cr.culinary_id AND cr.is_deleted = FALSE
+      WHERE
+        c.slug = ?
+        AND c.is_deleted = FALSE
+      GROUP BY
+        c.id;
+    `,
+      [slug]
+    );
+
+    if (culinaryDetails.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Culinary not found or has been deleted!",
+      });
+    }
+
+    const culinaryImages = await query(
+      `
+      SELECT
+        id,
+        img_path
+      FROM
+        culinary_images
+      WHERE
+        culinary_id = ? AND is_deleted = FALSE;
+    `,
+      [culinaryDetails[0].id]
+    );
+
+    const culinaryFacilities = await query(
+      `
+      SELECT
+        chf.facility_id, f.name
+      FROM
+        culinary_has_facilities chf
+      JOIN
+        facilities f ON chf.facility_id = f.id
+      WHERE
+        chf.culinary_id = ? AND chf.is_deleted = FALSE;
+    `,
+      [culinaryDetails[0].id]
+    );
+
+    const reviews = await query(
+      `
+      SELECT
+        cr.rating,
+        cr.content,
+        u.fullname
+      FROM
+        culinary_has_reviews cr
+      JOIN
+        users u ON cr.user_id = u.id
+      WHERE
+        cr.culinary_id = ? AND cr.is_deleted = FALSE;
+    `,
+      [culinaryDetails[0].id]
+    );
+
+    const formattedCulinaryDetails = {
+      id: culinaryDetails[0].id,
+      title: culinaryDetails[0].title,
+      slug: culinaryDetails[0].slug,
+      categories: culinaryDetails[0].categories,
+      price: culinaryDetails[0].price,
+      address: culinaryDetails[0].address,
+      address_link: culinaryDetails[0].address_link,
+      description: culinaryDetails[0].description,
+      ticket_operasional: culinaryDetails[0].ticket_operasional,
+      created_at: culinaryDetails[0].created_at,
+      updated_at: culinaryDetails[0].updated_at,
+      average_rating: culinaryDetails[0].average_rating || 0,
+      images: culinaryImages,
+      facilities: culinaryFacilities,
+      reviews,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: formattedCulinaryDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+    throw new Error("Failed to fetch culinary data!");
+  }
+});
+
 // IMAGE UPLOADS
-const uploadCulinaryImages = asyncHandler(async (req, res) => {
+// IMAGE UPLOAD
+const uploadCulinaryImage = asyncHandler(async (req, res) => {
+  let imagePaths;
+  const { id } = req.params;
+  console.log(req.files);
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
@@ -383,7 +499,6 @@ const uploadCulinaryImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const { id } = req.body;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -391,7 +506,9 @@ const uploadCulinaryImages = asyncHandler(async (req, res) => {
       });
     }
 
-    const imagePaths = req.files;
+    imagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
 
     const allImages = await Promise.all(
       imagePaths.map(async (image) => {
@@ -414,7 +531,7 @@ const uploadCulinaryImages = asyncHandler(async (req, res) => {
     if (allImages.every((data) => data.length > 0)) {
       return res.json({
         success: true,
-        message: "Gambar kuliner ditambahkan!",
+        message: "Gambar ditambahkan!",
       });
     } else {
       await Promise.all(
@@ -432,7 +549,7 @@ const uploadCulinaryImages = asyncHandler(async (req, res) => {
 
       return res.json({
         success: false,
-        message: "Gambar kuliner gagal ditambahkan!",
+        message: "Gambar penginapan gagal ditambahkan!",
       });
     }
   } catch (error) {
@@ -453,16 +570,17 @@ const uploadCulinaryImages = asyncHandler(async (req, res) => {
 
     res.json({
       success: false,
-      message: "Gambar kuliner gagal ditambahkan!",
+      message: "Gambar gagal ditambahkan!",
     });
 
-    throw new Error("Gambar kuliner gagal ditambahkan!");
+    throw new Error("Gambar gagal ditambahkan!");
   }
 });
 
-const updateImages = asyncHandler(async (req, res) => {
+// Update Culinary Image
+const updateImage = asyncHandler(async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id || id === null) {
       return res.status(400).json({
         success: false,
@@ -491,8 +609,11 @@ const updateImages = asyncHandler(async (req, res) => {
     );
 
     // Access the file details using req.files
-    const newImagePaths = req.files;
-    // delete old images from db
+    const newImagePaths = req.files.map((file) =>
+      path.join("/public/images/", `${file.filename}`)
+    );
+
+    //  delete old images from db
     await query(`DELETE FROM culinary_images WHERE culinary_id = ?`, [id]);
 
     // Your logic to save data in the database
@@ -500,7 +621,7 @@ const updateImages = asyncHandler(async (req, res) => {
       newImagePaths.map(async (image) => {
         try {
           const data = await query(
-            `INSERT INTO culinary_has_facilities (id_uuid, culinary_id, img_path) VALUES (?, ?, ?)`,
+            `INSERT INTO culinary_images (id_uuid, culinary_id, img_path) VALUES (?, ?, ?)`,
             [uuidv4(), id, image]
           );
           return data;
@@ -516,7 +637,7 @@ const updateImages = asyncHandler(async (req, res) => {
     if (allImages.every((data) => data.length > 0)) {
       return res.json({
         success: true,
-        message: "Gambar paket wisata diperbarui!",
+        message: "Gambar penginapan diperbarui!",
       });
     } else {
       // Rollback: Delete all newly uploaded images
@@ -537,7 +658,7 @@ const updateImages = asyncHandler(async (req, res) => {
 
       return res.json({
         success: false,
-        message: "Gambar kuliner gagal diperbarui!",
+        message: "Gambar gagal diperbarui!",
       });
     }
   } catch (error) {
@@ -561,10 +682,10 @@ const updateImages = asyncHandler(async (req, res) => {
 
     res.json({
       success: false,
-      message: "Gambar kuliner gagal diperbarui!",
+      message: "Gambar gagal diperbarui!",
     });
 
-    throw new Error("Gambar kuliner gagal diperbarui!");
+    throw new Error("Gambar gagal diperbarui!");
   }
 });
 
@@ -588,7 +709,8 @@ const getAllFacilities = asyncHandler(async (req, res) => {
 
 // TOUR CULINARY POST AND PUT (CREATE AND UPDATE)
 const addCulinaryFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -633,7 +755,8 @@ const addCulinaryFacility = asyncHandler(async (req, res) => {
 });
 
 const updateCulinaryFacility = asyncHandler(async (req, res) => {
-  const { facilities, id } = req.body;
+  const { facilities } = req.body;
+  const { id } = req.params;
 
   if (
     !facilities ||
@@ -690,9 +813,10 @@ module.exports = {
   deleteCulinary,
   getAllCulinaries,
   getOneCulinary,
-  uploadCulinaryImages,
-  updateImages,
+  updateImage,
   getAllFacilities,
   addCulinaryFacility,
   updateCulinaryFacility,
+  getCulinaryBySlug,
+  uploadCulinaryImage,
 };

@@ -12,21 +12,23 @@ import Footer from "../../../../components/Footer/Footer";
 import SidebarAdmin from "../../../../components/SidebarAdmin/SidebarAdmin";
 import Navbar from "../../../../components/Navbar/Navbar";
 
-export default function IndexPenginapan() {
-  const [lodgings, setLodgings] = useState([]);
+export default function IndexKuliner() {
+  const [culinaries, setCulinaries] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [dataToDelete, setDataToDelete] = useState(null);
 
-  const UPDATE_URL = "/dashboard/penginapan/edit";
+  const UPDATE_URL = "/dashboard/kuliner/edit";
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/lodgings/");
+        const response = await axios.get(
+          "http://localhost:8000/api/culinaries/"
+        );
         console.log(response?.data.data);
-        setLodgings(response.data.data.lodgings);
+        setCulinaries(response.data.data.culinaries);
       } catch (error) {
-        console.error("Error fetching lodging packets:", error);
+        console.error("Error fetching culinary:", error);
       }
     };
 
@@ -36,11 +38,11 @@ export default function IndexPenginapan() {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/lodgings/delete/${dataToDelete}`
+        `http://localhost:8000/api/culinaries/delete/${dataToDelete}`
       );
       toast.success(response.data.message);
       // Update the state to reflect the changes
-      setLodgings((prevData) =>
+      setCulinaries((prevData) =>
         prevData.filter((lodgi) => lodgi.id !== dataToDelete)
       );
       closeDeleteModal(); // Close the modal after deletion
@@ -108,14 +110,14 @@ export default function IndexPenginapan() {
             <div className="px-4 py-6">
               <div className="flex lg:flex-row flex-col lg:justify-between px-6 py-10">
                 <h1 className="lg:text-2xl text-base font-bold mb-3">
-                  Kelola Penginapan
+                  Kelola Kuliner
                 </h1>
                 <Link
-                  to="/dashboard/penginapan/baru"
+                  to="/dashboard/kuliner/baru"
                   className="w-fit lg:px-4 lg:py-2 px-3 py-2 bg-primary-main rounded-lg text-white lg:text-base text-xs flex gap-3 items-center"
                 >
                   <FaPlus className="lg:w-5 lg:h-5 w-3 h-3" />
-                  Tambah Penginapan
+                  Tambah Kuliner
                 </Link>
               </div>
               <div className="border border-neutral-30 px-4"></div>
@@ -152,10 +154,10 @@ export default function IndexPenginapan() {
                         No
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
-                        Judul Penginapan
+                        Judul Kuliner
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
-                        Deskripsi Penginapan
+                        Deskripsi Kuliner
                       </th>
                       <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-white uppercase border border-neutral-50">
                         Aksi
@@ -163,27 +165,27 @@ export default function IndexPenginapan() {
                     </tr>
                   </thead>
                   <tbody className="bg-white border-collapse border border-neutral-50 rounded-lg">
-                    {Array.isArray(lodgings) && lodgings.length > 0 ? (
-                      lodgings.map((lodging, index) => (
-                        <tr key={lodging.id}>
+                    {Array.isArray(culinaries) && culinaries.length > 0 ? (
+                      culinaries.map((culinary, index) => (
+                        <tr key={culinary.id}>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
                             {index + 1}
                           </td>
                           <td className="px-6 py-4 text-sm whitespace-nowrap border border-neutral-50 text-center">
-                            {lodging.title}
+                            {culinary.title}
                           </td>
                           <td className="px-6 py-4 text-sm  border border-neutral-50">
-                            {lodging.description}
+                            {culinary.description}
                           </td>
                           <td className="px-4 py-2 whitespace-nowrap flex lg:flex-row flex-col gap-3 items-center justify-center">
                             <Link
-                              to={`${UPDATE_URL}/${lodging.slug}`}
+                              to={`${UPDATE_URL}/${culinary.slug}`}
                               className="px-4 py-2 bg-[#0D6EFD] rounded-lg"
                             >
                               <BiSolidPencil className="text-white" />
                             </Link>
                             <button
-                              onClick={() => openDeleteModal(lodging.id)}
+                              onClick={() => openDeleteModal(culinary.id)}
                               className="px-4 py-2 bg-[#FD3550] rounded-lg"
                             >
                               <FaTrashCan className="text-white" />

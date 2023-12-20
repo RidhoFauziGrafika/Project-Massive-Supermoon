@@ -17,8 +17,8 @@ const tourRoutes = require("./routes/tour.routes");
 const upload = require("./config/multer");
 
 app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({ origin: "*" }));
 
 app.use(errorHandler);
@@ -35,13 +35,29 @@ app.use("/api/culinaries", culinaryRoutes);
 app.use("/api/banks", bankRoutes);
 app.use("/api/tours", tourRoutes);
 
-app.use("/upload", upload.array("images", 4), (req, res) => {
+app.post("/upload", upload.array("images", 4), (req, res) => {
+  console.log("UPLOAD MULTIPLES");
+
+  const imagePath = req.file;
+  console.log("req.file", imagePath);
   const imagePaths = req.files;
-  console.log(imagePaths);
+  console.log("req.files", imagePaths);
   res.json({
     data: imagePaths,
   });
 });
+
+app.post("/upload-single", upload.single("images"), (req, res) => {
+  console.log("UPLOAD SINGLE");
+  const imagePath = req.file;
+  console.log("req.file", imagePath);
+  const imagePaths = req.files;
+  console.log("req.files", imagePaths);
+  res.json({
+    data: imagePath,
+  });
+});
+
 app.listen(NODE_PORT, () => {
   console.log(
     `Server is running on PORT ${NODE_PORT} http://localhost:${NODE_PORT}`

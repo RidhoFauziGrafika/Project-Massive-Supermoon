@@ -16,7 +16,7 @@ const {
 } = require("../controllers/lodging.controller");
 
 // Middleware to handle image upload using Multer
-const uploadLodgingImagesMiddleware = multer.array("images", 4);
+const uploadLodgingImagesMiddleware = multer.array("images", 1);
 
 // Routes
 router.post("/", createLodging);
