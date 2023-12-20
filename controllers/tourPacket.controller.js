@@ -266,15 +266,16 @@ WHERE
     const reviews = await query(
       `
       SELECT
-        tpr.rating,
-        tpr.content,
-        u.fullname
-      FROM
-        tour_packet_has_reviews tpr
-      JOIN
-        users u ON tpr.user_id = u.id
-      WHERE
-        tour_packet_id = ? AND is_deleted = FALSE
+  tpr.rating,
+  tpr.content,
+  u.fullname
+FROM
+  tour_packet_has_reviews tpr
+JOIN
+  users u ON tpr.user_id = u.id
+WHERE
+  tpr.tour_packet_id = 'id' AND tpr.is_deleted = FALSE;
+
     `,
       [id]
     );

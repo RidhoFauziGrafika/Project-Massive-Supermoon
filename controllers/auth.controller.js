@@ -82,7 +82,7 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   try {
     const user = await query(
-      `SELECT u.id_uuid, u.fullname, image_path, u.email, r.name AS role
+      `SELECT u.id, u.id_uuid, u.fullname, image_path, u.email, r.name AS role
 FROM users AS u
 JOIN user_roles AS r ON u.role_id = r.id
 WHERE u.email = ?;
@@ -98,6 +98,7 @@ WHERE u.email = ?;
         email: user.email,
         role: user.role,
         id_uuid: user.id_uuid,
+        id: user.id,
       },
       SECRET,
       {
