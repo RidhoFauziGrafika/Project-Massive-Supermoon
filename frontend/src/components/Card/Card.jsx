@@ -7,34 +7,37 @@ const Card = ({ filteredtour }) => {
     <>
       <div className="p-4 font-productSans">
         <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
-          <img src={filteredtour.image_card} alt="image" />
+          <img src={filteredtour.image_card}
+          src={`http://localhost:8000${filteredtour?.image}`}
+           alt="image" />
           <div className="p-5">
             <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
-              {filteredtour.title}
+              {filteredtour?.title}
             </h5>
             <div className="flex flex-row gap-2">
               <a className="text-primary-pressed">
-                {filteredtour.category[0].category1}
+                {/*{filteredtour.category[0].category1}*/}
+              {filteredtour?.categories ?? 'Alam, Outdoor, Camping'}
               </a>
-              <a className="text-primary-pressed">
+{/*              <a className="text-primary-pressed">
                 {filteredtour.category[1].category2}
               </a>
               <a className="text-primary-pressed">
                 {filteredtour.category[2].category3}
-              </a>
+              </a>*/}
             </div>
             <div className="flex flex-row justify-between p-3">
               <div className="flex flex-row">
                 <BsStarFill className="w-10 h-10" fill="#EE9C22" />
                 <div className="ml-4">
-                  <p className="text-sm font-bold">{filteredtour.rating}</p>
+                  <p className="text-sm font-bold">{parseInt(filteredtour?.rating) ?? 0}</p>
                   <p className="text-sm text-neutral-70">
-                    {filteredtour.review} Reviews
+                    {filteredtour?.review ?? 0} Reviews
                   </p>
                 </div>
               </div>
               <Link
-                to="/wisata"
+                to={`/dashboard/wisata/detil/${filteredtour?.slug}`}
                 className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
               >
                 Detail

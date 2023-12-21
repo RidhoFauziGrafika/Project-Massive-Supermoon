@@ -37,7 +37,7 @@ const Blog = () => {
           Mengagumkan`}
         </h3>
         <img
-          className="w-full h-full rounded-lg items-center"
+          className="md:max-w-[60%] md:max-h-[40%] object-fit mx-auto block h-full rounded-lg items-center"
           src={`http://localhost:8000${one?.img_path}`}
           alt="image"
         />

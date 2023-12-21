@@ -140,7 +140,7 @@ const TentangKami = () => {
                   <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
                     Dini Fariha
                   </h3>
-                  <p className="text-xs lg:text-base uppercase">Hipster</p>
+                  <p className="text-xs lg:text-base uppercase">Project Manager</p>
                 </div>
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img
@@ -175,7 +175,7 @@ const TentangKami = () => {
                   <h3 className="mb-1 uppercase text-sm lg:text-2xl font-bold tracking-tight text-gray-900 ">
                     Ridho Fauzi Grafika
                   </h3>
-                  <p className="text-xs lg:text-base uppercase">Hipster</p>
+                  <p className="text-xs lg:text-base uppercase">Hacker/Scrum Master</p>
                 </div>
                 <div className="text-center text-gray-500 dark:text-gray-400">
                   <img

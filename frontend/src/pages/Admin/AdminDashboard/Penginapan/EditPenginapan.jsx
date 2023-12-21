@@ -48,7 +48,6 @@ const EditPenginapan = () => {
     title: "",
     price: "",
     categories: "",
-    price: "",
     address: "",
     address_link: "",
     description: "",

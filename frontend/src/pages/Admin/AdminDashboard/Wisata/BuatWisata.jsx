@@ -16,7 +16,6 @@ const BuatWisata = () => {
     title: "",
     price: "",
     categories: "",
-    price: "",
     address: "",
     address_link: "",
     description: "",

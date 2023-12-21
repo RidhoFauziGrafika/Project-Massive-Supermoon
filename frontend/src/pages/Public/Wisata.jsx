@@ -13,8 +13,10 @@ const Wisata = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`http://localhost:8000/api/tours/all`);
-        console.log(response.data?.data ?? []);
+        const response = await axios.get(
+          `http://localhost:8000/api/tours/data/all`
+        );
+        // console.log("TOURS", response.data ?? []);
         setTours(response.data?.data ?? []);
       } catch (error) {}
     }
@@ -23,7 +25,7 @@ const Wisata = () => {
   return (
     <>
       <Navbar />
-      <div className="font-productSans py-6">
+      <div className="font-productSans py-6 px-6">
         <div className=" flex justify-center mt-10">
           <div className="flex rounded-full bg-primary-surface w-[544px] h-[60px]">
             <div className="bg-primary-main text-white w-full rounded-full flex justify-center">
@@ -50,12 +52,13 @@ const Wisata = () => {
           <div>
             <div className="flex flex-wrap justify-evenly gap-7">
               {/* cards */}
+            <div className="grid gap-8 lg:gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
               {tours.map((tour) => {
                 return (
                   <div className="p-4 font-productSans" key={tour?.title ?? ""}>
                     <div className="w-full bg-neutral-card rounded-lg drop-shadow-xl">
                       <img
-                        className="rounded-t-lg"
+                        className="rounded-t-lg aspect-square object-fill"
                         src={`http://localhost:8000${tour?.image}` ?? ""}
                         alt={""}
                       />
@@ -65,7 +68,7 @@ const Wisata = () => {
                         </h5>
                         <div className="flex flex-row gap-3">
                           <a className="text-primary-pressed">
-                            {/* {tour.categories} */}
+                            {tour?.categories}
                           </a>
                         </div>
                         <div className="flex flex-row justify-between p-3">
@@ -76,7 +79,7 @@ const Wisata = () => {
                             />
                             <div className="ml-4">
                               <p className="text-sm font-bold">
-                                {tour?.average_rating ?? ""}
+                                {parseInt(tour?.average_rating) ?? ""}
                               </p>
                               <p className="text-sm">
                                 {tour?.review_count ?? 0} Reviews
@@ -85,7 +88,7 @@ const Wisata = () => {
                           </div>
                           <Link
                             to={`/dashboard/wisata/detil/${tour?.slug}`}
-                            className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                            className="inline-flex items-center lg:px-4  px-2 lg:py-2 lg:text-[16px] text-[14px] text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
                           >
                             Detail
                           </Link>
@@ -95,6 +98,7 @@ const Wisata = () => {
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
         </div>

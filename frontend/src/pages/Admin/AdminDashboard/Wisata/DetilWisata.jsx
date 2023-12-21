@@ -29,6 +29,7 @@ import dataFood from "../../../../utils/constants/Kuliner";
 import dataLodge from "../../../../utils/constants/Penginapan";
 import CardPenginapan from "../../../../components/CardPenginapan/CardPenginapan";
 import splitComa from "../../../../utils/SplitComaToArray";
+import { BsStarFill } from "react-icons/bs";
 
 const DetilWisata = () => {
   // FROM OLD
@@ -55,7 +56,7 @@ const DetilWisata = () => {
         const response = await axios.get(
           `http://localhost:8000/api/culinaries/all`
         );
-        console.log(response.data?.data ?? []);
+        //console.log(response.data?.data ?? []);
         setCulinaries(response.data?.data ?? []);
       } catch (error) {}
     }
@@ -69,7 +70,7 @@ const DetilWisata = () => {
         const response = await axios.get(
           `http://localhost:8000/api/lodgings/all`
         );
-        console.log(response.data?.data ?? []);
+        //console.log(response.data?.data ?? []);
         setInns(response.data?.data ?? []);
       } catch (error) {}
     }
@@ -85,8 +86,8 @@ const DetilWisata = () => {
         );
 
         const fetchingData = response.data.data;
-        console.log("Data from API:", fetchingData);
-        console.log("Data from API images:", fetchingData.images);
+       // console.log("Data from API:", fetchingData);
+        //console.log("Data from API images:", fetchingData.images);
 
         // Update state with the fetched data
         setTourData(fetchingData);
@@ -94,27 +95,27 @@ const DetilWisata = () => {
         setFacilities(fetchingData.facilities ?? []);
         setReviews(fetchingData.reviews ?? []);
 
-        console.log("Data state:", tourData);
-        console.log("Images state:", images);
-        console.log("Facilities state:", facilities);
-        console.log("Reviews state:", reviews);
+        // console.log("Data state:", tourData);
+        // console.log("Images state:", images);
+        // console.log("Facilities state:", facilities);
+        // console.log("Reviews state:", reviews);
       } catch (error) {
         console.error("Fetch data error:", error);
       }
     };
 
-    // Immediately invoke the fetchData function
+  
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // Actions to perform after state has been updated
-    console.log("Updated state:", tourData);
-  }, [tourData]); // Add tourData as a dependency
+  // useEffect(() => {
+  //   console.log("Updated state:", tourData);
+  // }, [tourData]);
 
   return (
     <>
       <Navbar />
+      {/* <BsStarFill/> */}
       <div className="font-productSans">
         <div className="lg:px-16 px-4 flex flex-col gap-8 py-6 lg:py-24">
           <div className="grid grid-flow-col grid-rows-2 gap-3">
@@ -144,12 +145,16 @@ const DetilWisata = () => {
                   <h2 className="text-primary-main uppercase font-bold lg:text-[48px] text-2xl">
                     {tourData.title ?? "JUDUL"}
                   </h2>
+                  {/*REVIEWS AND CATEGORIES*/}
                   <div className="flex gap-3 justify-start items-center">
                     <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
                     <div>
-                      <h4 className="lg:text-[32px] text-[16px]  font-bold">
+{/*                      <h4 className="lg:text-[32px] text-[16px]  font-bold">
                         {tourData.categories ?? 0}
-                      </h4>
+                      </h4>*/}
+                    <p className="font-bold lg:text-12 text-sm md:text-base">
+                        {tourData?.rating ?? 0}
+                      </p>
                       <p className="text-neutral-60 lg:text-base text-sm">
                         {tourData.reviews?.length ?? 0} reviews
                       </p>

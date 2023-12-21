@@ -16,8 +16,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
-  const ADMIN = auth.roles.includes(ROLES.ADMIN);
-  const CLIENT = auth.roles.includes(ROLES.CLIENT);
+  const ADMIN = auth.roles?.includes(ROLES.ADMIN);
+  const CLIENT = auth.roles?.includes(ROLES.CLIENT);
   const handleLogout = () => {
     logout();
     setAuth({});

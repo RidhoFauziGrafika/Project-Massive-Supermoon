@@ -143,7 +143,7 @@ const DetilPembayaran = () => {
               </h6>
             </div>
             <div className="flex justify-between items-center mb-10">
-              <img src={""} width="300" />
+              <img src={"/assets/images/bukti-transaksi.png"} width="300" />
             </div>
           </div>
           <div className="w-full bg-neutral-10  rounded-lg mb-5 px-4 py-8">

@@ -7,3 +7,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/*@components {
+  .btn-primary {
+    @apply inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg;
+  }
+}*/

@@ -3,12 +3,17 @@ import { BsStarFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const CardPenginapan = ({ lodge }) => {
+  console.log("LODGE DATA", lodge);
   return (
     <>
       <div className="p-4 font-productSans">
         <div className="p-4 font-productSans">
           <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
-            <img className="rounded-t-lg" src={lodge.img_card} alt="image" />
+            <img
+              className="rounded-t-lg"
+              alt="image"
+              src={`http://localhost:8000${lodge.image}` ?? ""}
+            />
             <div className="p-5">
               <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
                 {lodge.title}

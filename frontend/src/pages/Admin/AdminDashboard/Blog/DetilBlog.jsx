@@ -31,11 +31,13 @@ const DetilBlog = () => {
           <FaArrowLeftLong />
         </Link>
         <h2 className="py-5 text-4xl font-bold">{post?.title}</h2>
+        <div className={'md:max-w-[70%] md:max-h-[40%] object-fit  mx-auto'}>
         <img
-          className="rounded-lg items-center"
+          className="rounded-lg block"
           src={`http://localhost:8000${post?.img_path}`}
           alt="image"
         />
+        </div>
         <p className="py-5 text-xl tracking-tight text-gray-900">
           {post?.content}
         </p>

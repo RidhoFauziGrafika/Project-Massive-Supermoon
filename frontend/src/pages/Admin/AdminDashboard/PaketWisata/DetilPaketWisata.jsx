@@ -29,8 +29,8 @@ const DetailPaketWisata = () => {
   const [packageTours, setPackageTours] = useState(data);
   // real
   const { auth, setAuth } = useAuth();
-  const ADMIN = auth.roles.includes(ROLES.ADMIN);
-  const CLIENT = auth.roles.includes(ROLES.CLIENT);
+  const ADMIN = auth.roles?.includes(ROLES.ADMIN);
+  const CLIENT = auth.roles?.includes(ROLES.CLIENT);
   const [tourPacket, setTourPacket] = useState({});
   const [tourFacilities, setTourFacilities] = useState([]);
   const [culinaryFacilities, setCulinaryFacilities] = useState([]);

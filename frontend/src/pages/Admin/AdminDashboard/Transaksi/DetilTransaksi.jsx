@@ -18,7 +18,6 @@ const DetilTransaksi = () => {
     title: "",
     price: "",
     categories: "",
-    price: "",
     address: "",
     address_link: "",
     description: "",
@@ -31,18 +30,11 @@ const DetilTransaksi = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/lodgings/slug/${slug}`
+          `http://localhost:8000/api/lodgings/${id}`
         );
         const fetchData = response.data.data;
         console.log(fetchData);
-        setId(fetchData.id);
-        console.log("ID", id);
-
-        setImages(fetchData.images ?? []);
-        setFormData({
-          ...formData,
-          ...fetchData,
-        });
+ 
         const facilitiesArray = Array.isArray(fetchData.facilities)
           ? fetchData.facilities
           : [];
@@ -156,7 +148,7 @@ const DetilTransaksi = () => {
               </h6>
             </div>
             <div className="flex justify-between items-center mb-10">
-              <img src={""} width="300" />
+              <img src={'/assets/images/bukti-transaksi.png'} width="300" />
             </div>
           </div>
           <div className="w-full bg-neutral-10  rounded-lg mb-5 px-4 py-8">

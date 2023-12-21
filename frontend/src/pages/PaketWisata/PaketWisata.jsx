@@ -37,6 +37,7 @@ const PaketWisata = () => {
             </p>
           </div>
           <div>
+          <div className="grid gap-8 lg:gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-wrap justify-evenly gap-7">
               {packageTours.map((packageTour) => (
                 <AllPaketWisata
@@ -44,6 +45,7 @@ const PaketWisata = () => {
                   packageTour={packageTour}
                 />
               ))}
+            </div>
             </div>
           </div>
         </div>

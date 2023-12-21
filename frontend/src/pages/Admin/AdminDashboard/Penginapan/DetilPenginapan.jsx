@@ -75,7 +75,7 @@ const DetilPenginapan = () => {
                     <FaStar fill="#EE9C22" className="w-[50px] h-[53px]" />
                     <div>
                       <h4 className="lg:text-[32px] text-[16px]  font-bold">
-                        {/* {inn.average_rating ?? 0} reviews */}
+                        {parseInt(inn?.average_rating) ?? 0}
                       </h4>
                       <p className="text-neutral-60 lg:text-base text-sm">
                         {inn.reviews?.length ?? 0} reviews
