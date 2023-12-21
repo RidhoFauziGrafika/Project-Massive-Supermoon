@@ -36,7 +36,7 @@ const PaketWisata = () => {
               </Link>
             </div>
             <div className="bg-primary-main text-white w-full rounded-full flex justify-center">
-              <Link to="/paketWisata" className="flex items-center">
+              <Link to="/paket-wisata" className="flex items-center">
                 Paket Wisata
               </Link>
             </div>
