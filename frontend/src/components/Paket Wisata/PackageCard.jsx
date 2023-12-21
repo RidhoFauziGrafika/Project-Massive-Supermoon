@@ -27,6 +27,7 @@ const PackageCard = () => {
         <h3 className="lg:text-[40px] text-2xl font-bold flex items-center justify-center">
           Paket Wisata
         </h3>
+               <div className="flex flex-col">
         <div className="flex flex-col lg:flex-row justify-evenly mt-10 items-center">
           {packageTours.map((t) => (
             <div key={t?.slug ?? t?.title ?? t.id} className="p-4 font-productSans">
@@ -68,12 +69,13 @@ const PackageCard = () => {
         </div>
         <div className="flex flex-col justify-center items-center mt-4">
           <Link
-            to="/paketWisata"
+            to="/paket-wisata"
             className="px-4 py-2 gap-1 bg-primary-main rounded-lg text-xl text-neutral-10  flex items-center justify-center"
           >
             Tampilkan Lebih Banyak
           </Link>
         </div>
+         </div>
       </div>
     </>
   );

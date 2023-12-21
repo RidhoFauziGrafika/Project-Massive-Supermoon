@@ -85,7 +85,9 @@ useEffect(() => {
             </div>
           ))}
 
-          <div className="flex flex-col justify-center items-center mt-4">
+
+        </div>
+                  <div className="flex flex-col justify-center items-center mt-4">
             <Link
               to="/wisata"
               className="px-4 py-2 gap-1 bg-primary-main rounded-lg text-xl text-neutral-10  flex items-center justify-center"
@@ -93,7 +95,6 @@ useEffect(() => {
               Tampilkan Lebih Banyak
             </Link>
           </div>
-        </div>
       </div>
     </>
   );
