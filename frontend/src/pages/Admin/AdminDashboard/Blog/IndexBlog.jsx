@@ -26,7 +26,6 @@ export default function IndexBlog() {
         console.error("Error fetching data:", error);
       });
   }, []);
-  console.log(slug);
   return (
     <>
       <Navbar />
