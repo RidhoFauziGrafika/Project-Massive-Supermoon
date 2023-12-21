@@ -77,6 +77,21 @@ const DetilWisata = () => {
     fetchData();
   }, []);
 
+// REKOMENDASI KULINER
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/culinaries/all`
+        );
+        //console.log(response.data?.data ?? []);
+        setCulinaries(response.data?.data ?? []);
+      } catch (error) {}
+    }
+    fetchData();
+  }, []);
+
+
   // WISATA
   useEffect(() => {
     const fetchData = async () => {
@@ -86,19 +101,11 @@ const DetilWisata = () => {
         );
 
         const fetchingData = response.data.data;
-       // console.log("Data from API:", fetchingData);
-        //console.log("Data from API images:", fetchingData.images);
-
         // Update state with the fetched data
         setTourData(fetchingData);
         setImages(fetchingData.images ?? []);
         setFacilities(fetchingData.facilities ?? []);
         setReviews(fetchingData.reviews ?? []);
-
-        // console.log("Data state:", tourData);
-        // console.log("Images state:", images);
-        // console.log("Facilities state:", facilities);
-        // console.log("Reviews state:", reviews);
       } catch (error) {
         console.error("Fetch data error:", error);
       }
@@ -108,6 +115,10 @@ const DetilWisata = () => {
     fetchData();
   }, []);
 
+
+
+
+
   // useEffect(() => {
   //   console.log("Updated state:", tourData);
   // }, [tourData]);
@@ -115,7 +126,6 @@ const DetilWisata = () => {
   return (
     <>
       <Navbar />
-      {/* <BsStarFill/> */}
       <div className="font-productSans">
         <div className="lg:px-16 px-4 flex flex-col gap-8 py-6 lg:py-24">
           <div className="grid grid-flow-col grid-rows-2 gap-3">
@@ -304,8 +314,8 @@ const DetilWisata = () => {
                       <div className="p-4 font-productSans">
                         <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
                           <img
-                            className="rounded-t-lg"
-                            src={inn?.image}
+                            className="rounded-t-lg mx-auto object-cover w-full"
+                            src={`http://localhost:8000${inn?.image}`}
                             alt="image"
                           />
                           <div className="p-5">
@@ -313,15 +323,15 @@ const DetilWisata = () => {
                               {inn?.title}
                             </h5>
                             <div className="flex flex-row gap-2">
-                              <a className="text-primary-pressed">
-                                {splitComa(inn.categories)[0]}
-                              </a>
-                              <a className="text-primary-pressed">
-                                {splitComa(inn.categories)[1]}
-                              </a>
-                              <a className="text-primary-pressed">
-                                {splitComa(inn.categories)[2]}
-                              </a>
+                              <span className="text-primary-pressed">
+                                {splitComa(inn?.categories)[0] ?? 'Bervariasi'}
+                              </span>
+                              <span className="text-primary-pressed">
+                                {splitComa(inn?.categories)[1] ?? 'Sesuai Budget'}
+                              </span>
+                              <span className="text-primary-pressed">
+                                {splitComa(inn?.categories)[2] ?? 'Pasti Nyaman'}
+                              </span>
                             </div>
                             <div className="flex flex-row justify-between p-3">
                               <div className="flex flex-row">
@@ -331,16 +341,17 @@ const DetilWisata = () => {
                                 />
                                 <div className="ml-4">
                                   <p className="text-sm font-bold">
-                                    {inn.rating}
+                                    {parseInt(inn?.average_rating) ?? 0}
                                   </p>
                                   <p className="text-sm text-neutral-70">
-                                    {inn?.review} Reviews
+                                    {inn?.review ?? 0} Reviews
                                   </p>
                                 </div>
                               </div>
                               <Link
                                 to={`/dashboard/penginapan/detil/${inn?.slug}`}
-                                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                                className="inline-flex items-center lg:px-4  px-2 lg:py-2 lg:text-[16px] text-[14px] text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg
+"
                               >
                                 Detail
                               </Link>
@@ -356,36 +367,32 @@ const DetilWisata = () => {
             </div>
           </div>
           {/* rekomendasi kuliner */}
-          <div>
-            <h3 className="text-[40px] font-bold text-primary-main">
-              Rekomendasi Kuliner
-            </h3>
-            <div className="flex flex-col lg:flex-row justify-between mt-10 items-center">
-              {culinaries.map((culinary) => {
+ {/* CARDS */}
+              {culinaries.map((cul) => {
                 return (
                   <>
                     <div className="p-4 font-productSans">
                       <div className="p-4 font-productSans">
                         <div className="w-[328px] bg-neutral-card rounded-lg drop-shadow-xl">
                           <img
-                            className="rounded-t-lg"
-                            src={culinary?.image}
+                            className="rounded-t-lg mx-auto object-cover w-full"
+                            src={`http://localhost:8000${cul?.image}`}
                             alt="image"
                           />
                           <div className="p-5">
                             <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
-                              {culinary?.title}
+                              {cul?.title}
                             </h5>
                             <div className="flex flex-row gap-2">
-                              <a className="text-primary-pressed">
-                                {splitComa(culinary.categories)[0]}
-                              </a>
-                              <a className="text-primary-pressed">
-                                {splitComa(culinary.categories)[1]}
-                              </a>
-                              <a className="text-primary-pressed">
-                                {splitComa(culinary.categories)[2]}
-                              </a>
+                              <span className="text-primary-pressed">
+                                {splitComa(cul?.categories)[0] ?? 'Lezat'}
+                              </span>
+                              <span className="text-primary-pressed">
+                                {splitComa(cul?.categories)[1] ?? 'Nyaman'}
+                              </span>
+                              <span className="text-primary-pressed">
+                                {splitComa(cul?.categories)[2] ?? 'Khas'}
+                              </span>
                             </div>
                             <div className="flex flex-row justify-between p-3">
                               <div className="flex flex-row">
@@ -395,16 +402,17 @@ const DetilWisata = () => {
                                 />
                                 <div className="ml-4">
                                   <p className="text-sm font-bold">
-                                    {culinary.rating}
+                                    {parseInt(cul?.average_rating) ?? 0}
                                   </p>
                                   <p className="text-sm text-neutral-70">
-                                    {culinary?.review} Reviews
+                                    {cul?.review ?? 0} Reviews
                                   </p>
                                 </div>
                               </div>
                               <Link
-                                to={`/dashboard/penginapan/detil/${culinary?.slug}`}
-                                className="inline-flex items-center px-4 py-2 text-[16px]  text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg"
+                                to={`/dashboard/kuliner/detil/${cul?.slug}`}
+                                className="inline-flex items-center lg:px-4  px-2 lg:py-2 lg:text-[16px] text-[14px] text-center text-primary-main border-solid border-2 border-primary-main bg-primary-surface rounded-lg
+"
                               >
                                 Detail
                               </Link>
@@ -416,8 +424,7 @@ const DetilWisata = () => {
                   </>
                 );
               })}
-            </div>
-          </div>
+              {/* END CARDS */}
         </div>
       </div>
       <Footer />

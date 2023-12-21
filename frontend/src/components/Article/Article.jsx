@@ -25,7 +25,7 @@ const Article = () => {
             </p>
             <div className="lg:col-span-5">
               <Link
-                to="/paketWisata"
+                to="/paket-wisata"
                 className="text-center px-4 py-2 gap-1 text-base text-neutral-10 rounded-lg bg-primary-main"
               >
                 Mulai
